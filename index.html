@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Finanças Pro (Sync)</title>
+    <title>Finanças Completo (Sync)</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
@@ -19,28 +19,28 @@
         
         .container { max-width: 800px; margin: 0 auto; padding: 15px; }
         
-        /* HEADER SIMPLIFICADO */
+        /* HEADER */
         .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
         .month-nav { display: flex; align-items: center; gap: 10px; background: var(--card); padding: 8px 15px; border-radius: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         .nav-btn { background: none; border: none; font-size: 1.2rem; color: var(--accent); cursor: pointer; }
         
-        /* CARDS & LAYOUT */
+        /* CARDS */
         .card { background: var(--card); border-radius: var(--radius); padding: 20px; margin-bottom: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
         .row { display: flex; gap: 10px; }
         .col { flex: 1; }
 
-        /* INPUTS MELHORADOS */
+        /* INPUTS */
         label { display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 5px; color: var(--text); opacity: 0.8; }
         input, select { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 16px; background: var(--bg); color: var(--text); outline: none; }
         input:focus { border-color: var(--accent); }
 
-        /* BOTÕES */
+        /* BOTOES */
         .btn { width: 100%; padding: 12px; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; margin-top: 10px; font-size: 1rem; transition: 0.2s; }
         .btn-primary { background: var(--accent); color: white; }
         .btn-success { background: var(--success); color: white; }
         .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text); }
         
-        /* TABELA DATA */
+        /* LISTA */
         .transaction-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border); }
         .t-date { font-size: 0.75rem; color: var(--text); opacity: 0.6; display: block; }
         .t-desc { font-weight: 600; font-size: 0.95rem; }
@@ -48,7 +48,7 @@
         .is-expense { color: var(--danger); }
         .is-income { color: var(--success); }
 
-        /* TABS FLUTUANTES (Mobile style) */
+        /* BOTTOM NAV */
         .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--card); display: flex; justify-content: space-around; padding: 10px; border-top: 1px solid var(--border); z-index: 100; }
         .nav-icon { background: none; border: none; font-size: 0.7rem; color: var(--text); opacity: 0.6; display: flex; flex-direction: column; align-items: center; gap: 4px; }
         .nav-icon.active { color: var(--accent); opacity: 1; font-weight: bold; }
@@ -58,7 +58,6 @@
         .view-section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* BACKUP AREA */
         .backup-area { border: 1px dashed var(--accent); padding: 15px; border-radius: var(--radius); text-align: center; margin-top: 20px; background: rgba(37, 99, 235, 0.05); }
     </style>
 </head>
@@ -66,7 +65,7 @@
 
     <div class="container">
         <header class="header">
-            <h2 style="margin:0;">Finanças</h2>
+            <h2 style="margin:0;">Wesley Finanças</h2>
             <div class="month-nav">
                 <button class="nav-btn" onclick="mudarMes(-1)">‹</button>
                 <span id="label-mes" style="font-weight:700; font-size: 0.9rem; min-width: 90px; text-align:center;">Jan 2026</span>
@@ -80,14 +79,8 @@
                 <label>Saldo em Caixa</label>
                 <div style="font-size: 2rem; font-weight: 800; color: var(--text);" id="kpi-saldo">R$ 0,00</div>
                 <div class="row" style="margin-top: 15px;">
-                    <div class="col">
-                        <label>Entradas</label>
-                        <span style="color: var(--success); font-weight: 700;" id="kpi-receitas">R$ 0,00</span>
-                    </div>
-                    <div class="col">
-                        <label>Saídas</label>
-                        <span style="color: var(--danger); font-weight: 700;" id="kpi-despesas">R$ 0,00</span>
-                    </div>
+                    <div class="col"><label>Entradas</label><span style="color: var(--success); font-weight: 700;" id="kpi-receitas">R$ 0,00</span></div>
+                    <div class="col"><label>Saídas</label><span style="color: var(--danger); font-weight: 700;" id="kpi-despesas">R$ 0,00</span></div>
                 </div>
             </div>
 
@@ -109,20 +102,18 @@
             <div class="backup-area">
                 <label style="color:var(--accent); margin-bottom:10px;">☁️ Sincronizar (PC ↔ iPhone)</label>
                 <div class="row">
-                    <button class="btn btn-outline" onclick="baixarBackup()">⬇️ Baixar Dados</button>
+                    <button class="btn btn-outline" onclick="baixarBackup()">⬇️ Baixar</button>
                     <label class="btn btn-outline" style="cursor:pointer; display:flex; align-items:center; justify-content:center; margin-top:10px;">
                         ⬆️ Restaurar
                         <input type="file" id="file-input" style="display:none;" onchange="restaurarBackup(this)">
                     </label>
                 </div>
-                <small style="display:block; margin-top:5px; font-size:0.7rem;">Baixe o arquivo no PC e envie para o iPhone (ou vice-versa) para atualizar.</small>
             </div>
         </div>
 
         <div id="view-add" class="view-section">
             <div class="card">
                 <h3>Novo Lançamento</h3>
-                
                 <div style="display:flex; gap:10px; margin-bottom:15px;">
                     <button class="btn" id="btn-type-rec" onclick="setFormType('receita')" style="background:var(--border); color:var(--text);">Receita</button>
                     <button class="btn" id="btn-type-desp" onclick="setFormType('despesa')" style="background:var(--danger); color:white;">Despesa</button>
@@ -134,19 +125,23 @@
                 </div>
                 
                 <div style="margin-top:10px;">
-                    <label>Descrição</label>
-                    <input type="text" id="input-desc" placeholder="Ex: Mercado, Salário...">
+                    <label>Descrição</label><input type="text" id="input-desc" placeholder="Ex: Netflix, Nubank...">
                 </div>
 
                 <div style="margin-top:10px;" id="div-cat">
                     <label>Categoria</label>
                     <select id="input-cat">
-                        <option value="Moradia">🏠 Moradia</option>
+                        <option value="Moradia">🏠 Moradia / Casa</option>
                         <option value="Alimentação">🍔 Alimentação</option>
                         <option value="Transporte">🚗 Transporte</option>
-                        <option value="Lazer">🎉 Lazer</option>
-                        <option value="Saúde">💊 Saúde</option>
+                        <option value="Telefonia">📱 Celular / Internet</option>
+                        <option value="Streaming">🎬 Streaming / Assinaturas</option>
+                        <option value="Banco">🏦 Banco / Taxas / Cartão</option>
+                        <option value="Saúde">💊 Saúde / Farmácia</option>
                         <option value="Educação">📚 Educação</option>
+                        <option value="Lazer">🎉 Lazer / Bares</option>
+                        <option value="Compras">🛍️ Compras / Roupas</option>
+                        <option value="Pets">🐾 Pets / Veterinário</option>
                         <option value="Outros">⚙️ Outros</option>
                     </select>
                 </div>
@@ -158,17 +153,13 @@
         <div id="view-list" class="view-section">
             <div class="card">
                 <h3>Extrato Detalhado</h3>
-                <div id="lista-transacoes">
-                    <div style="text-align:center; padding:20px; opacity:0.5;">Sem lançamentos neste mês.</div>
-                </div>
+                <div id="lista-transacoes"></div>
             </div>
         </div>
 
         <div id="view-invest" class="view-section">
             <div class="card">
-                <h3>Meus Ativos</h3>
-                <p style="font-size:0.8rem;">Atualize o saldo total dos seus investimentos.</p>
-                
+                <h3>Patrimônio</h3>
                 <div class="row">
                     <div class="col">
                         <label>Tipo</label>
@@ -177,6 +168,7 @@
                             <option value="Renda Fixa">🔒 Renda Fixa</option>
                             <option value="Ações">📈 Ações/FIIs</option>
                             <option value="Cripto">₿ Cripto</option>
+                            <option value="Veículos">🚙 Veículos</option>
                         </select>
                     </div>
                 </div>
@@ -185,9 +177,8 @@
                 </div>
                 <button class="btn btn-success" onclick="salvarInvestimento()">Atualizar Saldo</button>
             </div>
-
             <div class="card">
-                <h3>Carteira Atual</h3>
+                <h3>Carteira</h3>
                 <div id="lista-investimentos"></div>
             </div>
         </div>
@@ -202,22 +193,24 @@
     </nav>
 
     <script>
-        // --- ESTADO & CONFIG ---
-        let currentMonth = new Date().toISOString().slice(0, 7); // YYYY-MM
+        // CONFIG
+        let currentMonth = new Date().toISOString().slice(0, 7);
         let activeType = 'despesa';
-        let db = JSON.parse(localStorage.getItem('fin_sync_v1')) || {};
+        let db = JSON.parse(localStorage.getItem('fin_sync_v2')) || {};
         let myChart = null;
 
-        // --- INICIALIZAÇÃO ---
+        // CORES ESTENDIDAS PARA MAIS CATEGORIAS
+        const CHART_COLORS = [
+            '#2563eb', '#16a34a', '#f59e0b', '#dc2626', '#9333ea', 
+            '#0891b2', '#475569', '#db2777', '#84cc16', '#7c3aed', '#ea580c'
+        ];
+
         window.onload = () => {
             renderAll();
             document.getElementById('input-data').value = new Date().toISOString().split('T')[0];
-            
-            // Tema
             if (localStorage.getItem('theme') === 'dark') toggleTheme();
         };
 
-        // --- NAVEGAÇÃO DE TELA ---
         function navTo(viewId, btn) {
             document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
             document.getElementById(viewId).classList.add('active');
@@ -239,7 +232,6 @@
             const btnRec = document.getElementById('btn-type-rec');
             const btnDesp = document.getElementById('btn-type-desp');
             const divCat = document.getElementById('div-cat');
-
             if (type === 'receita') {
                 btnRec.style.background = 'var(--success)'; btnRec.style.color = 'white';
                 btnDesp.style.background = 'var(--border)'; btnDesp.style.color = 'var(--text)';
@@ -251,7 +243,6 @@
             }
         }
 
-        // --- LÓGICA DE DADOS ---
         function getMonthData() {
             if (!db[currentMonth]) db[currentMonth] = { transacoes: [], investimentos: [] };
             return db[currentMonth];
@@ -262,18 +253,10 @@
             const valor = parseFloat(document.getElementById('input-valor').value);
             const desc = document.getElementById('input-desc').value;
             const cat = activeType === 'despesa' ? document.getElementById('input-cat').value : 'Entrada';
-
             if (!data || !valor || !desc) return alert("Preencha todos os campos!");
-
-            const nova = {
-                id: Date.now(),
-                tipo: activeType,
-                data, valor, desc, cat
-            };
-
-            getMonthData().transacoes.push(nova);
-            saveDB();
             
+            getMonthData().transacoes.push({ id: Date.now(), tipo: activeType, data, valor, desc, cat });
+            saveDB();
             alert('Salvo!');
             document.getElementById('input-valor').value = '';
             document.getElementById('input-desc').value = '';
@@ -283,17 +266,13 @@
         function salvarInvestimento() {
             const tipo = document.getElementById('inv-tipo').value;
             const valor = parseFloat(document.getElementById('inv-valor').value);
-            
-            if (!valor) return alert("Valor inválido");
-
-            // Remove anterior do mesmo tipo (snapshot)
+            if (!valor && valor !== 0) return alert("Valor inválido");
             const mData = getMonthData();
             mData.investimentos = mData.investimentos.filter(i => i.tipo !== tipo);
-            
             mData.investimentos.push({ id: Date.now(), tipo, valor });
             saveDB();
             renderAll();
-            alert('Patrimônio atualizado!');
+            alert('Atualizado!');
         }
 
         function removerItem(id, lista) {
@@ -305,81 +284,52 @@
         }
 
         function saveDB() {
-            localStorage.setItem('fin_sync_v1', JSON.stringify(db));
+            localStorage.setItem('fin_sync_v2', JSON.stringify(db));
         }
 
-        // --- RENDERIZAÇÃO ---
         function renderAll() {
             const mData = getMonthData();
-            
-            // Header
             const dateObj = new Date(currentMonth + '-02');
             document.getElementById('label-mes').textContent = dateObj.toLocaleDateString('pt-BR', { month:'short', year:'numeric' });
 
-            // 1. Extrato (Ordenado por Data DESC)
             const listaEl = document.getElementById('lista-transacoes');
             listaEl.innerHTML = '';
+            const sorted = [...mData.transacoes].sort((a, b) => new Date(b.data) - new Date(a.data));
+            if (sorted.length === 0) listaEl.innerHTML = '<div style="text-align:center; opacity:0.5; padding:20px;">Nada este mês.</div>';
             
-            // ORDENAÇÃO POR DATA AQUI
-            const sortedTransacoes = [...mData.transacoes].sort((a, b) => new Date(b.data) - new Date(a.data));
-
-            if (sortedTransacoes.length === 0) listaEl.innerHTML = '<div style="text-align:center; opacity:0.5; padding:20px;">Nada este mês.</div>';
-
-            sortedTransacoes.forEach(t => {
+            sorted.forEach(t => {
                 const dia = t.data.split('-')[2];
-                const mes = t.data.split('-')[1];
-                const div = document.createElement('div');
-                div.className = 'transaction-item';
-                div.innerHTML = `
-                    <div>
-                        <span class="t-date">${dia}/${mes} • ${t.cat}</span>
-                        <span class="t-desc">${t.desc}</span>
-                    </div>
-                    <div style="text-align:right;">
-                        <div class="t-val ${t.tipo === 'receita' ? 'is-income' : 'is-expense'}">
-                            ${t.tipo === 'despesa' ? '-' : '+'} R$ ${t.valor.toLocaleString('pt-BR')}
-                        </div>
-                        <button onclick="removerItem(${t.id}, 'transacoes')" style="background:none; border:none; color:#ccc; font-size:0.8rem;">Excluir</button>
-                    </div>
-                `;
-                listaEl.appendChild(div);
-            });
-
-            // 2. Investimentos
-            const invEl = document.getElementById('lista-investimentos');
-            invEl.innerHTML = '';
-            mData.investimentos.forEach(i => {
-                invEl.innerHTML += `
+                listaEl.innerHTML += `
                     <div class="transaction-item">
-                        <span class="t-desc">${i.tipo}</span>
-                        <div>
-                            <span class="t-val">R$ ${i.valor.toLocaleString('pt-BR')}</span>
-                            <button onclick="removerItem(${i.id}, 'investimentos')" style="margin-left:10px; color:red; background:none; border:none;">x</button>
+                        <div><span class="t-date">${dia} • ${t.cat}</span><span class="t-desc">${t.desc}</span></div>
+                        <div style="text-align:right;">
+                            <div class="t-val ${t.tipo==='receita'?'is-income':'is-expense'}">${t.tipo==='despesa'?'-':'+'} R$ ${t.valor.toLocaleString('pt-BR')}</div>
+                            <button onclick="removerItem(${t.id}, 'transacoes')" style="background:none; border:none; color:#ccc; font-size:0.8rem;">x</button>
                         </div>
                     </div>`;
             });
 
-            // 3. Totais & KPIs
+            const invEl = document.getElementById('lista-investimentos');
+            invEl.innerHTML = '';
+            mData.investimentos.forEach(i => {
+                invEl.innerHTML += `<div class="transaction-item"><span class="t-desc">${i.tipo}</span><div><span class="t-val">R$ ${i.valor.toLocaleString('pt-BR')}</span><button onclick="removerItem(${i.id},'investimentos')" style="margin-left:10px; color:red; background:none; border:none;">x</button></div></div>`;
+            });
+
             const totalRec = mData.transacoes.filter(t => t.tipo === 'receita').reduce((a, b) => a + b.valor, 0);
             const totalDesp = mData.transacoes.filter(t => t.tipo === 'despesa').reduce((a, b) => a + b.valor, 0);
             const totalInv = mData.investimentos.reduce((a, b) => a + b.valor, 0);
-            const saldo = totalRec - totalDesp;
 
-            document.getElementById('kpi-saldo').textContent = `R$ ${saldo.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+            document.getElementById('kpi-saldo').textContent = `R$ ${(totalRec - totalDesp).toLocaleString('pt-BR')}`;
             document.getElementById('kpi-receitas').textContent = `+ R$ ${totalRec.toLocaleString('pt-BR')}`;
             document.getElementById('kpi-despesas').textContent = `- R$ ${totalDesp.toLocaleString('pt-BR')}`;
 
-            // 4. Lógica Reserva (Custo x 6)
-            const custoVida = totalDesp || 1; // evita div por 0
-            const meta = custoVida * 6;
+            const custoVida = totalDesp || 1;
             const reservaTotal = mData.investimentos.filter(i => i.tipo === 'Reserva').reduce((a, b) => a + b.valor, 0);
-            const progresso = Math.min((reservaTotal / meta) * 100, 100);
-
+            const progresso = Math.min((reservaTotal / (custoVida * 6)) * 100, 100);
             document.getElementById('reserva-bar').style.width = `${progresso}%`;
             document.getElementById('reserva-percent').textContent = `${Math.round(progresso)}%`;
-            document.getElementById('reserva-msg').textContent = `Hoje você tem ${(reservaTotal/custoVida).toFixed(1)} meses de custo de vida garantidos.`;
+            document.getElementById('reserva-msg').textContent = `Cobertura atual: ${(reservaTotal/custoVida).toFixed(1)} meses.`;
 
-            // 5. Gráfico
             renderChart(mData.transacoes.filter(t => t.tipo === 'despesa'));
         }
 
@@ -387,22 +337,17 @@
             const ctx = document.getElementById('grafico-cat').getContext('2d');
             const cats = {};
             despesas.forEach(d => cats[d.cat] = (cats[d.cat] || 0) + d.valor);
-
             if (myChart) myChart.destroy();
             myChart = new Chart(ctx, {
                 type: 'doughnut',
                 data: {
                     labels: Object.keys(cats),
-                    datasets: [{
-                        data: Object.values(cats),
-                        backgroundColor: ['#2563eb', '#16a34a', '#f59e0b', '#dc2626', '#9333ea', '#0891b2', '#475569']
-                    }]
+                    datasets: [{ data: Object.values(cats), backgroundColor: CHART_COLORS }]
                 },
                 options: { responsive: true, plugins: { legend: { position: 'right' } } }
             });
         }
 
-        // --- SISTEMA DE SYNC (BACKUP/RESTORE) ---
         function baixarBackup() {
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(db));
             const node = document.createElement('a');
@@ -416,20 +361,14 @@
         function restaurarBackup(input) {
             const file = input.files[0];
             if (!file) return;
-            
             const reader = new FileReader();
             reader.onload = function(e) {
                 try {
-                    const json = JSON.parse(e.target.result);
-                    if (confirm("Isso irá substituir os dados atuais pelos do arquivo. Continuar?")) {
-                        db = json;
-                        saveDB();
-                        renderAll();
-                        alert("Dados restaurados com sucesso!");
-                    }
-                } catch (err) {
-                    alert("Erro ao ler arquivo. Certifique-se que é um backup válido.");
-                }
+                    db = JSON.parse(e.target.result);
+                    saveDB();
+                    renderAll();
+                    alert("Dados restaurados!");
+                } catch (err) { alert("Erro ao ler backup."); }
             };
             reader.readAsText(file);
         }
