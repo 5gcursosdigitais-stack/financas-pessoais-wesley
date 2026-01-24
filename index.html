@@ -345,19 +345,26 @@
                     <label>Data</label>
                     <input type="date" id="dataDespesa" required>
                 </div>
-                <div>
-                    <label>Categoria</label>
-                    <select id="categoriaDespesa" required>
-                        <option value="moradia">🏠 Moradia/Aluguel</option>
-                        <option value="alimentacao">🍚 Alimentação</option>
-                        <option value="transporte">🚗 Transporte</option>
-                        <option value="lazer">🎉 Lazer</option>
-                        <option value="saude">🏥 Saúde</option>
-                        <option value="educacao">📚 Educação</option>
-                        <option value="outras">📋 Outras</option>
-                    </select>
-                </div>
-                <div>
+                <div class="form-group">
+    <label>Categoria <span style="color: #3b82f6;">(personalizável)</span></label>
+    <div style="position: relative;">
+        <select id="categoriaDespesaSelect" onchange="toggleCategoriaPersonalizada()" style="width: 100%;">
+            <option value="">➕ Nova Categoria</option>
+            <option value="moradia">🏠 Moradia/Aluguel</option>
+            <option value="alimentacao">🍚 Alimentação</option>
+            <option value="transporte">🚗 Transporte</option>
+            <option value="lazer">🎉 Lazer</option>
+            <option value="saude">🏥 Saúde</option>
+            <option value="educacao">📚 Educação</option>
+            <option value="localiza">🚙 Localiza/Frota</option>
+            <option value="fitness">💪 Academia</option>
+            <option value="freelance">⭐ Freelance</option>
+        </select>
+        <input type="text" id="categoriaDespesaCustom" placeholder="Digite sua categoria..." 
+               style="display: none; margin-top: 0.5rem; border: 2px dashed #3b82f6;">
+    </div>
+</div>
+
                     <label>Descrição</label>
                     <input type="text" id="descDespesa" placeholder="O que foi gasto?" required>
                 </div>
@@ -648,34 +655,43 @@ function resetData() {
 }
 
 // ========================================
-// INICIALIZAR
+// CATEGORIAS PERSONALIZÁVEIS
 // ========================================
-document.addEventListener('DOMContentLoaded', function() {
-    // Header com navegação
-    document.querySelector('.header').innerHTML = `
-        <h1>💰 Finanças Pessoais</h1>
-        <div style="display: flex; gap: 0.5rem; align-items: center;">
-            <button class="btn btn-primary" onclick="trocarMes(-1)">◀️</button>
-            <span id="mesAtual" style="padding: 0.5rem; font-weight: bold; font-size: 1.1rem;">${NOMES_MESES[MES_ATUAL]} ${ANO_ATUAL}</span>
-            <button class="btn btn-primary" onclick="trocarMes(1)">▶️</button>
-            <button class="theme-toggle" onclick="toggleTheme()">🌙 Dark</button>
-        </div>
-    `;
-
-    // Dados iniciais Janeiro
-    if (!receitasMensais[`${ANO_ATUAL}-01`]) {
-        receitasMensais[`${ANO_ATUAL}-01`] = [{ data: '2026-01-05', descricao: 'Salário Localiza', valor: 4500, tipo: 'salario' }];
-        despesasMensais[`${ANO_ATUAL}-01`] = [{ data: '2026-01-02', categoria: 'moradia', descricao: 'Aluguel Mooca', valor: 1800 }];
-        salvarDados();
-    }
-
-    renderizarTabelas();
-    calcularKPIs();
+function toggleCategoriaPersonalizada() {
+    const select = document.getElementById('categoriaDespesaSelect');
+    const inputCustom = document.getElementById('categoriaDespesaCustom');
     
-    // Datas padrão
-    document.getElementById('dataReceita').value = mesSelecionado + '-01';
-    document.getElementById('dataDespesa').value = mesSelecionado + '-01';
-});
+    if (select.value === '') {
+        inputCustom.style.display = 'block';
+        inputCustom.focus();
+    } else {
+        inputCustom.style.display = 'none';
+        inputCustom.value = '';
+    }
+}
+
+// Atualizar função addDespesa para categorias personalizadas
+function addDespesa() {
+    const data = document.getElementById('dataDespesa').value;
+    const select = document.getElementById('categoriaDespesaSelect');
+    const inputCustom = document.getElementById('categoriaDespesaCustom');
+    const categoria = select.value === '' ? inputCustom.value : select.value;
+    const desc = document.getElementById('descDespesa').value;
+    const valor = parseFloat(document.getElementById('valorDespesa').value);
+
+    if (data && categoria && categoria.trim() && desc && valor && data.startsWith(mesSelecionado)) {
+        if (!despesasMensais[mesSelecionado]) despesasMensais[mesSelecionado] = [];
+        despesasMensais[mesSelecionado].push({ data, categoria: categoria.toLowerCase().trim(), descricao: desc, valor });
+        salvarDados();
+        renderizarTabelas();
+        calcularKPIs();
+        limparFormDespesa();
+        alert('✅ Despesa "' + categoria + '" adicionada!');
+    } else {
+        alert('❌ Preencha categoria, descrição e use data do mês!');
+    }
+}
+
 </script>
 
 </body>
