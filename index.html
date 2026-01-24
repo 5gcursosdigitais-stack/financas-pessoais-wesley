@@ -3,393 +3,442 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Finanças Wesley - Com Reserva</title>
+    <title>Finanças Pro (Sync)</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
-            --bg-primary: #f8fafc; --bg-secondary: #ffffff; --text-primary: #1e293b;
-            --text-secondary: #64748b; --accent: #3b82f6; --success: #10b981;
-            --warning: #f59e0b; --danger: #ef4444; --border: #e2e8f0; 
-            --shadow: 0 4px 6px -1px rgba(0,0,0,0.1); --radius: 12px;
+            --bg: #f1f5f9; --card: #ffffff; --text: #334155;
+            --accent: #2563eb; --success: #16a34a; --danger: #dc2626;
+            --border: #e2e8f0; --radius: 12px;
         }
         [data-theme="dark"] {
-            --bg-primary: #0f172a; --bg-secondary: #1e293b; --text-primary: #f8fafc;
-            --text-secondary: #94a3b8; --border: #334155;
+            --bg: #0f172a; --card: #1e293b; --text: #f1f5f9; --border: #334155;
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { 
-            font-family: -apple-system, system-ui, BlinkMacSystemFont, sans-serif;
-            background: var(--bg-primary); color: var(--text-primary); line-height: 1.6; 
-            transition: 0.3s; padding-bottom: 40px;
-        }
-        .container { max-width: 1000px; margin: 0 auto; padding: 1rem; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { margin: 0; font-family: -apple-system, sans-serif; background: var(--bg); color: var(--text); padding-bottom: 80px; }
         
-        .header { 
-            display: flex; justify-content: space-between; align-items: center; 
-            margin-bottom: 1.5rem; padding: 1rem; background: var(--bg-secondary); 
-            border-radius: var(--radius); box-shadow: var(--shadow); flex-wrap: wrap; gap: 10px;
-        }
-        .nav-controls { display: flex; gap: 8px; align-items: center; width: 100%; justify-content: center; }
+        .container { max-width: 800px; margin: 0 auto; padding: 15px; }
+        
+        /* HEADER SIMPLIFICADO */
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .month-nav { display: flex; align-items: center; gap: 10px; background: var(--card); padding: 8px 15px; border-radius: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .nav-btn { background: none; border: none; font-size: 1.2rem; color: var(--accent); cursor: pointer; }
+        
+        /* CARDS & LAYOUT */
+        .card { background: var(--card); border-radius: var(--radius); padding: 20px; margin-bottom: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .row { display: flex; gap: 10px; }
+        .col { flex: 1; }
 
-        /* Dashboard KPIs */
-        .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 1rem; }
-        .kpi-card { 
-            background: var(--bg-secondary); padding: 1rem; border-radius: var(--radius); 
-            box-shadow: var(--shadow); text-align: center; border-bottom: 4px solid var(--accent);
-        }
-        .kpi-value { font-size: 1.2rem; font-weight: 800; color: var(--accent); }
-        .kpi-label { color: var(--text-secondary); font-size: 0.75rem; text-transform: uppercase; font-weight: 700; }
+        /* INPUTS MELHORADOS */
+        label { display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 5px; color: var(--text); opacity: 0.8; }
+        input, select { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 16px; background: var(--bg); color: var(--text); outline: none; }
+        input:focus { border-color: var(--accent); }
 
-        /* Reserva de Emergência UI */
-        .reserva-box { 
-            background: var(--bg-secondary); padding: 1.5rem; border-radius: var(--radius); 
-            box-shadow: var(--shadow); margin-bottom: 1.5rem; border: 1px solid var(--border);
-        }
-        .reserva-header { display: flex; justify-content: space-between; margin-bottom: 10px; font-weight: 700; }
-        .progress-container { background: var(--border); height: 16px; border-radius: 10px; overflow: hidden; position: relative; }
-        .progress-bar { background: var(--success); height: 100%; width: 0%; transition: width 1s ease-in-out; }
-        .reserva-info { font-size: 0.85rem; color: var(--text-secondary); margin-top: 8px; display: flex; justify-content: space-between; flex-wrap: wrap;}
-
-        .tabs { display: flex; background: var(--border); padding: 4px; border-radius: 10px; margin-bottom: 1.5rem; gap: 4px; }
-        .tab-btn { flex: 1; padding: 10px 5px; border: none; border-radius: 8px; color: var(--text-secondary); cursor: pointer; font-weight: 600; font-size: 0.85rem; background: transparent; transition: 0.2s; }
-        .tab-btn.active { background: var(--bg-secondary); color: var(--accent); }
-
-        .tab-content { display: none; }
-        .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        .card { background: var(--bg-secondary); padding: 1.5rem; border-radius: var(--radius); box-shadow: var(--shadow); margin-bottom: 1.5rem; }
-        .form-group { margin-bottom: 1rem; }
-        label { display: block; margin-bottom: 4px; font-weight: 600; font-size: 0.9rem; }
-        input, select { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 16px; background: var(--bg-primary); color: var(--text-primary); }
-
-        .btn { width: 100%; padding: 14px; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; transition: 0.2s; font-size: 1rem; margin-top: 10px; }
+        /* BOTÕES */
+        .btn { width: 100%; padding: 12px; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; margin-top: 10px; font-size: 1rem; transition: 0.2s; }
+        .btn-primary { background: var(--accent); color: white; }
         .btn-success { background: var(--success); color: white; }
-        .btn-danger { background: #fee2e2; color: var(--danger); font-size: 0.7rem; padding: 5px 8px; border-radius: 5px; width: auto; }
+        .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text); }
         
-        .table-container { overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; min-width: 400px; }
-        th { text-align: left; padding: 10px; font-size: 0.8rem; color: var(--text-secondary); border-bottom: 1px solid var(--border); }
-        td { padding: 12px 10px; font-size: 0.9rem; border-bottom: 1px solid var(--border); }
+        /* TABELA DATA */
+        .transaction-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border); }
+        .t-date { font-size: 0.75rem; color: var(--text); opacity: 0.6; display: block; }
+        .t-desc { font-weight: 600; font-size: 0.95rem; }
+        .t-val { font-weight: 700; }
+        .is-expense { color: var(--danger); }
+        .is-income { color: var(--success); }
 
-        @media (min-width: 768px) {
-            .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-            .btn { width: auto; padding: 12px 30px; }
-            .nav-controls { width: auto; }
-        }
+        /* TABS FLUTUANTES (Mobile style) */
+        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--card); display: flex; justify-content: space-around; padding: 10px; border-top: 1px solid var(--border); z-index: 100; }
+        .nav-icon { background: none; border: none; font-size: 0.7rem; color: var(--text); opacity: 0.6; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+        .nav-icon.active { color: var(--accent); opacity: 1; font-weight: bold; }
+        .nav-icon span { font-size: 1.2rem; }
+
+        .view-section { display: none; animation: fadeIn 0.3s; }
+        .view-section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* BACKUP AREA */
+        .backup-area { border: 1px dashed var(--accent); padding: 15px; border-radius: var(--radius); text-align: center; margin-top: 20px; background: rgba(37, 99, 235, 0.05); }
     </style>
 </head>
 <body data-theme="light">
+
     <div class="container">
-        
         <header class="header">
-            <h3>💰 Wesley Finanças</h3>
-            <div class="nav-controls">
-                <button class="tab-btn" onclick="navegarMes(-1)">◀</button>
-                <span id="mesAtual" style="font-weight: 800; min-width: 130px; text-align: center;">--</span>
-                <button class="tab-btn" onclick="navegarMes(1)">▶</button>
-                <button onclick="toggleTheme()" id="themeBtn" style="border:none; background:none; font-size: 20px; cursor:pointer; margin-left:10px;">🌙</button>
+            <h2 style="margin:0;">Finanças</h2>
+            <div class="month-nav">
+                <button class="nav-btn" onclick="mudarMes(-1)">‹</button>
+                <span id="label-mes" style="font-weight:700; font-size: 0.9rem; min-width: 90px; text-align:center;">Jan 2026</span>
+                <button class="nav-btn" onclick="mudarMes(1)">›</button>
             </div>
+            <button onclick="toggleTheme()" style="background:none; border:none; font-size:1.2rem;">🌓</button>
         </header>
 
-        <div class="reserva-box">
-            <div class="reserva-header">
-                <span>🛡️ Reserva de Emergência</span>
-                <span id="reserva-percent">0%</span>
-            </div>
-            <div class="progress-container">
-                <div id="reserva-bar" class="progress-bar"></div>
-            </div>
-            <div class="reserva-info">
-                <span id="reserva-status">Meta: R$ 0,00</span>
-                <span id="reserva-meses" style="font-weight:bold; color:var(--accent);">0.0 meses garantidos</span>
-            </div>
-        </div>
-
-        <div class="kpis">
-            <div class="kpi-card"><div class="kpi-label">Saldo do Mês</div><div class="kpi-value" id="kpi-saldo">R$ 0</div></div>
-            <div class="kpi-card"><div class="kpi-label">Custo de Vida</div><div class="kpi-value" id="kpi-gastos" style="color:var(--danger)">R$ 0</div></div>
-            <div class="kpi-card"><div class="kpi-label">Total Investido</div><div class="kpi-value" id="kpi-patrimonio" style="color:var(--success)">R$ 0</div></div>
-        </div>
-
-        <div class="tabs">
-            <button class="tab-btn active" onclick="showTab('dashboard', this)">📊 Painel</button>
-            <button class="tab-btn" onclick="showTab('entradas', this)">💵 Entradas</button>
-            <button class="tab-btn" onclick="showTab('saidas', this)">💸 Saídas</button>
-            <button class="tab-btn" onclick="showTab('invest', this)">📈 Ativos</button>
-        </div>
-
-        <div id="dashboard" class="tab-content active">
-            <div class="grid-2">
-                <div class="card"><label>Gastos por Categoria</label><canvas id="chartDespesas" height="250"></canvas></div>
-                <div class="card">
-                    <label>Análise da Reserva</label>
-                    <p id="insight-financeiro" style="font-size: 0.9rem; margin-top: 10px; color: var(--text-secondary);">Adicione despesas para calcular sua meta.</p>
-                    <div style="margin-top: 20px;">
-                        <button class="btn" onclick="exportCSV()" style="background:var(--accent); color:white;">📥 Baixar CSV</button>
-                        <button class="btn" onclick="resetData()" style="background:none; color:var(--danger); font-size:0.8rem; margin-top:5px;">Apagar Tudo</button>
+        <div id="view-dash" class="view-section active">
+            <div class="card">
+                <label>Saldo em Caixa</label>
+                <div style="font-size: 2rem; font-weight: 800; color: var(--text);" id="kpi-saldo">R$ 0,00</div>
+                <div class="row" style="margin-top: 15px;">
+                    <div class="col">
+                        <label>Entradas</label>
+                        <span style="color: var(--success); font-weight: 700;" id="kpi-receitas">R$ 0,00</span>
+                    </div>
+                    <div class="col">
+                        <label>Saídas</label>
+                        <span style="color: var(--danger); font-weight: 700;" id="kpi-despesas">R$ 0,00</span>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div id="entradas" class="tab-content">
-            <div class="card">
-                <h3>Nova Receita</h3>
-                <div class="grid-2">
-                    <div class="form-group"><label>Descrição</label><input type="text" id="in-desc" placeholder="Ex: Salário"></div>
-                    <div class="form-group"><label>Valor (R$)</label><input type="number" id="in-valor" step="0.01"></div>
+            <div class="card" style="border-left: 5px solid var(--accent);">
+                <div style="display:flex; justify-content:space-between;">
+                    <label style="color:var(--accent);">🛡️ Reserva de Emergência</label>
+                    <span id="reserva-percent" style="font-weight:bold; font-size:0.8rem;">0%</span>
                 </div>
-                <button class="btn btn-success" onclick="salvar('receitas')">Salvar Entrada</button>
+                <div style="background:var(--border); height:10px; border-radius:5px; margin:10px 0; overflow:hidden;">
+                    <div id="reserva-bar" style="background:var(--accent); width:0%; height:100%; transition: 1s;"></div>
+                </div>
+                <div style="font-size:0.8rem; color:var(--text); opacity:0.7;" id="reserva-msg">Meta: Calculando...</div>
             </div>
-            <div class="card table-container">
-                <table id="tabela-receitas"></table>
+
+            <div class="card">
+                <canvas id="grafico-cat"></canvas>
+            </div>
+
+            <div class="backup-area">
+                <label style="color:var(--accent); margin-bottom:10px;">☁️ Sincronizar (PC ↔ iPhone)</label>
+                <div class="row">
+                    <button class="btn btn-outline" onclick="baixarBackup()">⬇️ Baixar Dados</button>
+                    <label class="btn btn-outline" style="cursor:pointer; display:flex; align-items:center; justify-content:center; margin-top:10px;">
+                        ⬆️ Restaurar
+                        <input type="file" id="file-input" style="display:none;" onchange="restaurarBackup(this)">
+                    </label>
+                </div>
+                <small style="display:block; margin-top:5px; font-size:0.7rem;">Baixe o arquivo no PC e envie para o iPhone (ou vice-versa) para atualizar.</small>
             </div>
         </div>
 
-        <div id="saidas" class="tab-content">
+        <div id="view-add" class="view-section">
             <div class="card">
-                <h3>Nova Despesa</h3>
-                <div class="form-group"><label>Categoria</label>
-                    <select id="out-cat">
+                <h3>Novo Lançamento</h3>
+                
+                <div style="display:flex; gap:10px; margin-bottom:15px;">
+                    <button class="btn" id="btn-type-rec" onclick="setFormType('receita')" style="background:var(--border); color:var(--text);">Receita</button>
+                    <button class="btn" id="btn-type-desp" onclick="setFormType('despesa')" style="background:var(--danger); color:white;">Despesa</button>
+                </div>
+
+                <div class="row">
+                    <div class="col"><label>Data</label><input type="date" id="input-data"></div>
+                    <div class="col"><label>Valor</label><input type="number" id="input-valor" step="0.01" placeholder="0,00"></div>
+                </div>
+                
+                <div style="margin-top:10px;">
+                    <label>Descrição</label>
+                    <input type="text" id="input-desc" placeholder="Ex: Mercado, Salário...">
+                </div>
+
+                <div style="margin-top:10px;" id="div-cat">
+                    <label>Categoria</label>
+                    <select id="input-cat">
                         <option value="Moradia">🏠 Moradia</option>
-                        <option value="Alimentação">🍚 Alimentação</option>
+                        <option value="Alimentação">🍔 Alimentação</option>
                         <option value="Transporte">🚗 Transporte</option>
                         <option value="Lazer">🎉 Lazer</option>
-                        <option value="Saúde">🏥 Saúde</option>
+                        <option value="Saúde">💊 Saúde</option>
+                        <option value="Educação">📚 Educação</option>
                         <option value="Outros">⚙️ Outros</option>
                     </select>
                 </div>
-                <div class="grid-2">
-                    <div class="form-group"><label>Descrição</label><input type="text" id="out-desc" placeholder="Ex: Mercado"></div>
-                    <div class="form-group"><label>Valor (R$)</label><input type="number" id="out-valor" step="0.01"></div>
-                </div>
-                <button class="btn btn-success" onclick="salvar('despesas')">Salvar Saída</button>
-            </div>
-            <div class="card table-container">
-                <table id="tabela-despesas"></table>
+
+                <button class="btn btn-primary" onclick="salvarTransacao()">Confirmar</button>
             </div>
         </div>
 
-        <div id="invest" class="tab-content">
+        <div id="view-list" class="view-section">
             <div class="card">
-                <h3>Atualizar Patrimônio</h3>
-                <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 1rem;">
-                    Atualize o saldo total dos seus investimentos. Use "Reserva / Liquidez" para o dinheiro de emergência.
-                </p>
-                <div class="form-group"><label>Tipo de Ativo</label>
-                    <select id="inv-tipo">
-                        <option value="Reserva / Liquidez">🛡️ Reserva / Liquidez (Conta/CDB)</option>
-                        <option value="Renda Fixa">🔒 Renda Fixa (IPCA/Pré)</option>
-                        <option value="Ações / FIIs">📈 Renda Variável (Ações/FIIs)</option>
-                        <option value="Cripto">₿ Criptomoedas</option>
-                    </select>
+                <h3>Extrato Detalhado</h3>
+                <div id="lista-transacoes">
+                    <div style="text-align:center; padding:20px; opacity:0.5;">Sem lançamentos neste mês.</div>
                 </div>
-                <div class="form-group"><label>Saldo Total Atual (R$)</label><input type="number" id="inv-valor" step="0.01"></div>
-                <button class="btn btn-success" onclick="salvar('investimentos')">Atualizar Saldo</button>
             </div>
-            <div class="card table-container">
-                <table id="tabela-invest"></table>
+        </div>
+
+        <div id="view-invest" class="view-section">
+            <div class="card">
+                <h3>Meus Ativos</h3>
+                <p style="font-size:0.8rem;">Atualize o saldo total dos seus investimentos.</p>
+                
+                <div class="row">
+                    <div class="col">
+                        <label>Tipo</label>
+                        <select id="inv-tipo">
+                            <option value="Reserva">🛡️ Reserva (Liquidez)</option>
+                            <option value="Renda Fixa">🔒 Renda Fixa</option>
+                            <option value="Ações">📈 Ações/FIIs</option>
+                            <option value="Cripto">₿ Cripto</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row" style="margin-top:10px;">
+                    <div class="col"><label>Saldo Total (R$)</label><input type="number" id="inv-valor" step="0.01"></div>
+                </div>
+                <button class="btn btn-success" onclick="salvarInvestimento()">Atualizar Saldo</button>
+            </div>
+
+            <div class="card">
+                <h3>Carteira Atual</h3>
+                <div id="lista-investimentos"></div>
             </div>
         </div>
 
     </div>
 
-    <script>
-        const state = {
-            mes: new Date().toISOString().slice(0, 7), // Formato YYYY-MM
-            db: JSON.parse(localStorage.getItem('wesley_fin_v6')) || {}
-        };
+    <nav class="bottom-nav">
+        <button class="nav-icon active" onclick="navTo('view-dash', this)"><span>📊</span>Dash</button>
+        <button class="nav-icon" onclick="navTo('view-list', this)"><span>📑</span>Extrato</button>
+        <button class="nav-icon" onclick="navTo('view-add', this)"><span>➕</span>Novo</button>
+        <button class="nav-icon" onclick="navTo('view-invest', this)"><span>📈</span>Inv.</button>
+    </nav>
 
+    <script>
+        // --- ESTADO & CONFIG ---
+        let currentMonth = new Date().toISOString().slice(0, 7); // YYYY-MM
+        let activeType = 'despesa';
+        let db = JSON.parse(localStorage.getItem('fin_sync_v1')) || {};
         let myChart = null;
 
-        function init() {
-            if (localStorage.getItem('dark') === 'true') toggleTheme(true);
-            render();
+        // --- INICIALIZAÇÃO ---
+        window.onload = () => {
+            renderAll();
+            document.getElementById('input-data').value = new Date().toISOString().split('T')[0];
+            
+            // Tema
+            if (localStorage.getItem('theme') === 'dark') toggleTheme();
+        };
+
+        // --- NAVEGAÇÃO DE TELA ---
+        function navTo(viewId, btn) {
+            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+            document.getElementById(viewId).classList.add('active');
+            document.querySelectorAll('.nav-icon').forEach(el => el.classList.remove('active'));
+            if(btn) btn.classList.add('active');
         }
 
-        function navegarMes(d) {
-            let [ano, mes] = state.mes.split('-').map(Number);
-            mes += d;
+        function mudarMes(delta) {
+            let [ano, mes] = currentMonth.split('-').map(Number);
+            mes += delta;
             if (mes > 12) { mes = 1; ano++; }
             if (mes < 1) { mes = 12; ano--; }
-            state.mes = `${ano}-${String(mes).padStart(2, '0')}`;
-            render();
+            currentMonth = `${ano}-${String(mes).padStart(2, '0')}`;
+            renderAll();
         }
 
-        function salvar(tipo) {
-            if (!state.db[state.mes]) state.db[state.mes] = { receitas: [], despesas: [], investimentos: [] };
-            
-            let data = {};
-            if (tipo === 'receitas') {
-                data = { id: Date.now(), desc: document.getElementById('in-desc').value, valor: parseFloat(document.getElementById('in-valor').value || 0) };
-            } else if (tipo === 'despesas') {
-                data = { id: Date.now(), cat: document.getElementById('out-cat').value, desc: document.getElementById('out-desc').value, valor: parseFloat(document.getElementById('out-valor').value || 0) };
-            } else if (tipo === 'investimentos') {
-                data = { id: Date.now(), tipo: document.getElementById('inv-tipo').value, valor: parseFloat(document.getElementById('inv-valor').value || 0) };
-                // Remove registro anterior do mesmo tipo para evitar duplicidade no saldo
-                state.db[state.mes].investimentos = state.db[state.mes].investimentos.filter(i => i.tipo !== data.tipo);
-            }
+        function setFormType(type) {
+            activeType = type;
+            const btnRec = document.getElementById('btn-type-rec');
+            const btnDesp = document.getElementById('btn-type-desp');
+            const divCat = document.getElementById('div-cat');
 
-            if (data.valor > 0 || (tipo === 'investimentos' && data.valor >= 0)) {
-                state.db[state.mes][tipo].push(data);
-                localStorage.setItem('wesley_fin_v6', JSON.stringify(state.db));
-                render();
-                document.querySelectorAll('input').forEach(i => i.value = '');
+            if (type === 'receita') {
+                btnRec.style.background = 'var(--success)'; btnRec.style.color = 'white';
+                btnDesp.style.background = 'var(--border)'; btnDesp.style.color = 'var(--text)';
+                divCat.style.display = 'none';
             } else {
-                alert("Digite um valor válido.");
+                btnRec.style.background = 'var(--border)'; btnRec.style.color = 'var(--text)';
+                btnDesp.style.background = 'var(--danger)'; btnDesp.style.color = 'white';
+                divCat.style.display = 'block';
             }
         }
 
-        function deletar(tipo, id) {
-            if(confirm("Deseja apagar este item?")) {
-                state.db[state.mes][tipo] = state.db[state.mes][tipo].filter(x => x.id !== id);
-                localStorage.setItem('wesley_fin_v6', JSON.stringify(state.db));
-                render();
-            }
+        // --- LÓGICA DE DADOS ---
+        function getMonthData() {
+            if (!db[currentMonth]) db[currentMonth] = { transacoes: [], investimentos: [] };
+            return db[currentMonth];
         }
 
-        function render() {
-            const d = state.db[state.mes] || { receitas: [], despesas: [], investimentos: [] };
-            const format = v => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(v);
+        function salvarTransacao() {
+            const data = document.getElementById('input-data').value;
+            const valor = parseFloat(document.getElementById('input-valor').value);
+            const desc = document.getElementById('input-desc').value;
+            const cat = activeType === 'despesa' ? document.getElementById('input-cat').value : 'Entrada';
+
+            if (!data || !valor || !desc) return alert("Preencha todos os campos!");
+
+            const nova = {
+                id: Date.now(),
+                tipo: activeType,
+                data, valor, desc, cat
+            };
+
+            getMonthData().transacoes.push(nova);
+            saveDB();
             
-            const totalRec = d.receitas.reduce((a, b) => a + b.valor, 0);
-            const totalOut = d.despesas.reduce((a, b) => a + b.valor, 0);
-            const totalPat = d.investimentos.reduce((a, b) => a + b.valor, 0);
-
-            // Filtra apenas o que é Reserva de Emergência
-            const totalReserva = d.investimentos
-                .filter(i => i.tipo === 'Reserva / Liquidez')
-                .reduce((a, b) => a + b.valor, 0);
-
-            // Header Data
-            const dataObj = new Date(state.mes + "-02"); // dia 02 evita fuso horário voltando mês
-            document.getElementById('mesAtual').textContent = dataObj.toLocaleDateString('pt-BR', {month:'long', year:'numeric'});
-
-            // KPIs Básicos
-            document.getElementById('kpi-saldo').textContent = format(totalRec - totalOut);
-            document.getElementById('kpi-gastos').textContent = format(totalOut);
-            document.getElementById('kpi-patrimonio').textContent = format(totalPat);
-
-            // LÓGICA DA RESERVA (Custo de Vida x 6)
-            const custoMensal = totalOut > 0 ? totalOut : 0;
-            const metaReserva = custoMensal * 6;
-            
-            let progresso = 0;
-            let mesesCobertos = 0;
-
-            if (custoMensal > 0) {
-                progresso = Math.min((totalReserva / metaReserva) * 100, 100);
-                mesesCobertos = (totalReserva / custoMensal).toFixed(1);
-            } else if (totalReserva > 0) {
-                // Se tem reserva mas não tem despesas lançadas
-                progresso = 100; 
-                mesesCobertos = "Infinito";
-            }
-
-            // Atualiza UI da Reserva
-            document.getElementById('reserva-bar').style.width = progresso + '%';
-            document.getElementById('reserva-percent').textContent = Math.round(progresso) + '%';
-            document.getElementById('reserva-meses').textContent = `${mesesCobertos} meses garantidos`;
-            document.getElementById('reserva-status').textContent = `Saldo Reserva: ${format(totalReserva)} / Meta: ${format(metaReserva)}`;
-            
-            // Insight Text
-            const msgFalta = metaReserva > totalReserva ? `Faltam <strong>${format(metaReserva - totalReserva)}</strong>` : "Meta atingida! 🏆";
-            document.getElementById('insight-financeiro').innerHTML = 
-                custoMensal === 0 
-                ? "Lance suas despesas para calcular a meta de 6 meses." 
-                : `Seu custo de vida é <strong>${format(custoMensal)}</strong>/mês. <br> ${msgFalta} para ter 6 meses de paz.`;
-
-            // Tabelas
-            renderTabela('tabela-receitas', d.receitas, ['desc', 'valor'], 'receitas');
-            renderTabela('tabela-despesas', d.despesas, ['cat', 'desc', 'valor'], 'despesas');
-            renderTabela('tabela-invest', d.investimentos, ['tipo', 'valor'], 'investimentos');
-
-            renderGrafico(d.despesas);
+            alert('Salvo!');
+            document.getElementById('input-valor').value = '';
+            document.getElementById('input-desc').value = '';
+            renderAll();
         }
 
-        function renderTabela(id, lista, campos, tipo) {
-            const tab = document.getElementById(id);
-            const format = v => typeof v === 'number' ? `R$ ${v.toLocaleString('pt-BR')}` : v;
-            tab.innerHTML = lista.map(item => `
-                <tr>
-                    ${campos.map(c => `<td>${format(item[c])}</td>`).join('')}
-                    <td style="text-align:right;"><button class="btn-danger" onclick="deletar('${tipo}', ${item.id})">✕</button></td>
-                </tr>
-            `).join('');
+        function salvarInvestimento() {
+            const tipo = document.getElementById('inv-tipo').value;
+            const valor = parseFloat(document.getElementById('inv-valor').value);
+            
+            if (!valor) return alert("Valor inválido");
+
+            // Remove anterior do mesmo tipo (snapshot)
+            const mData = getMonthData();
+            mData.investimentos = mData.investimentos.filter(i => i.tipo !== tipo);
+            
+            mData.investimentos.push({ id: Date.now(), tipo, valor });
+            saveDB();
+            renderAll();
+            alert('Patrimônio atualizado!');
         }
 
-        function renderGrafico(dados) {
+        function removerItem(id, lista) {
+            const mData = getMonthData();
+            if (lista === 'transacoes') mData.transacoes = mData.transacoes.filter(i => i.id !== id);
+            else mData.investimentos = mData.investimentos.filter(i => i.id !== id);
+            saveDB();
+            renderAll();
+        }
+
+        function saveDB() {
+            localStorage.setItem('fin_sync_v1', JSON.stringify(db));
+        }
+
+        // --- RENDERIZAÇÃO ---
+        function renderAll() {
+            const mData = getMonthData();
+            
+            // Header
+            const dateObj = new Date(currentMonth + '-02');
+            document.getElementById('label-mes').textContent = dateObj.toLocaleDateString('pt-BR', { month:'short', year:'numeric' });
+
+            // 1. Extrato (Ordenado por Data DESC)
+            const listaEl = document.getElementById('lista-transacoes');
+            listaEl.innerHTML = '';
+            
+            // ORDENAÇÃO POR DATA AQUI
+            const sortedTransacoes = [...mData.transacoes].sort((a, b) => new Date(b.data) - new Date(a.data));
+
+            if (sortedTransacoes.length === 0) listaEl.innerHTML = '<div style="text-align:center; opacity:0.5; padding:20px;">Nada este mês.</div>';
+
+            sortedTransacoes.forEach(t => {
+                const dia = t.data.split('-')[2];
+                const mes = t.data.split('-')[1];
+                const div = document.createElement('div');
+                div.className = 'transaction-item';
+                div.innerHTML = `
+                    <div>
+                        <span class="t-date">${dia}/${mes} • ${t.cat}</span>
+                        <span class="t-desc">${t.desc}</span>
+                    </div>
+                    <div style="text-align:right;">
+                        <div class="t-val ${t.tipo === 'receita' ? 'is-income' : 'is-expense'}">
+                            ${t.tipo === 'despesa' ? '-' : '+'} R$ ${t.valor.toLocaleString('pt-BR')}
+                        </div>
+                        <button onclick="removerItem(${t.id}, 'transacoes')" style="background:none; border:none; color:#ccc; font-size:0.8rem;">Excluir</button>
+                    </div>
+                `;
+                listaEl.appendChild(div);
+            });
+
+            // 2. Investimentos
+            const invEl = document.getElementById('lista-investimentos');
+            invEl.innerHTML = '';
+            mData.investimentos.forEach(i => {
+                invEl.innerHTML += `
+                    <div class="transaction-item">
+                        <span class="t-desc">${i.tipo}</span>
+                        <div>
+                            <span class="t-val">R$ ${i.valor.toLocaleString('pt-BR')}</span>
+                            <button onclick="removerItem(${i.id}, 'investimentos')" style="margin-left:10px; color:red; background:none; border:none;">x</button>
+                        </div>
+                    </div>`;
+            });
+
+            // 3. Totais & KPIs
+            const totalRec = mData.transacoes.filter(t => t.tipo === 'receita').reduce((a, b) => a + b.valor, 0);
+            const totalDesp = mData.transacoes.filter(t => t.tipo === 'despesa').reduce((a, b) => a + b.valor, 0);
+            const totalInv = mData.investimentos.reduce((a, b) => a + b.valor, 0);
+            const saldo = totalRec - totalDesp;
+
+            document.getElementById('kpi-saldo').textContent = `R$ ${saldo.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+            document.getElementById('kpi-receitas').textContent = `+ R$ ${totalRec.toLocaleString('pt-BR')}`;
+            document.getElementById('kpi-despesas').textContent = `- R$ ${totalDesp.toLocaleString('pt-BR')}`;
+
+            // 4. Lógica Reserva (Custo x 6)
+            const custoVida = totalDesp || 1; // evita div por 0
+            const meta = custoVida * 6;
+            const reservaTotal = mData.investimentos.filter(i => i.tipo === 'Reserva').reduce((a, b) => a + b.valor, 0);
+            const progresso = Math.min((reservaTotal / meta) * 100, 100);
+
+            document.getElementById('reserva-bar').style.width = `${progresso}%`;
+            document.getElementById('reserva-percent').textContent = `${Math.round(progresso)}%`;
+            document.getElementById('reserva-msg').textContent = `Hoje você tem ${(reservaTotal/custoVida).toFixed(1)} meses de custo de vida garantidos.`;
+
+            // 5. Gráfico
+            renderChart(mData.transacoes.filter(t => t.tipo === 'despesa'));
+        }
+
+        function renderChart(despesas) {
+            const ctx = document.getElementById('grafico-cat').getContext('2d');
             const cats = {};
-            dados.forEach(x => cats[x.cat] = (cats[x.cat] || 0) + x.valor);
-            const ctx = document.getElementById('chartDespesas').getContext('2d');
-            if (myChart) myChart.destroy();
-            
-            // Se não houver dados, mostra gráfico vazio limpo
-            if (Object.keys(cats).length === 0) {
-                cats["Sem dados"] = 1;
-            }
+            despesas.forEach(d => cats[d.cat] = (cats[d.cat] || 0) + d.valor);
 
+            if (myChart) myChart.destroy();
             myChart = new Chart(ctx, {
                 type: 'doughnut',
                 data: {
                     labels: Object.keys(cats),
-                    datasets: [{ 
-                        data: Object.values(cats), 
-                        backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#cbd5e1'] 
+                    datasets: [{
+                        data: Object.values(cats),
+                        backgroundColor: ['#2563eb', '#16a34a', '#f59e0b', '#dc2626', '#9333ea', '#0891b2', '#475569']
                     }]
                 },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+                options: { responsive: true, plugins: { legend: { position: 'right' } } }
             });
         }
 
-        function showTab(id, btn) {
-            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            btn.classList.add('active');
+        // --- SISTEMA DE SYNC (BACKUP/RESTORE) ---
+        function baixarBackup() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(db));
+            const node = document.createElement('a');
+            node.setAttribute("href", dataStr);
+            node.setAttribute("download", `backup_financas_${new Date().toISOString().slice(0,10)}.json`);
+            document.body.appendChild(node);
+            node.click();
+            node.remove();
         }
 
-        function toggleTheme(forceDark = null) {
-            const body = document.body;
-            let isDark;
-            if (forceDark !== null) {
-                isDark = forceDark;
-            } else {
-                isDark = body.getAttribute('data-theme') !== 'dark';
-            }
-            body.setAttribute('data-theme', isDark ? 'dark' : 'light');
-            document.getElementById('themeBtn').textContent = isDark ? '☀️' : '🌙';
-            localStorage.setItem('dark', isDark);
-        }
-
-        function exportCSV() {
-            let csv = "Mes;Tipo;Categoria;Descricao;Valor\n";
-            Object.keys(state.db).forEach(mesKey => {
-                const m = state.db[mesKey];
-                m.receitas.forEach(r => csv += `${mesKey};Receita;-;${r.desc};${r.valor}\n`);
-                m.despesas.forEach(d => csv += `${mesKey};Despesa;${d.cat};${d.desc};${d.valor}\n`);
-                m.investimentos.forEach(i => csv += `${mesKey};Investimento;${i.tipo};Saldo Atual;${i.valor}\n`);
-            });
+        function restaurarBackup(input) {
+            const file = input.files[0];
+            if (!file) return;
             
-            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement("a");
-            link.href = url;
-            link.download = `financas_backup_${new Date().toISOString().slice(0,10)}.csv`;
-            link.click();
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const json = JSON.parse(e.target.result);
+                    if (confirm("Isso irá substituir os dados atuais pelos do arquivo. Continuar?")) {
+                        db = json;
+                        saveDB();
+                        renderAll();
+                        alert("Dados restaurados com sucesso!");
+                    }
+                } catch (err) {
+                    alert("Erro ao ler arquivo. Certifique-se que é um backup válido.");
+                }
+            };
+            reader.readAsText(file);
         }
 
-        function resetData() {
-            if(confirm("Tem certeza? Isso apagará TODO o histórico.")) {
-                state.db = {};
-                localStorage.removeItem('wesley_fin_v6');
-                location.reload();
-            }
+        function toggleTheme() {
+            const isDark = document.body.getAttribute('data-theme') === 'dark';
+            document.body.setAttribute('data-theme', isDark ? 'light' : 'dark');
+            localStorage.setItem('theme', isDark ? 'light' : 'dark');
         }
-
-        // Iniciar
-        init();
     </script>
 </body>
 </html>
