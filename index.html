@@ -2,8 +2,9 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Finanças Wesley - PC + iPhone</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Finanças Wesley - Com Reserva</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
             --bg-primary: #f8fafc; --bg-secondary: #ffffff; --text-primary: #1e293b;
@@ -15,488 +16,380 @@
             --bg-primary: #0f172a; --bg-secondary: #1e293b; --text-primary: #f8fafc;
             --text-secondary: #94a3b8; --border: #334155;
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { 
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: -apple-system, system-ui, BlinkMacSystemFont, sans-serif;
             background: var(--bg-primary); color: var(--text-primary); line-height: 1.6; 
-            transition: all 0.3s ease; padding-bottom: 2rem;
+            transition: 0.3s; padding-bottom: 40px;
         }
-        .container { max-width: 1200px; margin: 0 auto; padding: 1rem; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 1rem; }
+        
         .header { 
             display: flex; justify-content: space-between; align-items: center; 
-            margin-bottom: 2rem; padding: 1.5rem; background: var(--bg-secondary); 
-            border-radius: var(--radius); box-shadow: var(--shadow);
+            margin-bottom: 1.5rem; padding: 1rem; background: var(--bg-secondary); 
+            border-radius: var(--radius); box-shadow: var(--shadow); flex-wrap: wrap; gap: 10px;
         }
-        .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+        .nav-controls { display: flex; gap: 8px; align-items: center; width: 100%; justify-content: center; }
+
+        /* Dashboard KPIs */
+        .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 1rem; }
         .kpi-card { 
+            background: var(--bg-secondary); padding: 1rem; border-radius: var(--radius); 
+            box-shadow: var(--shadow); text-align: center; border-bottom: 4px solid var(--accent);
+        }
+        .kpi-value { font-size: 1.2rem; font-weight: 800; color: var(--accent); }
+        .kpi-label { color: var(--text-secondary); font-size: 0.75rem; text-transform: uppercase; font-weight: 700; }
+
+        /* Reserva de Emergência UI */
+        .reserva-box { 
             background: var(--bg-secondary); padding: 1.5rem; border-radius: var(--radius); 
-            box-shadow: var(--shadow); text-align: center; border-left: 4px solid var(--accent);
+            box-shadow: var(--shadow); margin-bottom: 1.5rem; border: 1px solid var(--border);
         }
-        .kpi-value { font-size: 2rem; font-weight: bold; color: var(--accent); margin-bottom: 0.25rem; }
-        .kpi-label { color: var(--text-secondary); font-size: 0.9rem; }
-        .tabs { display: flex; background: var(--bg-secondary); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); margin-bottom: 2rem; }
-        .tab-btn { flex: 1; padding: 1rem; background: none; border: none; color: var(--text-secondary); cursor: pointer; transition: all 0.3s ease; font-size: 1rem; }
-        .tab-btn.active { background: var(--accent); color: white; }
+        .reserva-header { display: flex; justify-content: space-between; margin-bottom: 10px; font-weight: 700; }
+        .progress-container { background: var(--border); height: 16px; border-radius: 10px; overflow: hidden; position: relative; }
+        .progress-bar { background: var(--success); height: 100%; width: 0%; transition: width 1s ease-in-out; }
+        .reserva-info { font-size: 0.85rem; color: var(--text-secondary); margin-top: 8px; display: flex; justify-content: space-between; flex-wrap: wrap;}
+
+        .tabs { display: flex; background: var(--border); padding: 4px; border-radius: 10px; margin-bottom: 1.5rem; gap: 4px; }
+        .tab-btn { flex: 1; padding: 10px 5px; border: none; border-radius: 8px; color: var(--text-secondary); cursor: pointer; font-weight: 600; font-size: 0.85rem; background: transparent; transition: 0.2s; }
+        .tab-btn.active { background: var(--bg-secondary); color: var(--accent); }
+
         .tab-content { display: none; }
-        .tab-content.active { display: block; }
+        .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .card { background: var(--bg-secondary); padding: 1.5rem; border-radius: var(--radius); box-shadow: var(--shadow); margin-bottom: 1.5rem; }
         .form-group { margin-bottom: 1rem; }
-        label { display: block; margin-bottom: 0.5rem; font-weight: 500; color: var(--text-primary); }
-        input, select { 
-            width: 100%; padding: 0.75rem; border: 2px solid var(--border); border-radius: 8px; 
-            font-size: 1rem; transition: border-color 0.3s ease; background: var(--bg-secondary); 
-            color: var(--text-primary);
-        }
-        input:focus, select:focus { outline: none; border-color: var(--accent); }
-        .table-container { background: var(--bg-secondary); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; margin-bottom: 1rem; }
-        table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 1rem 0.75rem; text-align: left; border-bottom: 1px solid var(--border); }
-        th { background: var(--accent); color: white; font-weight: 600; }
-        .btn { 
-            padding: 0.75rem 1.5rem; border: none; border-radius: 8px; cursor: pointer; 
-            font-size: 0.9rem; font-weight: 500; transition: all 0.3s ease; margin: 0 0.25rem 0.5rem 0;
-        }
-        .btn-primary { background: var(--accent); color: white; }
+        label { display: block; margin-bottom: 4px; font-weight: 600; font-size: 0.9rem; }
+        input, select { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 16px; background: var(--bg-primary); color: var(--text-primary); }
+
+        .btn { width: 100%; padding: 14px; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; transition: 0.2s; font-size: 1rem; margin-top: 10px; }
         .btn-success { background: var(--success); color: white; }
-        .btn-danger { background: var(--danger); color: white; }
-        .btn:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
-        .chart-container { height: 280px; background: var(--bg-secondary); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 2rem; box-shadow: var(--shadow); display: flex; align-items: center; justify-content: center; }
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-        .storage-status { padding: 0.75rem; border-radius: 8px; text-align: center; margin-bottom: 1rem; font-weight: 500; }
-        .storage-ok { background: var(--success); color: white; }
-        .storage-warning { background: var(--warning); color: white; }
-        @media (max-width: 768px) { 
-            .container { padding: 0.5rem; } 
-            .header { flex-direction: column; gap: 1rem; text-align: center; } 
-            .kpis { grid-template-columns: 1fr; } 
-            .tabs { flex-direction: column; } 
-            .grid-2 { grid-template-columns: 1fr; }
-            th, td { padding: 0.75rem 0.5rem; font-size: 0.9rem; }
+        .btn-danger { background: #fee2e2; color: var(--danger); font-size: 0.7rem; padding: 5px 8px; border-radius: 5px; width: auto; }
+        
+        .table-container { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; min-width: 400px; }
+        th { text-align: left; padding: 10px; font-size: 0.8rem; color: var(--text-secondary); border-bottom: 1px solid var(--border); }
+        td { padding: 12px 10px; font-size: 0.9rem; border-bottom: 1px solid var(--border); }
+
+        @media (min-width: 768px) {
+            .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+            .btn { width: auto; padding: 12px 30px; }
+            .nav-controls { width: auto; }
         }
     </style>
 </head>
-<body>
+<body data-theme="light">
     <div class="container">
-        <!-- STATUS STORAGE -->
-        <div class="storage-status storage-warning" id="storageStatus">🔄 Verificando storage...</div>
-
-        <!-- HEADER -->
+        
         <header class="header">
-            <h1>💰 Finanças Pessoais</h1>
-            <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
-                <button class="btn btn-primary" onclick="navegarMes(-1)">◀️ Anterior</button>
-                <span id="mesAtual" style="padding: 0.75rem 1rem; font-weight: bold; font-size: 1.1rem; min-width: 140px; text-align: center; background: var(--accent); color: white; border-radius: 8px;">Janeiro 2026</span>
-                <button class="btn btn-primary" onclick="navegarMes(1)">Próximo ▶️</button>
-                <button class="btn btn-primary" id="themeBtn" onclick="toggleTheme()">🌙 Dark</button>
+            <h3>💰 Wesley Finanças</h3>
+            <div class="nav-controls">
+                <button class="tab-btn" onclick="navegarMes(-1)">◀</button>
+                <span id="mesAtual" style="font-weight: 800; min-width: 130px; text-align: center;">--</span>
+                <button class="tab-btn" onclick="navegarMes(1)">▶</button>
+                <button onclick="toggleTheme()" id="themeBtn" style="border:none; background:none; font-size: 20px; cursor:pointer; margin-left:10px;">🌙</button>
             </div>
         </header>
 
-        <!-- KPIs -->
+        <div class="reserva-box">
+            <div class="reserva-header">
+                <span>🛡️ Reserva de Emergência</span>
+                <span id="reserva-percent">0%</span>
+            </div>
+            <div class="progress-container">
+                <div id="reserva-bar" class="progress-bar"></div>
+            </div>
+            <div class="reserva-info">
+                <span id="reserva-status">Meta: R$ 0,00</span>
+                <span id="reserva-meses" style="font-weight:bold; color:var(--accent);">0.0 meses garantidos</span>
+            </div>
+        </div>
+
         <div class="kpis">
-            <div class="kpi-card">
-                <div class="kpi-value" id="saldoAtual">R$ 0,00</div>
-                <div class="kpi-label">Saldo Atual</div>
-            </div>
-            <div class="kpi-card">
-                <div class="kpi-value" id="taxaPoupanca">0%</div>
-                <div class="kpi-label">Taxa de Poupança</div>
-            </div>
-            <div class="kpi-card">
-                <div class="kpi-value" id="patrimonioTotal">R$ 0,00</div>
-                <div class="kpi-label">Patrimônio Total</div>
-            </div>
+            <div class="kpi-card"><div class="kpi-label">Saldo do Mês</div><div class="kpi-value" id="kpi-saldo">R$ 0</div></div>
+            <div class="kpi-card"><div class="kpi-label">Custo de Vida</div><div class="kpi-value" id="kpi-gastos" style="color:var(--danger)">R$ 0</div></div>
+            <div class="kpi-card"><div class="kpi-label">Total Investido</div><div class="kpi-value" id="kpi-patrimonio" style="color:var(--success)">R$ 0</div></div>
         </div>
 
-        <!-- TABS -->
         <div class="tabs">
-            <button class="tab-btn active" onclick="showTab('dashboard')">📊 Dashboard</button>
-            <button class="tab-btn" onclick="showTab('receitas')">💵 Receitas</button>
-            <button class="tab-btn" onclick="showTab('despesas')">💸 Despesas</button>
-            <button class="tab-btn" onclick="showTab('investimentos')">📈 Investimentos</button>
+            <button class="tab-btn active" onclick="showTab('dashboard', this)">📊 Painel</button>
+            <button class="tab-btn" onclick="showTab('entradas', this)">💵 Entradas</button>
+            <button class="tab-btn" onclick="showTab('saidas', this)">💸 Saídas</button>
+            <button class="tab-btn" onclick="showTab('invest', this)">📈 Ativos</button>
         </div>
 
-        <!-- DASHBOARD -->
         <div id="dashboard" class="tab-content active">
             <div class="grid-2">
-                <div class="chart-container">
-                    <canvas id="graficoDespesas" width="300" height="280"></canvas>
+                <div class="card"><label>Gastos por Categoria</label><canvas id="chartDespesas" height="250"></canvas></div>
+                <div class="card">
+                    <label>Análise da Reserva</label>
+                    <p id="insight-financeiro" style="font-size: 0.9rem; margin-top: 10px; color: var(--text-secondary);">Adicione despesas para calcular sua meta.</p>
+                    <div style="margin-top: 20px;">
+                        <button class="btn" onclick="exportCSV()" style="background:var(--accent); color:white;">📥 Baixar CSV</button>
+                        <button class="btn" onclick="resetData()" style="background:none; color:var(--danger); font-size:0.8rem; margin-top:5px;">Apagar Tudo</button>
+                    </div>
                 </div>
-                <div class="chart-container">
-                    <canvas id="graficoPatrimonio" width="300" height="280"></canvas>
-                </div>
-            </div>
-            <div style="text-align: center; padding: 2rem;">
-                <button class="btn btn-primary" onclick="exportCSV()">📥 Exportar CSV</button>
-                <button class="btn btn-danger" onclick="resetData()">🗑️ Resetar Tudo</button>
             </div>
         </div>
 
-        <!-- RECEITAS -->
-        <div id="receitas" class="tab-content">
-            <div class="table-container">
-                <table>
-                    <thead><tr><th>Data</th><th>Descrição</th><th>Valor (R$)</th><th>Tipo</th><th>Ações</th></tr></thead>
-                    <tbody id="tabelaReceitas"></tbody>
-                </table>
+        <div id="entradas" class="tab-content">
+            <div class="card">
+                <h3>Nova Receita</h3>
+                <div class="grid-2">
+                    <div class="form-group"><label>Descrição</label><input type="text" id="in-desc" placeholder="Ex: Salário"></div>
+                    <div class="form-group"><label>Valor (R$)</label><input type="number" id="in-valor" step="0.01"></div>
+                </div>
+                <button class="btn btn-success" onclick="salvar('receitas')">Salvar Entrada</button>
             </div>
-            <div class="form-group">
-                <input type="date" id="dataReceita" required>
-                <input type="text" id="descReceita" placeholder="Ex: Salário Localiza" required>
-                <input type="number" id="valorReceita" placeholder="0,00" step="0.01" required>
-                <select id="tipoReceita">
-                    <option value="salario">💼 Salário Fixo</option>
-                    <option value="extra">⭐ Renda Extra</option>
-                </select>
-                <button class="btn btn-success" onclick="addReceita()">➕ Adicionar Receita</button>
+            <div class="card table-container">
+                <table id="tabela-receitas"></table>
             </div>
         </div>
 
-        <!-- DESPESAS -->
-        <div id="despesas" class="tab-content">
-            <div class="table-container">
-                <table>
-                    <thead><tr><th>Data</th><th>Categoria</th><th>Descrição</th><th>Valor (R$)</th><th>Ações</th></tr></thead>
-                    <tbody id="tabelaDespesas"></tbody>
-                </table>
-            </div>
-            <div class="form-group grid-2">
-                <div>
-                    <label>Data *</label>
-                    <input type="date" id="dataDespesa" required>
-                </div>
-                <div>
-                    <label>Categoria <span style="color: var(--accent);">(livre)</span></label>
-                    <select id="categoriaDespesaSelect" onchange="toggleCustomCategoria()" style="width: 100%;">
-                        <option value="">➕ Digite nova categoria</option>
-                        <option value="moradia">🏠 Moradia/Aluguel</option>
-                        <option value="alimentacao">🍚 Alimentação</option>
-                        <option value="transporte">🚗 Transporte</option>
-                        <option value="lazer">🎉 Lazer</option>
-                        <option value="saude">🏥 Saúde</option>
-                        <option value="fitness">💪 Academia</option>
-                        <option value="localiza">🚙 Localiza/Frota</option>
-                    </select>
-                    <input type="text" id="categoriaCustom" placeholder="Ex: mooca-aluguel, shopee..." style="display: none; margin-top: 0.5rem; border: 2px dashed var(--accent);">
-                </div>
-                <div>
-                    <label>Descrição *</label>
-                    <input type="text" id="descDespesa" placeholder="O que foi gasto?" required>
-                </div>
-                <div>
-                    <label>Valor (R$) *</label>
-                    <input type="number" id="valorDespesa" placeholder="0,00" step="0.01" required>
-                </div>
-            </div>
-            <button class="btn btn-success" onclick="addDespesa()">➕ Adicionar Despesa</button>
-        </div>
-
-        <!-- INVESTIMENTOS -->
-        <div id="investimentos" class="tab-content">
-            <div class="table-container">
-                <table>
-                    <thead><tr><th>Tipo</th><th>Aporte (R$)</th><th>Rentabilidade</th><th>Saldo Atual</th><th>Projeção 1a</th><th>Ações</th></tr></thead>
-                    <tbody id="tabelaInvestimentos"></tbody>
-                </table>
-            </div>
-            <div class="form-group grid-2">
-                <div>
-                    <label>Tipo de Ativo</label>
-                    <select id="tipoInvestimento">
-                        <option value="renda-fixa">🔒 Renda Fixa</option>
-                        <option value="acoes">📈 Ações</option>
-                        <option value="fundos">💰 Fundos</option>
-                        <option value="cripto">₿ Criptomoedas</option>
+        <div id="saidas" class="tab-content">
+            <div class="card">
+                <h3>Nova Despesa</h3>
+                <div class="form-group"><label>Categoria</label>
+                    <select id="out-cat">
+                        <option value="Moradia">🏠 Moradia</option>
+                        <option value="Alimentação">🍚 Alimentação</option>
+                        <option value="Transporte">🚗 Transporte</option>
+                        <option value="Lazer">🎉 Lazer</option>
+                        <option value="Saúde">🏥 Saúde</option>
+                        <option value="Outros">⚙️ Outros</option>
                     </select>
                 </div>
-                <div><label>Aporte Inicial</label><input type="number" id="aporteInvestimento" step="0.01" required></div>
-                <div><label>Rentabilidade %</label><input type="number" id="rentabilidade" step="0.1" placeholder="12.5" required></div>
-                <div><label>Saldo Atual (R$)</label><input type="number" id="saldoAtualInv" step="0.01" required></div>
+                <div class="grid-2">
+                    <div class="form-group"><label>Descrição</label><input type="text" id="out-desc" placeholder="Ex: Mercado"></div>
+                    <div class="form-group"><label>Valor (R$)</label><input type="number" id="out-valor" step="0.01"></div>
+                </div>
+                <button class="btn btn-success" onclick="salvar('despesas')">Salvar Saída</button>
             </div>
-            <button class="btn btn-success" onclick="addInvestimento()">➕ Adicionar Investimento</button>
+            <div class="card table-container">
+                <table id="tabela-despesas"></table>
+            </div>
         </div>
+
+        <div id="invest" class="tab-content">
+            <div class="card">
+                <h3>Atualizar Patrimônio</h3>
+                <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 1rem;">
+                    Atualize o saldo total dos seus investimentos. Use "Reserva / Liquidez" para o dinheiro de emergência.
+                </p>
+                <div class="form-group"><label>Tipo de Ativo</label>
+                    <select id="inv-tipo">
+                        <option value="Reserva / Liquidez">🛡️ Reserva / Liquidez (Conta/CDB)</option>
+                        <option value="Renda Fixa">🔒 Renda Fixa (IPCA/Pré)</option>
+                        <option value="Ações / FIIs">📈 Renda Variável (Ações/FIIs)</option>
+                        <option value="Cripto">₿ Criptomoedas</option>
+                    </select>
+                </div>
+                <div class="form-group"><label>Saldo Total Atual (R$)</label><input type="number" id="inv-valor" step="0.01"></div>
+                <button class="btn btn-success" onclick="salvar('investimentos')">Atualizar Saldo</button>
+            </div>
+            <div class="card table-container">
+                <table id="tabela-invest"></table>
+            </div>
+        </div>
+
     </div>
 
     <script>
-        // =====================================================
-        // STORAGE FIX: PC + IPHONE + GitHub Pages
-        // =====================================================
-        class FinancasStorage {
-            constructor() {
-                this.prefix = `financas_wesley_${location.hostname}_${location.pathname.replace(/\//g,'_')}_v3`;
-                this.init();
+        const state = {
+            mes: new Date().toISOString().slice(0, 7), // Formato YYYY-MM
+            db: JSON.parse(localStorage.getItem('wesley_fin_v6')) || {}
+        };
+
+        let myChart = null;
+
+        function init() {
+            if (localStorage.getItem('dark') === 'true') toggleTheme(true);
+            render();
+        }
+
+        function navegarMes(d) {
+            let [ano, mes] = state.mes.split('-').map(Number);
+            mes += d;
+            if (mes > 12) { mes = 1; ano++; }
+            if (mes < 1) { mes = 12; ano--; }
+            state.mes = `${ano}-${String(mes).padStart(2, '0')}`;
+            render();
+        }
+
+        function salvar(tipo) {
+            if (!state.db[state.mes]) state.db[state.mes] = { receitas: [], despesas: [], investimentos: [] };
+            
+            let data = {};
+            if (tipo === 'receitas') {
+                data = { id: Date.now(), desc: document.getElementById('in-desc').value, valor: parseFloat(document.getElementById('in-valor').value || 0) };
+            } else if (tipo === 'despesas') {
+                data = { id: Date.now(), cat: document.getElementById('out-cat').value, desc: document.getElementById('out-desc').value, valor: parseFloat(document.getElementById('out-valor').value || 0) };
+            } else if (tipo === 'investimentos') {
+                data = { id: Date.now(), tipo: document.getElementById('inv-tipo').value, valor: parseFloat(document.getElementById('inv-valor').value || 0) };
+                // Remove registro anterior do mesmo tipo para evitar duplicidade no saldo
+                state.db[state.mes].investimentos = state.db[state.mes].investimentos.filter(i => i.tipo !== data.tipo);
             }
 
-            init() {
-                // Testar localStorage primeiro
-                try {
-                    localStorage.setItem('test', '1');
-                    localStorage.removeItem('test');
-                    this.storage = localStorage;
-                    this.type = 'localStorage';
-                } catch(e) {
-                    console.log('localStorage bloqueado, usando sessionStorage');
-                    this.storage = sessionStorage;
-                    this.type = 'sessionStorage';
-                }
-                this.atualizarStatus();
-            }
-
-            get(key) {
-                try {
-                    return JSON.parse(this.storage.getItem(`${this.prefix}_${key}`) || '{}');
-                } catch(e) {
-                    return {};
-                }
-            }
-
-            set(key, data) {
-                try {
-                    this.storage.setItem(`${this.prefix}_${key}`, JSON.stringify(data));
-                    return true;
-                } catch(e) {
-                    console.error('Storage falhou:', e);
-                    return false;
-                }
-            }
-
-            atualizarStatus() {
-                const status = document.getElementById('storageStatus');
-                status.textContent = `✅ Storage: ${this.type} | Dispositivo: ${/iPhone|iPad/.test(navigator.userAgent) ? 'iPhone' : 'PC'}`;
-                status.className = 'storage-status storage-ok';
+            if (data.valor > 0 || (tipo === 'investimentos' && data.valor >= 0)) {
+                state.db[state.mes][tipo].push(data);
+                localStorage.setItem('wesley_fin_v6', JSON.stringify(state.db));
+                render();
+                document.querySelectorAll('input').forEach(i => i.value = '');
+            } else {
+                alert("Digite um valor válido.");
             }
         }
 
-        // =====================================================
-        // VARIÁVEIS GLOBAIS
-        // =====================================================
-        const storage = new FinancasStorage();
-        const mesesNomes = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
-        const hoje = new Date('2026-01-24');
-        let mesSelecionado = `${hoje.getFullYear()}-${String(hoje.getMonth()+1).padStart(2,'0')}`;
-        let receitas = [], despesas = [], investimentos = [];
-
-        // =====================================================
-        // FUNÇÕES PRINCIPAIS
-        // =====================================================
-        function carregarDados() {
-            const todosDados = storage.get('dados');
-            const dadosMes = todosDados[mesSelecionado] || {receitas: [], despesas: [], investimentos: []};
-            receitas = dadosMes.receitas || [];
-            despesas = dadosMes.despesas || [];
-            investimentos = dadosMes.investimentos || [];
-            atualizarInterface();
+        function deletar(tipo, id) {
+            if(confirm("Deseja apagar este item?")) {
+                state.db[state.mes][tipo] = state.db[state.mes][tipo].filter(x => x.id !== id);
+                localStorage.setItem('wesley_fin_v6', JSON.stringify(state.db));
+                render();
+            }
         }
 
-        function salvarDados() {
-            const todosDados = storage.get('dados');
-            todosDados[mesSelecionado] = {receitas, despesas, investimentos};
-            storage.set('dados', todosDados);
-        }
+        function render() {
+            const d = state.db[state.mes] || { receitas: [], despesas: [], investimentos: [] };
+            const format = v => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(v);
+            
+            const totalRec = d.receitas.reduce((a, b) => a + b.valor, 0);
+            const totalOut = d.despesas.reduce((a, b) => a + b.valor, 0);
+            const totalPat = d.investimentos.reduce((a, b) => a + b.valor, 0);
 
-        function navegarMes(delta) {
-            const [ano, mes] = mesSelecionado.split('-').map(Number);
-            let novoMes = mes + delta;
-            let novoAno = ano;
-            if (novoMes > 12) { novoMes = 1; novoAno++; }
-            if (novoMes < 1) { novoMes = 12; novoAno--; }
-            mesSelecionado = `${novoAno}-${novoMes.toString().padStart(2,'0')}`;
-            carregarDados();
-        }
+            // Filtra apenas o que é Reserva de Emergência
+            const totalReserva = d.investimentos
+                .filter(i => i.tipo === 'Reserva / Liquidez')
+                .reduce((a, b) => a + b.valor, 0);
 
-        function atualizarInterface() {
-            // Header
-            const [ano, mes] = mesSelecionado.split('-');
-            document.getElementById('mesAtual').textContent = `${mesesNomes[mes-1]} ${ano}`;
+            // Header Data
+            const dataObj = new Date(state.mes + "-02"); // dia 02 evita fuso horário voltando mês
+            document.getElementById('mesAtual').textContent = dataObj.toLocaleDateString('pt-BR', {month:'long', year:'numeric'});
 
-            // KPIs
-            const totalReceitas = receitas.reduce((s, r) => s + r.valor, 0);
-            const totalDespesas = despesas.reduce((s, d) => s + d.valor, 0);
-            const saldo = totalReceitas - totalDespesas;
-            const poupanca = totalReceitas > 0 ? (saldo / totalReceitas * 100) : 0;
-            const patrimonio = saldo + investimentos.reduce((s, i) => s + i.saldoAtual, 0);
+            // KPIs Básicos
+            document.getElementById('kpi-saldo').textContent = format(totalRec - totalOut);
+            document.getElementById('kpi-gastos').textContent = format(totalOut);
+            document.getElementById('kpi-patrimonio').textContent = format(totalPat);
 
-            document.getElementById('saldoAtual').textContent = formatarReal(saldo);
-            document.getElementById('taxaPoupanca').textContent = poupanca.toFixed(1) + '%';
-            document.getElementById('patrimonioTotal').textContent = formatarReal(patrimonio);
+            // LÓGICA DA RESERVA (Custo de Vida x 6)
+            const custoMensal = totalOut > 0 ? totalOut : 0;
+            const metaReserva = custoMensal * 6;
+            
+            let progresso = 0;
+            let mesesCobertos = 0;
+
+            if (custoMensal > 0) {
+                progresso = Math.min((totalReserva / metaReserva) * 100, 100);
+                mesesCobertos = (totalReserva / custoMensal).toFixed(1);
+            } else if (totalReserva > 0) {
+                // Se tem reserva mas não tem despesas lançadas
+                progresso = 100; 
+                mesesCobertos = "Infinito";
+            }
+
+            // Atualiza UI da Reserva
+            document.getElementById('reserva-bar').style.width = progresso + '%';
+            document.getElementById('reserva-percent').textContent = Math.round(progresso) + '%';
+            document.getElementById('reserva-meses').textContent = `${mesesCobertos} meses garantidos`;
+            document.getElementById('reserva-status').textContent = `Saldo Reserva: ${format(totalReserva)} / Meta: ${format(metaReserva)}`;
+            
+            // Insight Text
+            const msgFalta = metaReserva > totalReserva ? `Faltam <strong>${format(metaReserva - totalReserva)}</strong>` : "Meta atingida! 🏆";
+            document.getElementById('insight-financeiro').innerHTML = 
+                custoMensal === 0 
+                ? "Lance suas despesas para calcular a meta de 6 meses." 
+                : `Seu custo de vida é <strong>${format(custoMensal)}</strong>/mês. <br> ${msgFalta} para ter 6 meses de paz.`;
 
             // Tabelas
-            document.getElementById('tabelaReceitas').innerHTML = receitas.map((r, i) => `
+            renderTabela('tabela-receitas', d.receitas, ['desc', 'valor'], 'receitas');
+            renderTabela('tabela-despesas', d.despesas, ['cat', 'desc', 'valor'], 'despesas');
+            renderTabela('tabela-invest', d.investimentos, ['tipo', 'valor'], 'investimentos');
+
+            renderGrafico(d.despesas);
+        }
+
+        function renderTabela(id, lista, campos, tipo) {
+            const tab = document.getElementById(id);
+            const format = v => typeof v === 'number' ? `R$ ${v.toLocaleString('pt-BR')}` : v;
+            tab.innerHTML = lista.map(item => `
                 <tr>
-                    <td>${r.data}</td>
-                    <td>${r.descricao}</td>
-                    <td>${formatarReal(r.valor)}</td>
-                    <td>${r.tipo === 'salario' ? '💼 Salário' : '⭐ Extra'}</td>
-                    <td><button class="btn btn-danger" onclick="removerItem('receitas', ${i})">🗑️</button></td>
+                    ${campos.map(c => `<td>${format(item[c])}</td>`).join('')}
+                    <td style="text-align:right;"><button class="btn-danger" onclick="deletar('${tipo}', ${item.id})">✕</button></td>
                 </tr>
             `).join('');
-
-            document.getElementById('tabelaDespesas').innerHTML = despesas.map((d, i) => `
-                <tr>
-                    <td>${d.data}</td>
-                    <td>${d.categoria}</td>
-                    <td>${d.descricao}</td>
-                    <td>${formatarReal(d.valor)}</td>
-                    <td><button class="btn btn-danger" onclick="removerItem('despesas', ${i})">🗑️</button></td>
-                </tr>
-            `).join('');
-
-            document.getElementById('tabelaInvestimentos').innerHTML = investimentos.map((inv, i) => {
-                const projetado = inv.saldoAtual * Math.pow(1 + inv.rentabilidade / 100, 1);
-                return `
-                    <tr>
-                        <td>${inv.tipo}</td>
-                        <td>${formatarReal(inv.aporte)}</td>
-                        <td>${inv.rentabilidade}%</td>
-                        <td>${formatarReal(inv.saldoAtual)}</td>
-                        <td>${formatarReal(projetado)}</td>
-                        <td><button class="btn btn-danger" onclick="removerItem('investimentos', ${i})">🗑️</button></td>
-                    </tr>
-                `;
-            }).join('');
-
-            // Datas padrão
-            const primeiroDia = mesSelecionado + '-01';
-            document.getElementById('dataReceita').value = primeiroDia;
-            document.getElementById('dataDespesa').value = primeiroDia;
         }
 
-        function formatarReal(valor) {
-            return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(valor || 0);
+        function renderGrafico(dados) {
+            const cats = {};
+            dados.forEach(x => cats[x.cat] = (cats[x.cat] || 0) + x.valor);
+            const ctx = document.getElementById('chartDespesas').getContext('2d');
+            if (myChart) myChart.destroy();
+            
+            // Se não houver dados, mostra gráfico vazio limpo
+            if (Object.keys(cats).length === 0) {
+                cats["Sem dados"] = 1;
+            }
+
+            myChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(cats),
+                    datasets: [{ 
+                        data: Object.values(cats), 
+                        backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#cbd5e1'] 
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+            });
         }
 
-        // =====================================================
-        // ADICIONAR ITENS
-        // =====================================================
-        function addReceita() {
-            const data = document.getElementById('dataReceita').value;
-            const desc = document.getElementById('descReceita').value.trim();
-            const valor = parseFloat(document.getElementById('valorReceita').value);
-            const tipo = document.getElementById('tipoReceita').value;
+        function showTab(id, btn) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            btn.classList.add('active');
+        }
 
-            if (data && desc && valor > 0 && data.startsWith(mesSelecionado)) {
-                receitas.push({ data, descricao: desc, valor, tipo });
-                salvarDados();
-                atualizarInterface();
-                limparFormulario('receitas');
-                alert('✅ Receita adicionada!');
+        function toggleTheme(forceDark = null) {
+            const body = document.body;
+            let isDark;
+            if (forceDark !== null) {
+                isDark = forceDark;
             } else {
-                alert('❌ Preencha todos os campos com data deste mês!');
+                isDark = body.getAttribute('data-theme') !== 'dark';
             }
-        }
-
-        function addDespesa() {
-            const data = document.getElementById('dataDespesa').value;
-            const select = document.getElementById('categoriaDespesaSelect');
-            const custom = document.getElementById('categoriaCustom');
-            const categoria = (select.value || custom.value || '').trim();
-            const desc = document.getElementById('descDespesa').value.trim();
-            const valor = parseFloat(document.getElementById('valorDespesa').value);
-
-            if (data && categoria && desc && valor > 0 && data.startsWith(mesSelecionado)) {
-                despesas.push({ data, categoria: categoria.toLowerCase(), descricao: desc, valor });
-                salvarDados();
-                atualizarInterface();
-                limparFormulario('despesas');
-                alert(`✅ Despesa "${categoria}" adicionada!`);
-            } else {
-                alert('❌ Todos os campos obrigatórios + data deste mês!');
-            }
-        }
-
-        function addInvestimento() {
-            const tipo = document.getElementById('tipoInvestimento').value;
-            const aporte = parseFloat(document.getElementById('aporteInvestimento').value);
-            const rentabilidade = parseFloat(document.getElementById('rentabilidade').value);
-            const saldoAtual = parseFloat(document.getElementById('saldoAtualInv').value);
-
-            if (tipo && aporte > 0 && rentabilidade >= 0 && saldoAtual > 0) {
-                investimentos.push({ tipo, aporte, rentabilidade, saldoAtual });
-                salvarDados();
-                atualizarInterface();
-                limparFormulario('investimentos');
-                alert('✅ Investimento adicionado!');
-            } else {
-                alert('❌ Preencha todos os campos corretamente!');
-            }
-        }
-
-        function toggleCustomCategoria() {
-            const select = document.getElementById('categoriaDespesaSelect');
-            const custom = document.getElementById('categoriaCustom');
-            custom.style.display = select.value === '' ? 'block' : 'none';
-            if (select.value === '') custom.focus();
-        }
-
-        function limparFormulario(tipo) {
-            if (tipo === 'receitas') {
-                document.getElementById('dataReceita').value = mesSelecionado + '-01';
-                document.getElementById('descReceita').value = '';
-                document.getElementById('valorReceita').value = '';
-            } else if (tipo === 'despesas') {
-                document.getElementById('dataDespesa').value = mesSelecionado + '-01';
-                document.getElementById('descDespesa').value = '';
-                document.getElementById('valorDespesa').value = '';
-                document.getElementById('categoriaDespesaSelect').value = '';
-                document.getElementById('categoriaCustom').value = '';
-                document.getElementById('categoriaCustom').style.display = 'none';
-            } else if (tipo === 'investimentos') {
-                document.querySelectorAll('#investimentos input, #investimentos select').forEach(el => el.value = '');
-            }
-        }
-
-        function removerItem(tipo, index) {
-            if (confirm('Remover este item?')) {
-                if (tipo === 'receitas') receitas.splice(index, 1);
-                else if (tipo === 'despesas') despesas.splice(index, 1);
-                else investimentos.splice(index, 1);
-                salvarDados();
-                atualizarInterface();
-            }
-        }
-
-        function showTab(nomeTab) {
-            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.getElementById(nomeTab).classList.add('active');
-            event.target.classList.add('active');
-        }
-
-        function toggleTheme() {
-            const isDark = document.body.getAttribute('data-theme') === 'dark';
-            document.body.setAttribute('data-theme', isDark ? 'light' : 'dark');
-            document.getElementById('themeBtn').textContent = isDark ? '☀️ Light' : '🌙 Dark';
+            body.setAttribute('data-theme', isDark ? 'dark' : 'light');
+            document.getElementById('themeBtn').textContent = isDark ? '☀️' : '🌙';
+            localStorage.setItem('dark', isDark);
         }
 
         function exportCSV() {
-            const csv = [
-                ['TIPO,MÊS,DATA,DESCRIÇÃO,VALOR,CATEGORIA'],
-                ...receitas.map(r => [`RECEITA,${mesSelecionado},${r.data},"${r.descricao}",${r.valor},"${r.tipo}"`]),
-                ...despesas.map(d => [`DESPESA,${mesSelecionado},${d.data},"${d.descricao}",${d.valor},"${d.categoria}"`]),
-                ...investimentos.map(i => [`INVESTIMENTO,${mesSelecionado},,"${i.tipo}",${i.saldoAtual},"${i.rentabilidade}%"`])
-            ].join('\n');
+            let csv = "Mes;Tipo;Categoria;Descricao;Valor\n";
+            Object.keys(state.db).forEach(mesKey => {
+                const m = state.db[mesKey];
+                m.receitas.forEach(r => csv += `${mesKey};Receita;-;${r.desc};${r.valor}\n`);
+                m.despesas.forEach(d => csv += `${mesKey};Despesa;${d.cat};${d.desc};${d.valor}\n`);
+                m.investimentos.forEach(i => csv += `${mesKey};Investimento;${i.tipo};Saldo Atual;${i.valor}\n`);
+            });
             
             const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
             const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `financas_${mesSelecionado}.csv`;
-            a.click();
-            URL.revokeObjectURL(url);
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = `financas_backup_${new Date().toISOString().slice(0,10)}.csv`;
+            link.click();
         }
 
         function resetData() {
-            if (confirm('⚠️ APAGAR TODOS OS DADOS? Estoque + iPhone + PC')) {
-                storage.set('dados', {});
-                carregarDados();
-                alert('🗑️ Tudo resetado!');
+            if(confirm("Tem certeza? Isso apagará TODO o histórico.")) {
+                state.db = {};
+                localStorage.removeItem('wesley_fin_v6');
+                location.reload();
             }
         }
 
-        // =====================================================
-        // INICIALIZAÇÃO
-        // =====================================================
-        document.addEventListener('DOMContentLoaded', function() {
-            carregarDados();
-        });
+        // Iniciar
+        init();
     </script>
 </body>
 </html>
