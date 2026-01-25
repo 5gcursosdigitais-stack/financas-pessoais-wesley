@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Wesley Finanças</title>
+    <title>Wesley Finanças (Seguro)</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
@@ -59,7 +59,7 @@
         .progress-fill { height: 100%; transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 6px; }
         
         /* BOTTOM NAV */
-        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--card); display: flex; justify-content: space-around; padding: 12px 10px; border-top: 1px solid var(--border); z-index: 100; padding-bottom: env(safe-area-inset-bottom); backdrop-filter: blur(10px); }
+        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--card); display: flex; justify-content: space-around; padding: 12px 10px; border-top: 1px solid var(--border); z-index: 90; padding-bottom: env(safe-area-inset-bottom); backdrop-filter: blur(10px); }
         .nav-icon { background: none; border: none; font-size: 0.7rem; color: var(--text); opacity: 0.5; display: flex; flex-direction: column; align-items: center; gap: 4px; font-weight: 600; transition: 0.2s; }
         .nav-icon.active { color: var(--accent); opacity: 1; transform: translateY(-2px); }
         .nav-icon span { font-size: 1.4rem; }
@@ -69,9 +69,32 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         .backup-area { border: 2px dashed var(--border); padding: 20px; border-radius: var(--radius); text-align: center; margin-top: 20px; }
+        
+        /* --- LOCK SCREEN CSS --- */
+        #lock-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg); z-index: 9999;
+            display: none; flex-direction: column; align-items: center; justify-content: center;
+            padding: 20px; text-align: center;
+        }
+        #lock-overlay.active { display: flex; }
+        .lock-input {
+            font-size: 2rem; letter-spacing: 10px; text-align: center;
+            width: 200px; padding: 10px; margin: 20px 0;
+            background: var(--card); color: var(--text);
+            border: 2px solid var(--accent); border-radius: 12px;
+        }
     </style>
 </head>
 <body data-theme="light">
+
+    <div id="lock-overlay">
+        <h2 style="margin-bottom: 10px;">🔒 Wesley Finanças</h2>
+        <p style="opacity: 0.7;">Digite seu PIN para acessar</p>
+        <input type="tel" id="pin-input" class="lock-input" maxlength="4" placeholder="••••">
+        <button class="btn btn-primary" onclick="unlockApp()" style="width: 200px;">Entrar</button>
+        <p id="lock-msg" style="color: var(--danger); margin-top: 10px; font-size: 0.9rem;"></p>
+    </div>
 
     <div class="container">
         <header class="header">
@@ -85,6 +108,7 @@
                 </div>
 
                 <div class="header-actions">
+                    <button onclick="configurarSenha()" class="btn-icon">🔒</button>
                     <button onclick="togglePrivacy()" class="btn-icon" id="btn-eye">👁️</button>
                     <button onclick="toggleTheme()" class="btn-icon">🌓</button>
                 </div>
@@ -132,7 +156,6 @@
         <div id="view-metas" class="view-section">
             <div class="card">
                 <h3>🎯 Definir Metas</h3>
-                <p style="font-size:0.85rem; color:var(--text); opacity:0.7; margin-bottom:15px;">Defina limites mensais para cada categoria.</p>
                 <div class="row">
                     <div class="col" style="flex:2">
                         <label>Categoria</label>
@@ -222,7 +245,7 @@
     </nav>
 
     <script>
-        // --- CATEGORIAS MESTRA ---
+        // --- CATEGORIAS ---
         const CATEGORIAS_MESTRE = [
             "🏠 Moradia", "🍔 Alimentação", "🚗 Transporte", "📱 Celular / Internet",
             "🎬 Streaming", "🏦 Banco / Cartão", "💊 Saúde / Farmácia", "📚 Educação",
@@ -232,24 +255,76 @@
         // --- CONFIG & ESTADO ---
         let currentMonth = new Date().toISOString().slice(0, 7);
         let activeType = 'despesa';
-        let db = JSON.parse(localStorage.getItem('fin_sync_v5')) || { config: { metas: {} } };
+        let db = JSON.parse(localStorage.getItem('fin_sync_v6')) || { config: { metas: {} } };
         if (!db.config) db.config = { metas: {} };
         
         let isPrivacyMode = localStorage.getItem('privacy_mode') === 'true'; 
 
+        // ESTADO DE SEGURANÇA
+        let userPin = localStorage.getItem('app_pin'); // PIN salvo
+        
         let myChart = null;
         const CHART_COLORS = ['#3b82f6', '#22c55e', '#eab308', '#ef4444', '#a855f7', '#06b6d4', '#64748b', '#ec4899', '#84cc16'];
 
         // --- INICIALIZAÇÃO ---
         window.onload = () => {
+            // Verificar PIN ao abrir
+            if (userPin) {
+                document.getElementById('lock-overlay').classList.add('active');
+                document.getElementById('pin-input').focus();
+            }
+
             preencherCategorias();
             renderAll(); 
             document.getElementById('input-data').value = new Date().toISOString().split('T')[0];
+            
             if (localStorage.getItem('theme') === 'dark') {
                 document.body.setAttribute('data-theme', 'dark');
             }
             updateEyeIcon();
         };
+
+        // --- SISTEMA DE BLOQUEIO (PIN) ---
+        function configurarSenha() {
+            if (userPin) {
+                // Remover Senha
+                if (confirm("Você já tem uma senha. Deseja remover o bloqueio?")) {
+                    const check = prompt("Digite a senha atual para remover:");
+                    if (check === userPin) {
+                        localStorage.removeItem('app_pin');
+                        userPin = null;
+                        alert("Senha removida! O app agora está desbloqueado.");
+                    } else {
+                        alert("Senha incorreta.");
+                    }
+                }
+            } else {
+                // Criar Senha
+                const newPin = prompt("Crie um PIN de 4 números para proteger o app:");
+                if (newPin && newPin.length === 4 && !isNaN(newPin)) {
+                    localStorage.setItem('app_pin', newPin);
+                    userPin = newPin;
+                    alert("Senha criada! O app pedirá esse código na próxima vez.");
+                } else {
+                    alert("Erro: O PIN deve ter 4 números.");
+                }
+            }
+        }
+
+        function unlockApp() {
+            const input = document.getElementById('pin-input');
+            const msg = document.getElementById('lock-msg');
+            
+            if (input.value === userPin) {
+                document.getElementById('lock-overlay').classList.remove('active');
+                msg.textContent = "";
+                input.value = "";
+            } else {
+                msg.textContent = "Senha incorreta. Tente novamente.";
+                input.value = "";
+                input.focus();
+            }
+        }
 
         // --- PRIVACIDADE ---
         function togglePrivacy() {
@@ -269,7 +344,7 @@
             return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
         }
 
-        // --- AUXILIARES ---
+        // --- CORE FUNCTIONS ---
         function preencherCategorias() {
             const options = CATEGORIAS_MESTRE.map(cat => `<option value="${cat}">${cat}</option>`).join('');
             document.getElementById('input-cat').innerHTML = options;
@@ -380,7 +455,7 @@
         }
 
         function saveDB() {
-            localStorage.setItem('fin_sync_v5', JSON.stringify(db));
+            localStorage.setItem('fin_sync_v6', JSON.stringify(db));
         }
 
         // --- RENDER ---
@@ -389,7 +464,6 @@
             const dateObj = new Date(currentMonth + '-02');
             document.getElementById('label-mes').textContent = dateObj.toLocaleDateString('pt-BR', { month:'short', year:'numeric' });
 
-            // 1. Extrato
             const listaEl = document.getElementById('lista-transacoes');
             listaEl.innerHTML = '';
             const sorted = [...mData.transacoes].sort((a, b) => new Date(b.data) - new Date(a.data));
@@ -412,18 +486,16 @@
                 if (t.tipo === 'despesa') catsSum[t.cat] = (catsSum[t.cat] || 0) + t.valor;
             });
 
-            // 2. Metas
+            // Metas
             const metasEl = document.getElementById('lista-metas');
             metasEl.innerHTML = '';
             const metas = db.config.metas || {};
-            
             if (Object.keys(metas).length === 0) metasEl.innerHTML = '<div style="text-align:center; opacity:0.5; padding:20px;">Sem metas.</div>';
 
             Object.keys(metas).forEach(cat => {
                 const limite = metas[cat];
                 const gasto = catsSum[cat] || 0;
                 const pct = Math.min((gasto / limite) * 100, 100);
-                
                 let color = 'var(--success)';
                 if (pct > 75) color = 'var(--warning)';
                 if (gasto > limite) color = 'var(--danger)';
@@ -438,18 +510,17 @@
                             <div class="progress-fill" style="width:${pct}%; background:${color}"></div>
                         </div>
                         <button onclick="removerMeta('${cat}')" style="background:none; border:none; color:#aaa; font-size:0.7rem; margin-top:4px; cursor:pointer;">Remover</button>
-                    </div>
-                `;
+                    </div>`;
             });
 
-            // 3. Investimentos
+            // Investimentos
             const invEl = document.getElementById('lista-investimentos');
             invEl.innerHTML = '';
             mData.investimentos.forEach(i => {
                 invEl.innerHTML += `<div class="transaction-item"><span class="t-desc">${i.tipo}</span><div><span class="t-val">${formatMoney(i.valor)}</span><button onclick="removerItem(${i.id},'investimentos')" style="margin-left:10px; color:red; background:none; border:none;">x</button></div></div>`;
             });
 
-            // 4. Totais
+            // Totais
             const totalRec = mData.transacoes.filter(t => t.tipo === 'receita').reduce((a, b) => a + b.valor, 0);
             const totalDesp = mData.transacoes.filter(t => t.tipo === 'despesa').reduce((a, b) => a + b.valor, 0);
             
@@ -457,7 +528,7 @@
             document.getElementById('kpi-receitas').textContent = `+ ${formatMoney(totalRec)}`;
             document.getElementById('kpi-despesas').textContent = `- ${formatMoney(totalDesp)}`;
 
-            // 5. Reserva
+            // Reserva
             const custoVida = totalDesp || 1;
             const reservaTotal = mData.investimentos.filter(i => i.tipo === 'Reserva').reduce((a, b) => a + b.valor, 0);
             const progresso = Math.min((reservaTotal / (custoVida * 6)) * 100, 100);
@@ -470,7 +541,7 @@
                 document.getElementById('reserva-msg').textContent = `Você tem ${(reservaTotal/custoVida).toFixed(1)} meses garantidos.`;
             }
 
-            // 6. Chart
+            // Chart
             const ctx = document.getElementById('grafico-cat').getContext('2d');
             if (myChart) myChart.destroy();
             myChart = new Chart(ctx, {
