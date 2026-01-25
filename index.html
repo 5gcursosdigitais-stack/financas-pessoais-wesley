@@ -17,14 +17,8 @@
             --bg: #0b0e14; --card: #151b25; --text: #f1f5f9; --border: #2d3748;
         }
         
-        /* --- CORREÇÃO DE ROLAGEM LATERAL (NUCLEAR) --- */
-        html, body {
-            width: 100%;
-            max-width: 100%;
-            overflow-x: hidden; /* OBRIGATÓRIO: Mata a rolagem lateral */
-            position: relative;
-        }
-
+        /* RESET E BLOQUEIO DE ROLAGEM */
+        html, body { width: 100%; max-width: 100%; overflow-x: hidden; position: relative; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; outline: none; }
         
         body { 
@@ -35,77 +29,22 @@
         }
         
         .container { 
-            width: 100%; 
-            max-width: 600px; 
-            margin: 0 auto; 
-            padding: 10px 15px; /* Reduzi levemente o padding lateral */
-            padding-top: max(10px, env(safe-area-inset-top)); 
+            width: 100%; max-width: 600px; margin: 0 auto; 
+            padding: 10px 15px; padding-top: max(10px, env(safe-area-inset-top)); 
         }
         
-        /* HEADER OTIMIZADO PARA IPHONE */
-        .header { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            margin-bottom: 20px; 
-            padding-top: 5px; 
-            gap: 5px; /* Espaço mínimo entre titulo e controles */
-        }
-        
-        .header h2 {
-            margin: 0;
-            font-size: 1.1rem; /* Fonte um pouco menor para caber */
-            letter-spacing: -0.5px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis; /* Se o nome for longo, corta com ... */
-        }
+        /* HEADER */
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-top: 5px; gap: 5px; }
+        .header h2 { margin: 0; font-size: 1.1rem; letter-spacing: -0.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .header-controls { display: flex; align-items: center; gap: 8px; }
+        .header-actions { display: flex; gap: 2px; align-items: center; background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 4px 6px; }
 
-        .header-controls {
-            display: flex;
-            align-items: center;
-            gap: 8px; /* Gap reduzido */
-        }
-        
-        .header-actions { 
-            display: flex; 
-            gap: 2px; /* Ícones bem juntinhos agora */
-            align-items: center; 
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 4px 6px; /* Padding reduzido */
-        }
-
-        .month-nav { 
-            display: flex; align-items: center; gap: 4px; 
-            background: var(--card); padding: 4px 8px; 
-            border-radius: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); 
-            border: 1px solid var(--border); 
-            height: 34px; /* Altura fixa para alinhar */
-        }
-        
+        .month-nav { display: flex; align-items: center; gap: 4px; background: var(--card); padding: 4px 8px; border-radius: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border: 1px solid var(--border); height: 34px; }
         .nav-btn { background: none; border: none; font-size: 1rem; color: var(--accent); cursor: pointer; font-weight: bold; padding: 0 4px; display: flex; align-items: center; }
-        
-        /* ÍCONES DO HEADER REDUZIDOS */
-        .btn-icon { 
-            background: none; border: none; 
-            font-size: 1rem; /* Reduzi de 1.4rem para 1rem */
-            cursor: pointer; 
-            padding: 4px; 
-            display: flex; align-items: center; justify-content: center; 
-            border-radius: 50%;
-        }
+        .btn-icon { background: none; border: none; font-size: 1rem; cursor: pointer; padding: 4px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
 
         /* CARDS */
-        .card { 
-            background: var(--card); border-radius: var(--radius); 
-            padding: 20px; margin-bottom: 15px; 
-            box-shadow: 0 2px 10px rgba(0,0,0,0.03); 
-            border: 1px solid var(--border); 
-            width: 100%; 
-        }
-        
+        .card { background: var(--card); border-radius: var(--radius); padding: 20px; margin-bottom: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.03); border: 1px solid var(--border); width: 100%; }
         .row { display: flex; gap: 12px; flex-wrap: wrap; }
         .col { flex: 1; min-width: 130px; }
 
@@ -113,11 +52,11 @@
         label { display: block; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; margin-bottom: 8px; color: var(--text); opacity: 0.6; letter-spacing: 0.5px; }
         input, select { width: 100%; padding: 14px; border: 1px solid var(--border); border-radius: 12px; font-size: 16px; background: var(--bg); color: var(--text); appearance: none; }
         input:focus, select:focus { border-color: var(--accent); }
-        
         .search-box { width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 12px; border: 1px solid var(--border); background: var(--bg); color: var(--text); font-size: 16px; }
 
         /* BOTOES */
         .btn { width: 100%; padding: 16px; border: none; border-radius: 14px; font-weight: 700; cursor: pointer; margin-top: 10px; font-size: 1rem; }
+        .btn:active { transform: scale(0.98); opacity: 0.9; }
         .btn-primary { background: var(--accent); color: white; }
         .btn-success { background: var(--success); color: white; }
         .btn-outline { background: transparent; border: 2px solid var(--border); color: var(--text); }
@@ -136,23 +75,36 @@
         .progress-bg { background: var(--border); height: 8px; border-radius: 4px; overflow: hidden; }
         .progress-fill { height: 100%; transition: width 0.6s ease; border-radius: 4px; }
         
-        /* BOTTOM NAV */
+        /* BOTTOM NAV - FIXO E ESTÁVEL */
         .bottom-nav { 
             position: fixed; bottom: 0; left: 0; width: 100%; 
-            background: rgba(255,255,255,0.9); 
-            display: flex; justify-content: space-around; 
-            padding: 10px 5px; 
+            background: rgba(255,255,255,0.95); 
+            display: flex; justify-content: space-between; /* Distribuição igual */
+            padding: 10px 0; /* Zero padding lateral, controlado pelos itens */
             border-top: 1px solid var(--border); 
             z-index: 100; 
             padding-bottom: max(10px, env(safe-area-inset-bottom)); 
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
         }
-        [data-theme="dark"] .bottom-nav { background: rgba(21, 27, 37, 0.9); }
+        [data-theme="dark"] .bottom-nav { background: rgba(21, 27, 37, 0.95); }
 
-        .nav-icon { background: none; border: none; font-size: 0.7rem; color: var(--text); opacity: 0.5; display: flex; flex-direction: column; align-items: center; gap: 4px; font-weight: 500; width: 100%; }
-        .nav-icon.active { color: var(--accent); opacity: 1; font-weight: 700; }
-        .nav-icon span { font-size: 1.4rem; margin-bottom: 2px; }
+        .nav-icon { 
+            background: none; border: none; 
+            flex: 1; /* O SEGREDO: Todos ocupam largura igual */
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            font-size: 0.7rem; color: var(--text); opacity: 0.5; 
+            gap: 4px; 
+            font-weight: 600; /* Peso fixo para não "engordar" */
+            transition: color 0.2s, opacity 0.2s; /* Anima só cor */
+            transform: none !important; /* Remove pulo visual */
+        }
+        .nav-icon.active { 
+            color: var(--accent); 
+            opacity: 1; 
+            /* Mantém font-weight 600 para não mexer no layout */
+        }
+        .nav-icon span { font-size: 1.4rem; margin-bottom: 2px; display: block; }
 
         .view-section { display: none; animation: fadeIn 0.2s ease-out; }
         .view-section.active { display: block; }
@@ -175,7 +127,7 @@
             border: 2px solid var(--accent); border-radius: 16px;
         }
         
-        /* CHART RESPONSIVO FIXO */
+        /* CHART FIXO */
         .chart-wrapper { position: relative; height: 250px; width: 100%; overflow: hidden; }
         canvas { max-width: 100% !important; height: auto !important; }
     </style>
@@ -193,14 +145,12 @@
     <div class="container">
         <header class="header">
             <h2>Wesley Finanças</h2>
-            
             <div class="header-controls">
                 <div class="month-nav">
                     <button class="nav-btn" onclick="mudarMes(-1)">‹</button>
                     <span id="label-mes" style="font-weight:800; font-size: 0.8rem; min-width: 45px; text-align:center;">--</span>
                     <button class="nav-btn" onclick="mudarMes(1)">›</button>
                 </div>
-
                 <div class="header-actions">
                     <button onclick="configurarSenha()" class="btn-icon">🔒</button>
                     <button onclick="togglePrivacy()" class="btn-icon" id="btn-eye">👁️</button>
@@ -218,7 +168,6 @@
                     <div class="col"><label>Saídas</label><span style="color: var(--danger); font-weight: 700; font-size: 1.1rem;" id="kpi-despesas">---</span></div>
                 </div>
             </div>
-
             <div class="card" style="border-left: 5px solid var(--accent);">
                 <div style="display:flex; justify-content:space-between;">
                     <label style="color:var(--accent);">🛡️ Reserva</label>
@@ -229,14 +178,12 @@
                 </div>
                 <div style="font-size:0.8rem; color:var(--text); opacity:0.7;" id="reserva-msg">Calculando...</div>
             </div>
-
             <div class="card">
                 <label style="margin-bottom:15px;">Gastos por Categoria</label>
                 <div class="chart-wrapper">
                     <canvas id="grafico-cat"></canvas>
                 </div>
             </div>
-
             <div class="backup-area">
                 <label style="margin-bottom:15px; display:block;">⚙️ Opções</label>
                 <button class="btn btn-outline" onclick="clonarMesAnterior()" style="margin-bottom:10px;">🔁 Copiar Mês Anterior</button>
@@ -348,7 +295,6 @@
     </nav>
 
     <script>
-        // CONFIGURAÇÕES GERAIS
         const CATEGORIAS_MESTRE = [
             "🏠 Moradia", "🍔 Alimentação", "🚗 Transporte", "📱 Celular / Internet",
             "🎬 Streaming", "🏦 Banco / Cartão", "💊 Saúde / Farmácia", "📚 Educação",
@@ -378,8 +324,6 @@
             if (localStorage.getItem('theme') === 'dark') document.body.setAttribute('data-theme', 'dark');
             updateEyeIcon();
         };
-
-        // --- FUNÇÕES ---
 
         function clonarMesAnterior() {
             if(!confirm("Copiar lançamentos do mês passado?")) return;
