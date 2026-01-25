@@ -17,59 +17,40 @@
             --bg: #0b0e14; --card: #151b25; --text: #f1f5f9; --border: #2d3748;
         }
         
-        /* --- RESET ABSOLUTO --- */
+        /* RESET ABSOLUTO */
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; outline: none; }
         
         html, body {
-            width: 100%;
-            height: 100%;
-            overflow-x: hidden; /* Proíbe rolagem lateral */
-            position: fixed; /* Trava o corpo para scroll nativo apenas na div container se necessário, mas aqui usaremos scroll no body com travamento */
-            position: relative; 
+            width: 100%; height: 100%; overflow-x: hidden; position: relative;
         }
 
         body { 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
             background: var(--bg); color: var(--text); 
             display: flex; flex-direction: column;
-            overflow-y: auto; /* Permite rolagem vertical */
+            overflow-y: auto; 
             -webkit-overflow-scrolling: touch;
         }
         
         .container { 
-            width: 100%; 
-            max-width: 100%; /* Garante uso total no mobile */
+            width: 100%; max-width: 100%; 
             padding: 15px; 
             padding-top: max(15px, env(safe-area-inset-top)); 
-            padding-bottom: 150px; /* Espaço GIGANTE para o menu não comer o botão */
+            padding-bottom: 160px; /* Garante que o conteúdo não fique escondido atrás do menu */
             overflow-x: hidden;
         }
         
-        /* --- LAYOUT RESPONSIVO (O SEGREDO DO "EM PÉ") --- */
-        /* Se a tela for menor que 600px (Celular em pé), empilha tudo */
-        .row { 
-            display: flex; 
-            gap: 15px; 
-            flex-wrap: wrap; 
-        }
-        
-        .col { 
-            flex: 1; 
-            min-width: 100%; /* FORÇA COLUNA ÚNICA EM TELAS PEQUENAS */
-        }
-        
-        /* Se a tela for maior (Tablet/PC ou Deitado), permite lado a lado */
-        @media (min-width: 600px) {
-            .col { min-width: 0; } 
-        }
+        /* --- LAYOUT RESPONSIVO --- */
+        .row { display: flex; gap: 15px; flex-wrap: wrap; }
+        .col { flex: 1; min-width: 100%; } /* Mobile First: Empilhado */
+        @media (min-width: 600px) { .col { min-width: 0; } } /* Tablet/PC: Lado a lado */
 
-        /* CARDS & ELEMENTOS */
+        /* CARDS */
         .card { 
             background: var(--card); border-radius: var(--radius); 
             padding: 20px; margin-bottom: 20px; 
             box-shadow: 0 4px 12px rgba(0,0,0,0.03); 
-            border: 1px solid var(--border); 
-            width: 100%;
+            border: 1px solid var(--border); width: 100%;
         }
 
         /* HEADER */
@@ -86,20 +67,19 @@
         .header-actions { display: flex; gap: 5px; }
         .btn-icon { background: var(--card); border: 1px solid var(--border); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
 
-        /* INPUTS GRANDES (Fáceis de tocar) */
+        /* INPUTS */
         label { display: block; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; margin-bottom: 8px; color: var(--text); opacity: 0.7; }
         input, select { 
-            width: 100%; padding: 16px; /* Mais altura para toque */
+            width: 100%; padding: 16px; 
             border: 1px solid var(--border); border-radius: 12px; 
-            font-size: 16px; /* Evita zoom no iOS */
-            background: var(--bg); color: var(--text); appearance: none; 
+            font-size: 16px; background: var(--bg); color: var(--text); appearance: none; 
         }
         input:focus, select:focus { border-color: var(--accent); }
 
         /* BOTÕES */
         .btn { width: 100%; padding: 18px; border: none; border-radius: 14px; font-weight: 700; cursor: pointer; margin-top: 10px; font-size: 1rem; }
         .btn:active { opacity: 0.8; transform: scale(0.98); }
-        .btn-primary { background: var(--accent); color: white; margin-bottom: 20px; /* Garante espaço abaixo */ }
+        .btn-primary { background: var(--accent); color: white; margin-bottom: 20px; }
         .btn-success { background: var(--success); color: white; }
         .btn-outline { background: transparent; border: 2px solid var(--border); color: var(--text); }
 
@@ -110,36 +90,40 @@
         .t-desc { font-weight: 600; font-size: 1rem; }
         .t-cat { font-size: 0.8rem; opacity: 0.6; }
         
-        /* MENU INFERIOR FIXO (GRID PERFEITO) */
+        /* --- MENU INFERIOR AJUSTADO (MAIS BAIXO) --- */
         .bottom-nav { 
-            position: fixed; bottom: 0; left: 0; width: 100%; 
+            position: fixed; 
+            bottom: 0; 
+            left: 0; 
+            width: 100%; 
             background: var(--card);
+            
+            /* GRID FIXO DE 6 COLUNAS */
             display: grid; 
             grid-template-columns: repeat(6, 1fr); 
-            padding: 10px 0;
-            padding-bottom: max(20px, env(safe-area-inset-bottom)); 
+            
+            /* AJUSTE DE ALTURA: Apenas o padding necessário */
+            padding-top: 8px;
+            /* Usa APENAS a área segura do iPhone, sem adicionar pixels extras */
+            padding-bottom: env(safe-area-inset-bottom);
+            
             border-top: 1px solid var(--border); 
             z-index: 9999;
             box-shadow: 0 -5px 20px rgba(0,0,0,0.05);
         }
+
         .nav-icon { 
             background: none; border: none; 
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
             color: var(--text); opacity: 0.4; 
             font-size: 0.65rem; font-weight: 600;
-            gap: 4px;
+            gap: 2px;
+            height: 100%;
+            padding-bottom: 2px; /* Pequeno ajuste fino */
         }
         .nav-icon.active { color: var(--accent); opacity: 1; }
         .nav-emoji { font-size: 1.4rem; line-height: 1; }
-
-        /* TELA DE BLOQUEIO */
-        #lock-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--bg); z-index: 99999;
-            display: none; flex-direction: column; align-items: center; justify-content: center;
-        }
-        #lock-overlay.active { display: flex; }
-        .lock-input { font-size: 2rem; letter-spacing: 10px; text-align: center; width: 200px; padding: 15px; border-radius: 12px; border: 2px solid var(--accent); margin: 20px 0; background: var(--card); color: var(--text); }
+        .nav-label { margin-top: 2px; }
 
         /* UTILITÁRIOS */
         .progress-bg { background: var(--border); height: 10px; border-radius: 5px; overflow: hidden; margin-top: 10px; }
@@ -147,6 +131,11 @@
         .hidden { display: none; }
         .show { display: block; animation: fadeUp 0.3s forwards; }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* LOCK SCREEN */
+        #lock-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 99999; display: none; flex-direction: column; align-items: center; justify-content: center; }
+        #lock-overlay.active { display: flex; }
+        .lock-input { font-size: 2rem; letter-spacing: 10px; text-align: center; width: 200px; padding: 15px; border-radius: 12px; border: 2px solid var(--accent); margin: 20px 0; background: var(--card); color: var(--text); }
     </style>
 </head>
 <body data-theme="light">
@@ -300,22 +289,22 @@
 
     <nav class="bottom-nav">
         <button class="nav-icon active" onclick="navTo('view-dash', this)">
-            <span class="nav-emoji">📊</span><span>Dash</span>
+            <span class="nav-emoji">📊</span><span class="nav-label">Dash</span>
         </button>
         <button class="nav-icon" onclick="navTo('view-list', this)">
-            <span class="nav-emoji">📑</span><span>Extrato</span>
+            <span class="nav-emoji">📑</span><span class="nav-label">Extrato</span>
         </button>
         <button class="nav-icon" onclick="navTo('view-add', this)">
-            <span class="nav-emoji">➕</span><span>Novo</span>
+            <span class="nav-emoji">➕</span><span class="nav-label">Novo</span>
         </button>
         <button class="nav-icon" onclick="navTo('view-anual', this)">
-            <span class="nav-emoji">📅</span><span>Anual</span>
+            <span class="nav-emoji">📅</span><span class="nav-label">Anual</span>
         </button>
         <button class="nav-icon" onclick="navTo('view-metas', this)">
-            <span class="nav-emoji">🎯</span><span>Metas</span>
+            <span class="nav-emoji">🎯</span><span class="nav-label">Metas</span>
         </button>
         <button class="nav-icon" onclick="navTo('view-invest', this)">
-            <span class="nav-emoji">📈</span><span>Inv.</span>
+            <span class="nav-emoji">📈</span><span class="nav-label">Inv.</span>
         </button>
     </nav>
 
