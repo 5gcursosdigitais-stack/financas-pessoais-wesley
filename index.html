@@ -17,7 +17,7 @@
             --bg: #0b0e14; --card: #151b25; --text: #f1f5f9; --border: #2d3748;
         }
         
-        /* RESET E BLOQUEIO DE ROLAGEM */
+        /* RESET */
         html, body { width: 100%; max-width: 100%; overflow-x: hidden; position: relative; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; outline: none; }
         
@@ -75,36 +75,48 @@
         .progress-bg { background: var(--border); height: 8px; border-radius: 4px; overflow: hidden; }
         .progress-fill { height: 100%; transition: width 0.6s ease; border-radius: 4px; }
         
-        /* BOTTOM NAV - FIXO E ESTÁVEL */
+        /* BOTTOM NAV - AGORA USANDO GRID PARA TRAVAMENTO TOTAL */
         .bottom-nav { 
             position: fixed; bottom: 0; left: 0; width: 100%; 
-            background: rgba(255,255,255,0.95); 
-            display: flex; justify-content: space-between; /* Distribuição igual */
-            padding: 10px 0; /* Zero padding lateral, controlado pelos itens */
+            background: rgba(255,255,255,0.98); /* Mais opaco para garantir leitura */
+            
+            /* O SEGREDO DO TRAVAMENTO: GRID COM 6 COLUNAS IGUAIS */
+            display: grid; 
+            grid-template-columns: repeat(6, 1fr); 
+            
+            padding: 8px 0; 
             border-top: 1px solid var(--border); 
             z-index: 100; 
-            padding-bottom: max(10px, env(safe-area-inset-bottom)); 
+            padding-bottom: max(8px, env(safe-area-inset-bottom)); 
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
         }
-        [data-theme="dark"] .bottom-nav { background: rgba(21, 27, 37, 0.95); }
+        [data-theme="dark"] .bottom-nav { background: rgba(21, 27, 37, 0.98); }
 
         .nav-icon { 
             background: none; border: none; 
-            flex: 1; /* O SEGREDO: Todos ocupam largura igual */
+            width: 100%; /* Ocupa 100% da célula do grid */
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            font-size: 0.7rem; color: var(--text); opacity: 0.5; 
+            font-size: 0.65rem; /* Fonte levemente menor para não quebrar */
+            color: var(--text); opacity: 0.5; 
             gap: 4px; 
-            font-weight: 600; /* Peso fixo para não "engordar" */
-            transition: color 0.2s, opacity 0.2s; /* Anima só cor */
-            transform: none !important; /* Remove pulo visual */
+            font-weight: 600; /* Peso fixo */
+            transition: color 0.2s; /* Removemos animação de transform/opacity */
+            padding: 0; margin: 0;
         }
+        
         .nav-icon.active { 
             color: var(--accent); 
             opacity: 1; 
-            /* Mantém font-weight 600 para não mexer no layout */
+            /* Zero mudança de tamanho ou posição aqui */
         }
-        .nav-icon span { font-size: 1.4rem; margin-bottom: 2px; display: block; }
+        
+        .nav-icon span { 
+            font-size: 1.3rem; 
+            margin-bottom: 2px; 
+            display: block; 
+            line-height: 1; /* Garante altura de linha fixa */
+        }
 
         .view-section { display: none; animation: fadeIn 0.2s ease-out; }
         .view-section.active { display: block; }
@@ -168,6 +180,7 @@
                     <div class="col"><label>Saídas</label><span style="color: var(--danger); font-weight: 700; font-size: 1.1rem;" id="kpi-despesas">---</span></div>
                 </div>
             </div>
+
             <div class="card" style="border-left: 5px solid var(--accent);">
                 <div style="display:flex; justify-content:space-between;">
                     <label style="color:var(--accent);">🛡️ Reserva</label>
@@ -178,12 +191,14 @@
                 </div>
                 <div style="font-size:0.8rem; color:var(--text); opacity:0.7;" id="reserva-msg">Calculando...</div>
             </div>
+
             <div class="card">
                 <label style="margin-bottom:15px;">Gastos por Categoria</label>
                 <div class="chart-wrapper">
                     <canvas id="grafico-cat"></canvas>
                 </div>
             </div>
+
             <div class="backup-area">
                 <label style="margin-bottom:15px; display:block;">⚙️ Opções</label>
                 <button class="btn btn-outline" onclick="clonarMesAnterior()" style="margin-bottom:10px;">🔁 Copiar Mês Anterior</button>
