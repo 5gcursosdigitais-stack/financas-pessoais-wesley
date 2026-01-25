@@ -34,8 +34,7 @@
             padding: 10px 15px; 
             padding-top: max(10px, env(safe-area-inset-top)); 
             flex: 1; 
-            /* AUMENTO DRASTICO DE ESPAÇO PARA O IPHONE */
-            padding-bottom: 200px; 
+            padding-bottom: 200px; /* Espaço extra garantido */
         }
         
         /* HEADER */
@@ -60,9 +59,9 @@
         .search-box { width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 12px; border: 1px solid var(--border); background: var(--bg); color: var(--text); font-size: 16px; }
 
         /* BOTOES */
-        .btn { width: 100%; padding: 16px; border: none; border-radius: 14px; font-weight: 700; cursor: pointer; margin-top: 15px; font-size: 1rem; }
+        .btn { width: 100%; padding: 16px; border: none; border-radius: 14px; font-weight: 700; cursor: pointer; margin-top: 10px; font-size: 1rem; }
         .btn:active { transform: scale(0.98); opacity: 0.9; }
-        .btn-primary { background: var(--accent); color: white; margin-bottom: 10px; /* Margem extra no botão */ }
+        .btn-primary { background: var(--accent); color: white; }
         .btn-success { background: var(--success); color: white; }
         .btn-outline { background: transparent; border: 2px solid var(--border); color: var(--text); }
 
@@ -80,13 +79,18 @@
         .progress-bg { background: var(--border); height: 8px; border-radius: 4px; overflow: hidden; }
         .progress-fill { height: 100%; transition: width 0.6s ease; border-radius: 4px; }
         
-        /* BOTTOM NAV */
+        /* --- BOTTOM NAV AJUSTADO (CENTRALIZAÇÃO FORÇADA) --- */
         .bottom-nav { 
-            position: fixed; bottom: 0; left: 0; width: 100%; 
+            position: fixed; 
+            bottom: 0; 
+            left: 0; 
+            width: 100%; 
             background: var(--card);
             display: grid; 
             grid-template-columns: repeat(6, 1fr); 
-            padding: 6px 0; 
+            justify-items: center; /* Centraliza horizontalmente na célula do grid */
+            align-items: end; 
+            padding: 8px 0; 
             border-top: 1px solid var(--border); 
             z-index: 9999;
             padding-bottom: max(5px, env(safe-area-inset-bottom)); 
@@ -94,22 +98,47 @@
         }
 
         .nav-icon { 
-            background: none; border: none; 
+            background: none; 
+            border: none; 
             width: 100%; 
             height: 100%;
-            display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
-            color: var(--text); opacity: 0.4; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; /* Centraliza conteúdo flex */
+            justify-content: center; 
+            color: var(--text); 
+            opacity: 0.4; 
             gap: 2px; 
             padding: 4px 0; 
             margin: 0;
             cursor: pointer;
-            transition: color 0.2s, opacity 0.2s;
+            text-align: center; /* Força texto ao centro */
+            -webkit-appearance: none; /* Remove estilo nativo iOS */
         }
         
-        .nav-icon.active { color: var(--accent); opacity: 1; }
+        .nav-icon.active { 
+            color: var(--accent); 
+            opacity: 1; 
+        }
         
-        .nav-emoji { font-size: 1.15rem; line-height: 1; display: block; margin-bottom: 2px; }
-        .nav-label { font-size: 0.6rem; font-weight: 600; display: block; white-space: nowrap; letter-spacing: -0.2px; }
+        .nav-emoji { 
+            font-size: 1.15rem; 
+            line-height: 1; 
+            display: block; 
+            margin-bottom: 2px;
+            width: 100%;
+            text-align: center; /* Redundância de segurança */
+        }
+        
+        .nav-label { 
+            font-size: 0.6rem; 
+            font-weight: 600; 
+            display: block; 
+            white-space: nowrap; 
+            width: 100%;
+            text-align: center; /* Redundância de segurança */
+            letter-spacing: -0.2px;
+        }
 
         .view-section { display: none; animation: fadeIn 0.2s ease-out; }
         .view-section.active { display: block; }
@@ -134,9 +163,6 @@
         
         .chart-wrapper { position: relative; height: 250px; width: 100%; overflow: hidden; }
         canvas { max-width: 100% !important; height: auto !important; }
-        
-        /* ESPAÇADOR DE SEGURANÇA */
-        .safe-spacer { height: 150px; width: 100%; display: block; }
     </style>
 </head>
 <body data-theme="light">
@@ -233,7 +259,7 @@
                     <select id="input-cat"></select>
                 </div>
                 <button class="btn btn-primary" onclick="salvarTransacao()">Confirmar</button>
-                <div style="height: 20px;"></div> </div>
+            </div>
         </div>
 
         <div id="view-list" class="view-section">
@@ -290,8 +316,6 @@
                 <div id="lista-investimentos"></div>
             </div>
         </div>
-        
-        <div class="safe-spacer"></div>
     </div>
 
     <nav class="bottom-nav">
