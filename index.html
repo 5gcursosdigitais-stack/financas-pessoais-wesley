@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Wesley Finanças (Seguro)</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Wesley Finanças</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
@@ -17,7 +19,7 @@
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); padding-bottom: 90px; -webkit-font-smoothing: antialiased; }
         
-        .container { max-width: 800px; margin: 0 auto; padding: 15px; }
+        .container { max-width: 800px; margin: 0 auto; padding: 15px; padding-top: env(safe-area-inset-top); }
         
         /* HEADER */
         .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding: 10px 0; }
@@ -34,6 +36,9 @@
         label { display: block; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; margin-bottom: 6px; color: var(--text); opacity: 0.7; letter-spacing: 0.5px; }
         input, select { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 12px; font-size: 16px; background: var(--bg); color: var(--text); outline: none; appearance: none; transition: 0.2s; }
         input:focus, select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
+        
+        /* SEARCH BAR */
+        .search-box { width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 10px; border: 1px solid var(--border); background: var(--bg); color: var(--text); font-size: 14px; }
 
         /* BOTOES */
         .btn { width: 100%; padding: 14px; border: none; border-radius: 12px; font-weight: 700; cursor: pointer; margin-top: 10px; font-size: 1rem; transition: transform 0.1s; }
@@ -59,7 +64,7 @@
         .progress-fill { height: 100%; transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 6px; }
         
         /* BOTTOM NAV */
-        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--card); display: flex; justify-content: space-around; padding: 12px 10px; border-top: 1px solid var(--border); z-index: 90; padding-bottom: env(safe-area-inset-bottom); backdrop-filter: blur(10px); }
+        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--card); display: flex; justify-content: space-around; padding: 12px 10px; border-top: 1px solid var(--border); z-index: 100; padding-bottom: env(safe-area-inset-bottom); backdrop-filter: blur(10px); }
         .nav-icon { background: none; border: none; font-size: 0.7rem; color: var(--text); opacity: 0.5; display: flex; flex-direction: column; align-items: center; gap: 4px; font-weight: 600; transition: 0.2s; }
         .nav-icon.active { color: var(--accent); opacity: 1; transform: translateY(-2px); }
         .nav-icon span { font-size: 1.4rem; }
@@ -141,10 +146,12 @@
                 <canvas id="grafico-cat"></canvas>
             </div>
 
-            <div class="backup-area">
-                <label style="color:var(--accent); margin-bottom:10px;">☁️ Sincronizar (PC ↔ iPhone)</label>
+            <div class="backup-area" style="border-style: solid; border-width: 1px;">
+                <label style="margin-bottom:15px;">⚙️ Opções Avançadas</label>
+                <button class="btn btn-outline" onclick="clonarMesAnterior()" style="margin-bottom:10px;">🔁 Clonar Despesas do Mês Anterior</button>
+                
                 <div class="row">
-                    <button class="btn btn-outline" onclick="baixarBackup()">⬇️ Baixar</button>
+                    <button class="btn btn-outline" onclick="baixarBackup()">⬇️ Backup</button>
                     <label class="btn btn-outline" style="cursor:pointer; display:flex; align-items:center; justify-content:center; margin-top:10px;">
                         ⬆️ Restaurar
                         <input type="file" id="file-input" style="display:none;" onchange="restaurarBackup(this)">
@@ -153,25 +160,11 @@
             </div>
         </div>
 
-        <div id="view-metas" class="view-section">
+        <div id="view-anual" class="view-section">
             <div class="card">
-                <h3>🎯 Definir Metas</h3>
-                <div class="row">
-                    <div class="col" style="flex:2">
-                        <label>Categoria</label>
-                        <select id="meta-cat"></select>
-                    </div>
-                    <div class="col" style="flex:1">
-                        <label>Limite (R$)</label>
-                        <input type="number" id="meta-valor" placeholder="200">
-                    </div>
-                </div>
-                <button class="btn btn-primary" onclick="salvarMeta()">Salvar Meta</button>
-            </div>
-
-            <div class="card">
-                <h3>Meus Objetivos</h3>
-                <div id="lista-metas"></div>
+                <h3>📅 Relatório Anual</h3>
+                <p style="font-size:0.8rem; opacity:0.7; margin-bottom:15px;">Comparativo dos últimos 6 meses</p>
+                <canvas id="grafico-anual"></canvas>
             </div>
         </div>
 
@@ -204,7 +197,29 @@
         <div id="view-list" class="view-section">
             <div class="card">
                 <h3>Extrato Detalhado</h3>
+                <input type="text" id="search-bar" class="search-box" placeholder="🔍 Buscar (ex: Uber, Mercado)..." onkeyup="renderExtrato()">
                 <div id="lista-transacoes"></div>
+            </div>
+        </div>
+
+        <div id="view-metas" class="view-section">
+            <div class="card">
+                <h3>🎯 Definir Metas</h3>
+                <div class="row">
+                    <div class="col" style="flex:2">
+                        <label>Categoria</label>
+                        <select id="meta-cat"></select>
+                    </div>
+                    <div class="col" style="flex:1">
+                        <label>Limite</label>
+                        <input type="number" id="meta-valor" placeholder="200">
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="salvarMeta()">Salvar</button>
+            </div>
+            <div class="card">
+                <h3>Objetivos</h3>
+                <div id="lista-metas"></div>
             </div>
         </div>
 
@@ -238,9 +253,10 @@
 
     <nav class="bottom-nav">
         <button class="nav-icon active" onclick="navTo('view-dash', this)"><span>📊</span>Dash</button>
-        <button class="nav-icon" onclick="navTo('view-metas', this)"><span>🎯</span>Metas</button>
-        <button class="nav-icon" onclick="navTo('view-add', this)"><span>➕</span>Novo</button>
         <button class="nav-icon" onclick="navTo('view-list', this)"><span>📑</span>Extrato</button>
+        <button class="nav-icon" onclick="navTo('view-add', this)"><span>➕</span>Novo</button>
+        <button class="nav-icon" onclick="navTo('view-anual', this)"><span>📅</span>Anual</button>
+        <button class="nav-icon" onclick="navTo('view-metas', this)"><span>🎯</span>Metas</button>
         <button class="nav-icon" onclick="navTo('view-invest', this)"><span>📈</span>Inv.</button>
     </nav>
 
@@ -255,20 +271,18 @@
         // --- CONFIG & ESTADO ---
         let currentMonth = new Date().toISOString().slice(0, 7);
         let activeType = 'despesa';
-        let db = JSON.parse(localStorage.getItem('fin_sync_v6')) || { config: { metas: {} } };
+        let db = JSON.parse(localStorage.getItem('fin_sync_v7')) || { config: { metas: {} } };
         if (!db.config) db.config = { metas: {} };
         
         let isPrivacyMode = localStorage.getItem('privacy_mode') === 'true'; 
-
-        // ESTADO DE SEGURANÇA
-        let userPin = localStorage.getItem('app_pin'); // PIN salvo
+        let userPin = localStorage.getItem('app_pin');
         
         let myChart = null;
+        let chartAnual = null;
         const CHART_COLORS = ['#3b82f6', '#22c55e', '#eab308', '#ef4444', '#a855f7', '#06b6d4', '#64748b', '#ec4899', '#84cc16'];
 
         // --- INICIALIZAÇÃO ---
         window.onload = () => {
-            // Verificar PIN ao abrir
             if (userPin) {
                 document.getElementById('lock-overlay').classList.add('active');
                 document.getElementById('pin-input').focus();
@@ -284,29 +298,60 @@
             updateEyeIcon();
         };
 
-        // --- SISTEMA DE BLOQUEIO (PIN) ---
+        // --- CLONAR MÊS (FEATURE NOVA) ---
+        function clonarMesAnterior() {
+            if(!confirm("Deseja copiar todos os lançamentos do mês passado para este mês?")) return;
+
+            // Calcular mês anterior
+            let [ano, mes] = currentMonth.split('-').map(Number);
+            mes -= 1;
+            if (mes < 1) { mes = 12; ano--; }
+            const prevMonthKey = `${ano}-${String(mes).padStart(2, '0')}`;
+
+            if (!db[prevMonthKey] || !db[prevMonthKey].transacoes.length) {
+                return alert("Não há dados no mês anterior para copiar.");
+            }
+
+            const transacoesAnteriores = db[prevMonthKey].transacoes;
+            const transacoesAtuais = getMonthData().transacoes;
+
+            // Clonar (mudando a data para o dia equivalente no mês atual)
+            transacoesAnteriores.forEach(t => {
+                const dia = t.data.split('-')[2];
+                const novaData = `${currentMonth}-${dia}`;
+                
+                transacoesAtuais.push({
+                    id: Date.now() + Math.random(), // ID único
+                    tipo: t.tipo,
+                    data: novaData,
+                    valor: t.valor,
+                    desc: t.desc + " (Cópia)",
+                    cat: t.cat
+                });
+            });
+
+            saveDB();
+            renderAll();
+            alert("Lançamentos copiados com sucesso!");
+        }
+
+        // --- SISTEMA DE BLOQUEIO ---
         function configurarSenha() {
             if (userPin) {
-                // Remover Senha
-                if (confirm("Você já tem uma senha. Deseja remover o bloqueio?")) {
-                    const check = prompt("Digite a senha atual para remover:");
+                if (confirm("Remover senha atual?")) {
+                    const check = prompt("Senha atual:");
                     if (check === userPin) {
                         localStorage.removeItem('app_pin');
                         userPin = null;
-                        alert("Senha removida! O app agora está desbloqueado.");
-                    } else {
-                        alert("Senha incorreta.");
-                    }
+                        alert("Senha removida.");
+                    } else alert("Senha incorreta.");
                 }
             } else {
-                // Criar Senha
-                const newPin = prompt("Crie um PIN de 4 números para proteger o app:");
+                const newPin = prompt("Crie um PIN de 4 dígitos:");
                 if (newPin && newPin.length === 4 && !isNaN(newPin)) {
                     localStorage.setItem('app_pin', newPin);
                     userPin = newPin;
-                    alert("Senha criada! O app pedirá esse código na próxima vez.");
-                } else {
-                    alert("Erro: O PIN deve ter 4 números.");
+                    alert("Senha criada!");
                 }
             }
         }
@@ -314,15 +359,11 @@
         function unlockApp() {
             const input = document.getElementById('pin-input');
             const msg = document.getElementById('lock-msg');
-            
             if (input.value === userPin) {
                 document.getElementById('lock-overlay').classList.remove('active');
-                msg.textContent = "";
-                input.value = "";
+                msg.textContent = ""; input.value = "";
             } else {
-                msg.textContent = "Senha incorreta. Tente novamente.";
-                input.value = "";
-                input.focus();
+                msg.textContent = "Senha incorreta."; input.value = ""; input.focus();
             }
         }
 
@@ -333,18 +374,13 @@
             updateEyeIcon();
             renderAll();
         }
-
-        function updateEyeIcon() {
-            const btn = document.getElementById('btn-eye');
-            btn.textContent = isPrivacyMode ? '🙈' : '👁️';
-        }
-
+        function updateEyeIcon() { document.getElementById('btn-eye').textContent = isPrivacyMode ? '🙈' : '👁️'; }
         function formatMoney(value) {
             if (isPrivacyMode) return '🙈🙈🙈';
             return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
         }
 
-        // --- CORE FUNCTIONS ---
+        // --- CORE ---
         function preencherCategorias() {
             const options = CATEGORIAS_MESTRE.map(cat => `<option value="${cat}">${cat}</option>`).join('');
             document.getElementById('input-cat').innerHTML = options;
@@ -356,6 +392,9 @@
             document.getElementById(viewId).classList.add('active');
             document.querySelectorAll('.nav-icon').forEach(el => el.classList.remove('active'));
             if(btn) btn.classList.add('active');
+            
+            // Se for aba anual, renderiza o gráfico
+            if (viewId === 'view-anual') renderGraficoAnual();
         }
 
         function mudarMes(delta) {
@@ -372,7 +411,6 @@
             const btnRec = document.getElementById('btn-type-rec');
             const btnDesp = document.getElementById('btn-type-desp');
             const divCat = document.getElementById('div-cat');
-            
             if (type === 'receita') {
                 btnRec.style.background = 'var(--success)'; btnRec.style.color = 'white';
                 btnDesp.style.background = 'var(--border)'; btnDesp.style.color = 'var(--text)';
@@ -409,7 +447,6 @@
             } else {
                 alert('Salvo!');
             }
-
             document.getElementById('input-valor').value = '';
             document.getElementById('input-desc').value = '';
             renderAll();
@@ -455,7 +492,7 @@
         }
 
         function saveDB() {
-            localStorage.setItem('fin_sync_v6', JSON.stringify(db));
+            localStorage.setItem('fin_sync_v7', JSON.stringify(db));
         }
 
         // --- RENDER ---
@@ -464,37 +501,19 @@
             const dateObj = new Date(currentMonth + '-02');
             document.getElementById('label-mes').textContent = dateObj.toLocaleDateString('pt-BR', { month:'short', year:'numeric' });
 
-            const listaEl = document.getElementById('lista-transacoes');
-            listaEl.innerHTML = '';
-            const sorted = [...mData.transacoes].sort((a, b) => new Date(b.data) - new Date(a.data));
-            if (sorted.length === 0) listaEl.innerHTML = '<div style="text-align:center; opacity:0.5; padding:20px;">Sem dados.</div>';
-            
-            const catsSum = {}; 
-
-            sorted.forEach(t => {
-                const dia = t.data.split('-')[2];
-                listaEl.innerHTML += `
-                    <div class="transaction-item">
-                        <div><span class="t-date">${dia} • ${t.cat}</span><span class="t-desc">${t.desc}</span></div>
-                        <div style="text-align:right;">
-                            <div class="t-val ${t.tipo==='receita'?'is-income':'is-expense'}">
-                                ${t.tipo==='despesa'?'-':'+'} ${formatMoney(t.valor)}
-                            </div>
-                            <button onclick="removerItem(${t.id}, 'transacoes')" style="background:none; border:none; color:#ccc; font-size:0.8rem;">x</button>
-                        </div>
-                    </div>`;
-                if (t.tipo === 'despesa') catsSum[t.cat] = (catsSum[t.cat] || 0) + t.valor;
-            });
+            renderExtrato(); // Chama a função que agora suporta busca
 
             // Metas
             const metasEl = document.getElementById('lista-metas');
             metasEl.innerHTML = '';
             const metas = db.config.metas || {};
-            if (Object.keys(metas).length === 0) metasEl.innerHTML = '<div style="text-align:center; opacity:0.5; padding:20px;">Sem metas.</div>';
+            // Calcula gastos para metas
+            const gastosPorCat = {};
+            mData.transacoes.filter(t=>t.tipo==='despesa').forEach(t => gastosPorCat[t.cat] = (gastosPorCat[t.cat] || 0) + t.valor);
 
             Object.keys(metas).forEach(cat => {
                 const limite = metas[cat];
-                const gasto = catsSum[cat] || 0;
+                const gasto = gastosPorCat[cat] || 0;
                 const pct = Math.min((gasto / limite) * 100, 100);
                 let color = 'var(--success)';
                 if (pct > 75) color = 'var(--warning)';
@@ -535,11 +554,8 @@
             document.getElementById('reserva-bar').style.width = `${progresso}%`;
             document.getElementById('reserva-percent').textContent = `${Math.round(progresso)}%`;
             
-            if (isPrivacyMode) {
-                document.getElementById('reserva-msg').textContent = "Dados Ocultos";
-            } else {
-                document.getElementById('reserva-msg').textContent = `Você tem ${(reservaTotal/custoVida).toFixed(1)} meses garantidos.`;
-            }
+            if (isPrivacyMode) document.getElementById('reserva-msg').textContent = "Dados Ocultos";
+            else document.getElementById('reserva-msg').textContent = `Você tem ${(reservaTotal/custoVida).toFixed(1)} meses garantidos.`;
 
             // Chart
             const ctx = document.getElementById('grafico-cat').getContext('2d');
@@ -547,10 +563,87 @@
             myChart = new Chart(ctx, {
                 type: 'doughnut',
                 data: {
-                    labels: Object.keys(catsSum),
-                    datasets: [{ data: Object.values(catsSum), backgroundColor: CHART_COLORS, borderWidth:0 }]
+                    labels: Object.keys(gastosPorCat),
+                    datasets: [{ data: Object.values(gastosPorCat), backgroundColor: CHART_COLORS, borderWidth:0 }]
                 },
                 options: { responsive: true, plugins: { legend: { position: 'right', labels: { boxWidth: 10, usePointStyle: true } } } }
+            });
+        }
+
+        // --- EXTRATO COM BUSCA ---
+        function renderExtrato() {
+            const listaEl = document.getElementById('lista-transacoes');
+            listaEl.innerHTML = '';
+            const mData = getMonthData();
+            const termo = document.getElementById('search-bar').value.toLowerCase();
+            
+            const sorted = [...mData.transacoes]
+                .sort((a, b) => new Date(b.data) - new Date(a.data))
+                .filter(t => t.desc.toLowerCase().includes(termo) || t.cat.toLowerCase().includes(termo));
+
+            if (sorted.length === 0) listaEl.innerHTML = '<div style="text-align:center; opacity:0.5; padding:20px;">Nada encontrado.</div>';
+            
+            sorted.forEach(t => {
+                const dia = t.data.split('-')[2];
+                listaEl.innerHTML += `
+                    <div class="transaction-item">
+                        <div><span class="t-date">${dia} • ${t.cat}</span><span class="t-desc">${t.desc}</span></div>
+                        <div style="text-align:right;">
+                            <div class="t-val ${t.tipo==='receita'?'is-income':'is-expense'}">
+                                ${t.tipo==='despesa'?'-':'+'} ${formatMoney(t.valor)}
+                            </div>
+                            <button onclick="removerItem(${t.id}, 'transacoes')" style="background:none; border:none; color:#ccc; font-size:0.8rem;">x</button>
+                        </div>
+                    </div>`;
+            });
+        }
+
+        // --- GRAFICO ANUAL ---
+        function renderGraficoAnual() {
+            const ctx = document.getElementById('grafico-anual').getContext('2d');
+            
+            // Pegar últimos 6 meses
+            const labels = [];
+            const saldos = [];
+            
+            let [ano, mes] = currentMonth.split('-').map(Number);
+            
+            // Iterar para trás 5 vezes + mês atual
+            for (let i = 5; i >= 0; i--) {
+                let m = mes - i;
+                let a = ano;
+                if (m <= 0) { m += 12; a--; }
+                
+                const key = `${a}-${String(m).padStart(2, '0')}`;
+                const mesNome = new Date(key + '-02').toLocaleDateString('pt-BR', { month: 'short' });
+                labels.push(mesNome);
+                
+                if (db[key]) {
+                    const r = db[key].transacoes.filter(t=>t.tipo==='receita').reduce((s,t)=>s+t.valor,0);
+                    const d = db[key].transacoes.filter(t=>t.tipo==='despesa').reduce((s,t)=>s+t.valor,0);
+                    saldos.push(r - d);
+                } else {
+                    saldos.push(0);
+                }
+            }
+
+            if (chartAnual) chartAnual.destroy();
+            chartAnual = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Saldo Líquido (R$)',
+                        data: saldos,
+                        backgroundColor: saldos.map(v => v >= 0 ? '#16a34a' : '#dc2626'),
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { legend: { display: false } },
+                    scales: { y: { beginAtZero: true } }
+                }
             });
         }
 
