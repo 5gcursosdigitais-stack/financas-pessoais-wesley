@@ -16,72 +16,111 @@
         [data-theme="dark"] {
             --bg: #0b0e14; --card: #151b25; --text: #f1f5f9; --border: #2d3748;
         }
-        /* RESET TOTAL PARA EVITAR ROLAGEM LATERAL */
+        
+        /* --- CORREÇÃO DE ROLAGEM LATERAL (NUCLEAR) --- */
+        html, body {
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden; /* OBRIGATÓRIO: Mata a rolagem lateral */
+            position: relative;
+        }
+
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; outline: none; }
         
         body { 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
-            background: var(--bg); 
-            color: var(--text); 
-            padding-bottom: 100px; /* Espaço para menu inferior */
-            overflow-x: hidden; /* O SEGREDO: Bloqueia rolagem lateral */
+            background: var(--bg); color: var(--text); 
+            padding-bottom: 100px; 
             -webkit-font-smoothing: antialiased;
         }
         
         .container { 
             width: 100%; 
-            max-width: 600px; /* Limitado para não ficar gigante no PC */
+            max-width: 600px; 
             margin: 0 auto; 
-            padding: 15px 20px; 
-            padding-top: max(15px, env(safe-area-inset-top)); /* Respeita o notch do iPhone */
+            padding: 10px 15px; /* Reduzi levemente o padding lateral */
+            padding-top: max(10px, env(safe-area-inset-top)); 
         }
         
-        /* HEADER */
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; padding-top: 10px; }
-        .header-actions { display: flex; gap: 12px; align-items: center; }
+        /* HEADER OTIMIZADO PARA IPHONE */
+        .header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 20px; 
+            padding-top: 5px; 
+            gap: 5px; /* Espaço mínimo entre titulo e controles */
+        }
         
+        .header h2 {
+            margin: 0;
+            font-size: 1.1rem; /* Fonte um pouco menor para caber */
+            letter-spacing: -0.5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis; /* Se o nome for longo, corta com ... */
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px; /* Gap reduzido */
+        }
+        
+        .header-actions { 
+            display: flex; 
+            gap: 2px; /* Ícones bem juntinhos agora */
+            align-items: center; 
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 4px 6px; /* Padding reduzido */
+        }
+
         .month-nav { 
-            display: flex; align-items: center; gap: 8px; 
-            background: var(--card); padding: 6px 12px; 
-            border-radius: 20px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); 
+            display: flex; align-items: center; gap: 4px; 
+            background: var(--card); padding: 4px 8px; 
+            border-radius: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); 
             border: 1px solid var(--border); 
+            height: 34px; /* Altura fixa para alinhar */
         }
-        .nav-btn { background: none; border: none; font-size: 1.2rem; color: var(--accent); cursor: pointer; font-weight: bold; padding: 0 5px; display: flex; align-items: center; justify-content: center; }
         
+        .nav-btn { background: none; border: none; font-size: 1rem; color: var(--accent); cursor: pointer; font-weight: bold; padding: 0 4px; display: flex; align-items: center; }
+        
+        /* ÍCONES DO HEADER REDUZIDOS */
+        .btn-icon { 
+            background: none; border: none; 
+            font-size: 1rem; /* Reduzi de 1.4rem para 1rem */
+            cursor: pointer; 
+            padding: 4px; 
+            display: flex; align-items: center; justify-content: center; 
+            border-radius: 50%;
+        }
+
         /* CARDS */
         .card { 
             background: var(--card); border-radius: var(--radius); 
             padding: 20px; margin-bottom: 15px; 
             box-shadow: 0 2px 10px rgba(0,0,0,0.03); 
             border: 1px solid var(--border); 
-            width: 100%; /* Garante que não estoure */
+            width: 100%; 
         }
         
-        /* ROW FLEXÍVEL */
         .row { display: flex; gap: 12px; flex-wrap: wrap; }
-        .col { flex: 1; min-width: 140px; /* Evita quebra feia em telas minusculas */ }
+        .col { flex: 1; min-width: 130px; }
 
         /* INPUTS */
         label { display: block; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; margin-bottom: 8px; color: var(--text); opacity: 0.6; letter-spacing: 0.5px; }
-        input, select { 
-            width: 100%; padding: 14px; 
-            border: 1px solid var(--border); border-radius: 12px; 
-            font-size: 16px; /* Evita zoom no iPhone */
-            background: var(--bg); color: var(--text); 
-            appearance: none; 
-        }
+        input, select { width: 100%; padding: 14px; border: 1px solid var(--border); border-radius: 12px; font-size: 16px; background: var(--bg); color: var(--text); appearance: none; }
         input:focus, select:focus { border-color: var(--accent); }
         
-        /* SEARCH BAR */
         .search-box { width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 12px; border: 1px solid var(--border); background: var(--bg); color: var(--text); font-size: 16px; }
 
         /* BOTOES */
         .btn { width: 100%; padding: 16px; border: none; border-radius: 14px; font-weight: 700; cursor: pointer; margin-top: 10px; font-size: 1rem; }
-        .btn:active { transform: scale(0.98); opacity: 0.9; }
         .btn-primary { background: var(--accent); color: white; }
         .btn-success { background: var(--success); color: white; }
         .btn-outline { background: transparent; border: 2px solid var(--border); color: var(--text); }
-        .btn-icon { background: none; border: none; font-size: 1.4rem; cursor: pointer; padding: 4px; display: flex; align-items: center; justify-content: center; }
 
         /* LISTA */
         .transaction-item { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid var(--border); }
@@ -100,12 +139,12 @@
         /* BOTTOM NAV */
         .bottom-nav { 
             position: fixed; bottom: 0; left: 0; width: 100%; 
-            background: rgba(255,255,255,0.9); /* Transparência no Light */
+            background: rgba(255,255,255,0.9); 
             display: flex; justify-content: space-around; 
             padding: 10px 5px; 
             border-top: 1px solid var(--border); 
             z-index: 100; 
-            padding-bottom: max(10px, env(safe-area-inset-bottom)); /* Respeita a barra home do iPhone */
+            padding-bottom: max(10px, env(safe-area-inset-bottom)); 
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
         }
@@ -136,8 +175,9 @@
             border: 2px solid var(--accent); border-radius: 16px;
         }
         
-        /* CHART RESPONSIVO */
-        canvas { max-width: 100%; height: auto !important; }
+        /* CHART RESPONSIVO FIXO */
+        .chart-wrapper { position: relative; height: 250px; width: 100%; overflow: hidden; }
+        canvas { max-width: 100% !important; height: auto !important; }
     </style>
 </head>
 <body data-theme="light">
@@ -152,12 +192,12 @@
 
     <div class="container">
         <header class="header">
-            <h2 style="margin:0; font-size: 1.3rem; letter-spacing: -0.5px; white-space: nowrap;">Wesley Finanças</h2>
+            <h2>Wesley Finanças</h2>
             
-            <div style="display: flex; gap: 8px;">
+            <div class="header-controls">
                 <div class="month-nav">
                     <button class="nav-btn" onclick="mudarMes(-1)">‹</button>
-                    <span id="label-mes" style="font-weight:800; font-size: 0.9rem; min-width: 50px; text-align:center;">--</span>
+                    <span id="label-mes" style="font-weight:800; font-size: 0.8rem; min-width: 45px; text-align:center;">--</span>
                     <button class="nav-btn" onclick="mudarMes(1)">›</button>
                 </div>
 
@@ -192,7 +232,7 @@
 
             <div class="card">
                 <label style="margin-bottom:15px;">Gastos por Categoria</label>
-                <div style="position: relative; height:250px; width:100%">
+                <div class="chart-wrapper">
                     <canvas id="grafico-cat"></canvas>
                 </div>
             </div>
@@ -214,7 +254,7 @@
             <div class="card">
                 <h3>📅 Relatório Anual</h3>
                 <p style="font-size:0.8rem; opacity:0.7; margin-bottom:15px;">Comparativo (Últimos 6 meses)</p>
-                <div style="position: relative; height:300px; width:100%">
+                <div class="chart-wrapper">
                     <canvas id="grafico-anual"></canvas>
                 </div>
             </div>
@@ -227,21 +267,17 @@
                     <button class="btn" id="btn-type-rec" onclick="setFormType('receita')" style="background:var(--border); color:var(--text);">Receita</button>
                     <button class="btn" id="btn-type-desp" onclick="setFormType('despesa')" style="background:var(--danger); color:white;">Despesa</button>
                 </div>
-
                 <div class="row">
                     <div class="col"><label>Data</label><input type="date" id="input-data"></div>
                     <div class="col"><label>Valor</label><input type="number" id="input-valor" step="0.01" placeholder="0,00"></div>
                 </div>
-                
                 <div style="margin-top:15px;">
                     <label>Descrição</label><input type="text" id="input-desc" placeholder="Ex: Netflix...">
                 </div>
-
                 <div style="margin-top:15px;" id="div-cat">
                     <label>Categoria</label>
                     <select id="input-cat"></select>
                 </div>
-
                 <button class="btn btn-primary" onclick="salvarTransacao()">Confirmar</button>
             </div>
         </div>
@@ -300,7 +336,6 @@
                 <div id="lista-investimentos"></div>
             </div>
         </div>
-
     </div>
 
     <nav class="bottom-nav">
@@ -344,7 +379,7 @@
             updateEyeIcon();
         };
 
-        // --- FUNÇÕES PRINCIPAIS ---
+        // --- FUNÇÕES ---
 
         function clonarMesAnterior() {
             if(!confirm("Copiar lançamentos do mês passado?")) return;
@@ -352,9 +387,7 @@
             mes -= 1;
             if (mes < 1) { mes = 12; ano--; }
             const prevMonthKey = `${ano}-${String(mes).padStart(2, '0')}`;
-
             if (!db[prevMonthKey] || !db[prevMonthKey].transacoes.length) return alert("Sem dados anteriores.");
-
             const transacoesAtuais = getMonthData().transacoes;
             db[prevMonthKey].transacoes.forEach(t => {
                 const dia = t.data.split('-')[2];
@@ -367,47 +400,32 @@
                     cat: t.cat
                 });
             });
-            saveDB();
-            renderAll();
-            alert("Copiado com sucesso!");
+            saveDB(); renderAll(); alert("Copiado com sucesso!");
         }
 
         function configurarSenha() {
             if (userPin) {
                 if (confirm("Remover senha?")) {
                     const check = prompt("Senha atual:");
-                    if (check === userPin) {
-                        localStorage.removeItem('app_pin');
-                        userPin = null;
-                        alert("Senha removida.");
-                    } else alert("Senha incorreta.");
+                    if (check === userPin) { localStorage.removeItem('app_pin'); userPin = null; alert("Senha removida."); }
+                    else alert("Senha incorreta.");
                 }
             } else {
                 const newPin = prompt("Crie PIN de 4 dígitos:");
-                if (newPin && newPin.length === 4 && !isNaN(newPin)) {
-                    localStorage.setItem('app_pin', newPin);
-                    userPin = newPin;
-                    alert("Senha criada!");
-                }
+                if (newPin && newPin.length === 4 && !isNaN(newPin)) { localStorage.setItem('app_pin', newPin); userPin = newPin; alert("Senha criada!"); }
             }
         }
 
         function unlockApp() {
             const input = document.getElementById('pin-input');
-            if (input.value === userPin) {
-                document.getElementById('lock-overlay').classList.remove('active');
-                input.value = "";
-            } else {
-                document.getElementById('lock-msg').textContent = "Senha incorreta.";
-                input.value = ""; input.focus();
-            }
+            if (input.value === userPin) { document.getElementById('lock-overlay').classList.remove('active'); input.value = ""; }
+            else { document.getElementById('lock-msg').textContent = "Senha incorreta."; input.value = ""; input.focus(); }
         }
 
         function togglePrivacy() {
             isPrivacyMode = !isPrivacyMode;
             localStorage.setItem('privacy_mode', isPrivacyMode);
-            updateEyeIcon();
-            renderAll();
+            updateEyeIcon(); renderAll();
         }
         function updateEyeIcon() { document.getElementById('btn-eye').textContent = isPrivacyMode ? '🙈' : '👁️'; }
         function formatMoney(value) {
@@ -465,17 +483,12 @@
             const desc = document.getElementById('input-desc').value;
             const cat = activeType === 'despesa' ? document.getElementById('input-cat').value : 'Entrada';
             if (!data || !valor || !desc) return alert("Preencha todos os campos!");
-            
             getMonthData().transacoes.push({ id: Date.now(), tipo: activeType, data, valor, desc, cat });
             saveDB();
-            
             if (activeType === 'despesa' && db.config.metas[cat]) {
-                const gastosMes = getMonthData().transacoes
-                    .filter(t => t.tipo === 'despesa' && t.cat === cat)
-                    .reduce((a,b) => a + b.valor, 0);
+                const gastosMes = getMonthData().transacoes.filter(t => t.tipo === 'despesa' && t.cat === cat).reduce((a,b) => a + b.valor, 0);
                 if (gastosMes > db.config.metas[cat]) alert(`⚠️ Limite de ${cat} excedido!`);
             } else alert('Salvo!');
-
             document.getElementById('input-valor').value = '';
             document.getElementById('input-desc').value = '';
             renderAll();
@@ -486,9 +499,7 @@
             const valor = parseFloat(document.getElementById('meta-valor').value);
             if (!valor) return alert("Digite valor");
             db.config.metas[cat] = valor;
-            saveDB();
-            renderAll();
-            alert("Meta salva!");
+            saveDB(); renderAll(); alert("Meta salva!");
             document.getElementById('meta-valor').value = '';
         }
 
@@ -499,17 +510,14 @@
             const mData = getMonthData();
             mData.investimentos = mData.investimentos.filter(i => i.tipo !== tipo);
             mData.investimentos.push({ id: Date.now(), tipo, valor });
-            saveDB();
-            renderAll();
-            alert('Atualizado!');
+            saveDB(); renderAll(); alert('Atualizado!');
         }
 
         function removerItem(id, lista) {
             const mData = getMonthData();
             if (lista === 'transacoes') mData.transacoes = mData.transacoes.filter(i => i.id !== id);
             else mData.investimentos = mData.investimentos.filter(i => i.id !== id);
-            saveDB();
-            renderAll();
+            saveDB(); renderAll();
         }
 
         function removerMeta(cat) {
@@ -525,7 +533,6 @@
 
             renderExtrato();
 
-            // Metas
             const metasEl = document.getElementById('lista-metas');
             metasEl.innerHTML = '';
             const metas = db.config.metas || {};
@@ -542,23 +549,18 @@
 
                 metasEl.innerHTML += `
                     <div class="meta-item">
-                        <div class="meta-header">
-                            <span>${cat}</span>
-                            <span>${formatMoney(gasto)} / ${formatMoney(limite)}</span>
-                        </div>
+                        <div class="meta-header"><span>${cat}</span><span>${formatMoney(gasto)} / ${formatMoney(limite)}</span></div>
                         <div class="progress-bg"><div class="progress-fill" style="width:${pct}%; background:${color}"></div></div>
                         <button onclick="removerMeta('${cat}')" style="background:none; border:none; color:#aaa; font-size:0.7rem; margin-top:4px;">Remover</button>
                     </div>`;
             });
 
-            // Investimentos
             const invEl = document.getElementById('lista-investimentos');
             invEl.innerHTML = '';
             mData.investimentos.forEach(i => {
                 invEl.innerHTML += `<div class="transaction-item"><span class="t-desc">${i.tipo}</span><div><span class="t-val">${formatMoney(i.valor)}</span><button onclick="removerItem(${i.id},'investimentos')" style="margin-left:10px; color:red; background:none; border:none;">x</button></div></div>`;
             });
 
-            // Totais
             const totalRec = mData.transacoes.filter(t => t.tipo === 'receita').reduce((a, b) => a + b.valor, 0);
             const totalDesp = mData.transacoes.filter(t => t.tipo === 'despesa').reduce((a, b) => a + b.valor, 0);
             
@@ -566,7 +568,6 @@
             document.getElementById('kpi-receitas').textContent = `+ ${formatMoney(totalRec)}`;
             document.getElementById('kpi-despesas').textContent = `- ${formatMoney(totalDesp)}`;
 
-            // Reserva
             const custoVida = totalDesp || 1;
             const reservaTotal = mData.investimentos.filter(i => i.tipo === 'Reserva').reduce((a, b) => a + b.valor, 0);
             const progresso = Math.min((reservaTotal / (custoVida * 6)) * 100, 100);
@@ -574,15 +575,11 @@
             document.getElementById('reserva-percent').textContent = `${Math.round(progresso)}%`;
             document.getElementById('reserva-msg').textContent = isPrivacyMode ? "Dados Ocultos" : `${(reservaTotal/custoVida).toFixed(1)} meses garantidos.`;
 
-            // Chart
             const ctx = document.getElementById('grafico-cat').getContext('2d');
             if (myChart) myChart.destroy();
             myChart = new Chart(ctx, {
                 type: 'doughnut',
-                data: {
-                    labels: Object.keys(gastosPorCat),
-                    datasets: [{ data: Object.values(gastosPorCat), backgroundColor: CHART_COLORS, borderWidth:0 }]
-                },
+                data: { labels: Object.keys(gastosPorCat), datasets: [{ data: Object.values(gastosPorCat), backgroundColor: CHART_COLORS, borderWidth:0 }] },
                 options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { boxWidth: 10, usePointStyle: true } } } }
             });
         }
@@ -592,22 +589,15 @@
             listaEl.innerHTML = '';
             const mData = getMonthData();
             const termo = document.getElementById('search-bar').value.toLowerCase();
-            
-            const sorted = [...mData.transacoes]
-                .sort((a, b) => new Date(b.data) - new Date(a.data))
-                .filter(t => t.desc.toLowerCase().includes(termo) || t.cat.toLowerCase().includes(termo));
-
+            const sorted = [...mData.transacoes].sort((a, b) => new Date(b.data) - new Date(a.data)).filter(t => t.desc.toLowerCase().includes(termo) || t.cat.toLowerCase().includes(termo));
             if (sorted.length === 0) listaEl.innerHTML = '<div style="text-align:center; opacity:0.5; padding:20px;">Nada encontrado.</div>';
-            
             sorted.forEach(t => {
                 const dia = t.data.split('-')[2];
                 listaEl.innerHTML += `
                     <div class="transaction-item">
                         <div><span class="t-date">${dia} • ${t.cat}</span><span class="t-desc">${t.desc}</span></div>
                         <div style="text-align:right;">
-                            <div class="t-val ${t.tipo==='receita'?'is-income':'is-expense'}">
-                                ${t.tipo==='despesa'?'-':'+'} ${formatMoney(t.valor)}
-                            </div>
+                            <div class="t-val ${t.tipo==='receita'?'is-income':'is-expense'}">${t.tipo==='despesa'?'-':'+'} ${formatMoney(t.valor)}</div>
                             <button onclick="removerItem(${t.id}, 'transacoes')" style="background:none; border:none; color:#ccc; font-size:0.8rem;">x</button>
                         </div>
                     </div>`;
@@ -618,32 +608,21 @@
             const ctx = document.getElementById('grafico-anual').getContext('2d');
             const labels = []; const saldos = [];
             let [ano, mes] = currentMonth.split('-').map(Number);
-            
             for (let i = 5; i >= 0; i--) {
                 let m = mes - i; let a = ano;
                 if (m <= 0) { m += 12; a--; }
                 const key = `${a}-${String(m).padStart(2, '0')}`;
                 labels.push(new Date(key + '-02').toLocaleDateString('pt-BR', { month: 'short' }));
-                
                 if (db[key]) {
                     const r = db[key].transacoes.filter(t=>t.tipo==='receita').reduce((s,t)=>s+t.valor,0);
                     const d = db[key].transacoes.filter(t=>t.tipo==='despesa').reduce((s,t)=>s+t.valor,0);
                     saldos.push(r - d);
                 } else saldos.push(0);
             }
-
             if (chartAnual) chartAnual.destroy();
             chartAnual = new Chart(ctx, {
                 type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Saldo',
-                        data: saldos,
-                        backgroundColor: saldos.map(v => v >= 0 ? '#16a34a' : '#dc2626'),
-                        borderRadius: 4
-                    }]
-                },
+                data: { labels: labels, datasets: [{ label: 'Saldo', data: saldos, backgroundColor: saldos.map(v => v >= 0 ? '#16a34a' : '#dc2626'), borderRadius: 4 }] },
                 options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
             });
         }
@@ -653,8 +632,7 @@
             const node = document.createElement('a');
             node.setAttribute("href", dataStr);
             node.setAttribute("download", `backup_financas_${new Date().toISOString().slice(0,10)}.json`);
-            document.body.appendChild(node);
-            node.click(); node.remove();
+            document.body.appendChild(node); node.click(); node.remove();
         }
 
         function restaurarBackup(input) {
@@ -667,8 +645,7 @@
                     if (!db.config) db.config = { metas: {} };
                     saveDB(); renderAll(); alert("Restaurado!");
                 } catch (err) { alert("Erro ao ler backup."); }
-            };
-            reader.readAsText(file);
+            }; reader.readAsText(file);
         }
 
         function toggleTheme() {
