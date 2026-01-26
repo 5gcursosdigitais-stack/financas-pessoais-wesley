@@ -12,148 +12,163 @@
             --bg: #f8fafc; --card: #ffffff; --text: #0f172a;
             --accent: #2563eb; --success: #16a34a; --warning: #ca8a04; --danger: #dc2626;
             --border: #e2e8f0; --radius: 16px;
+            --nav-height: 80px; /* Altura reservada para o menu */
         }
         [data-theme="dark"] {
             --bg: #0b0e14; --card: #151b25; --text: #f1f5f9; --border: #2d3748;
         }
         
-        /* RESET ABSOLUTO */
+        /* --- RESET E ESTRUTURA --- */
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; outline: none; }
         
         html, body {
-            width: 100%; height: 100%; overflow-x: hidden; position: relative;
+            width: 100%; height: 100%;
+            overflow-x: hidden; /* Bloqueia lateral */
+            position: fixed; /* Previne o 'bounce' elástico do iOS no body */
         }
 
         body { 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
             background: var(--bg); color: var(--text); 
             display: flex; flex-direction: column;
-            overflow-y: auto; 
-            -webkit-overflow-scrolling: touch;
         }
         
-        .container { 
-            width: 100%; max-width: 100%; 
-            padding: 15px; 
-            padding-top: max(15px, env(safe-area-inset-top)); 
-            padding-bottom: 160px; /* Garante que o conteúdo não fique escondido atrás do menu */
-            overflow-x: hidden;
+        /* Container com rolagem interna (Melhor para Apps iOS) */
+        .scroll-container {
+            flex: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch; /* Rolagem nativa suave */
+            padding: 15px;
+            padding-top: max(15px, env(safe-area-inset-top));
+            padding-bottom: calc(var(--nav-height) + 40px); /* Espaço extra garantido */
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
         }
-        
-        /* --- LAYOUT RESPONSIVO --- */
-        .row { display: flex; gap: 15px; flex-wrap: wrap; }
-        .col { flex: 1; min-width: 100%; } /* Mobile First: Empilhado */
-        @media (min-width: 600px) { .col { min-width: 0; } } /* Tablet/PC: Lado a lado */
 
-        /* CARDS */
+        /* --- COMPONENTES VISUAIS --- */
+        
+        /* Header */
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; min-height: 44px; }
+        .header h2 { font-size: 1.1rem; letter-spacing: -0.5px; font-weight: 800; }
+        .header-controls { display: flex; gap: 8px; align-items: center; }
+        
+        .month-nav { 
+            display: flex; align-items: center; justify-content: space-between;
+            background: var(--card); padding: 4px 8px; 
+            border-radius: 20px; border: 1px solid var(--border); 
+            min-width: 130px;
+        }
+        .nav-btn { background: none; border: none; font-size: 1.2rem; color: var(--accent); font-weight: bold; padding: 0 10px; cursor: pointer; }
+        
+        .header-actions { display: flex; gap: 8px; }
+        .btn-icon { 
+            background: var(--card); border: 1px solid var(--border); 
+            width: 38px; height: 38px; border-radius: 50%; 
+            display: flex; align-items: center; justify-content: center; font-size: 1.1rem; cursor: pointer;
+        }
+
+        /* Cards */
         .card { 
             background: var(--card); border-radius: var(--radius); 
             padding: 20px; margin-bottom: 20px; 
             box-shadow: 0 4px 12px rgba(0,0,0,0.03); 
             border: 1px solid var(--border); width: 100%;
+            position: relative; z-index: 1;
         }
 
-        /* HEADER */
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
-        .header h2 { font-size: 1.2rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 50%; }
-        .header-controls { display: flex; gap: 8px; align-items: center; }
-        
-        .month-nav { 
-            display: flex; align-items: center; gap: 5px; 
-            background: var(--card); padding: 5px 10px; 
-            border-radius: 20px; border: 1px solid var(--border); 
-        }
-        .nav-btn { background: none; border: none; font-size: 1.1rem; color: var(--accent); font-weight: bold; padding: 0 5px; }
-        .header-actions { display: flex; gap: 5px; }
-        .btn-icon { background: var(--card); border: 1px solid var(--border); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
-
-        /* INPUTS */
-        label { display: block; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; margin-bottom: 8px; color: var(--text); opacity: 0.7; }
+        /* Inputs e Forms - Altura aumentada para toque fácil */
+        label { display: block; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; margin-bottom: 8px; color: var(--text); opacity: 0.6; }
         input, select { 
-            width: 100%; padding: 16px; 
+            width: 100%; padding: 14px; height: 50px;
             border: 1px solid var(--border); border-radius: 12px; 
             font-size: 16px; background: var(--bg); color: var(--text); appearance: none; 
         }
         input:focus, select:focus { border-color: var(--accent); }
 
-        /* BOTÕES */
-        .btn { width: 100%; padding: 18px; border: none; border-radius: 14px; font-weight: 700; cursor: pointer; margin-top: 10px; font-size: 1rem; }
-        .btn:active { opacity: 0.8; transform: scale(0.98); }
-        .btn-primary { background: var(--accent); color: white; margin-bottom: 20px; }
+        /* Botões Principais */
+        .btn { 
+            width: 100%; padding: 0; height: 54px; 
+            border: none; border-radius: 14px; font-weight: 700; font-size: 1rem; 
+            cursor: pointer; margin-top: 15px; 
+            display: flex; align-items: center; justify-content: center;
+            transition: transform 0.1s;
+        }
+        .btn:active { transform: scale(0.97); opacity: 0.9; }
+        .btn-primary { background: var(--accent); color: white; }
         .btn-success { background: var(--success); color: white; }
         .btn-outline { background: transparent; border: 2px solid var(--border); color: var(--text); }
 
-        /* LISTAS E GRÁFICOS */
-        .chart-wrapper { position: relative; height: 260px; width: 100%; overflow: hidden; margin-top: 10px; }
+        /* Layout Grid para botões de tipo */
+        .type-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+        .type-btn { height: 45px; border-radius: 10px; border: 1px solid var(--border); font-weight: 600; background: var(--bg); color: var(--text); cursor: pointer; }
+        .type-btn.active-rec { background: var(--success); color: white; border: none; }
+        .type-btn.active-desp { background: var(--danger); color: white; border: none; }
+
+        /* Listas */
         .transaction-item { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid var(--border); }
-        .t-info { display: flex; flex-direction: column; gap: 4px; }
+        .t-info { display: flex; flex-direction: column; gap: 2px; }
         .t-desc { font-weight: 600; font-size: 1rem; }
         .t-cat { font-size: 0.8rem; opacity: 0.6; }
+        .t-val { font-weight: 700; font-size: 1rem; }
         
-        /* --- MENU INFERIOR AJUSTADO (MAIS BAIXO) --- */
+        /* Cores */
+        .color-success { color: var(--success); }
+        .color-danger { color: var(--danger); }
+
+        /* Menu Inferior Travado */
         .bottom-nav { 
-            position: fixed; 
-            bottom: 0; 
-            left: 0; 
-            width: 100%; 
-            background: var(--card);
-            
-            /* GRID FIXO DE 6 COLUNAS */
-            display: grid; 
-            grid-template-columns: repeat(6, 1fr); 
-            
-            /* AJUSTE DE ALTURA: Apenas o padding necessário */
-            padding-top: 8px;
-            /* Usa APENAS a área segura do iPhone, sem adicionar pixels extras */
-            padding-bottom: env(safe-area-inset-bottom);
-            
+            position: fixed; bottom: 0; left: 0; width: 100%; height: var(--nav-height);
+            background: var(--card); 
+            display: grid; grid-template-columns: repeat(6, 1fr); 
             border-top: 1px solid var(--border); 
-            z-index: 9999;
+            z-index: 1000; 
+            padding-bottom: env(safe-area-inset-bottom);
             box-shadow: 0 -5px 20px rgba(0,0,0,0.05);
         }
-
-        .nav-icon { 
-            background: none; border: none; 
-            display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
-            color: var(--text); opacity: 0.4; 
-            font-size: 0.65rem; font-weight: 600;
-            gap: 2px;
-            height: 100%;
-            padding-bottom: 2px; /* Pequeno ajuste fino */
+        .nav-item { 
+            display: flex; flex-direction: column; align-items: center; justify-content: center; 
+            height: 100%; width: 100%; border: none; background: none; 
+            color: var(--text); opacity: 0.4; transition: 0.2s; cursor: pointer;
         }
-        .nav-icon.active { color: var(--accent); opacity: 1; }
-        .nav-emoji { font-size: 1.4rem; line-height: 1; }
-        .nav-label { margin-top: 2px; }
+        .nav-item.active { opacity: 1; color: var(--accent); }
+        .nav-icon { font-size: 1.4rem; margin-bottom: 2px; display: block; }
+        .nav-label { font-size: 0.65rem; font-weight: 600; display: block; }
 
-        /* UTILITÁRIOS */
-        .progress-bg { background: var(--border); height: 10px; border-radius: 5px; overflow: hidden; margin-top: 10px; }
-        .progress-fill { height: 100%; transition: width 0.5s; border-radius: 5px; }
-        .hidden { display: none; }
-        .show { display: block; animation: fadeUp 0.3s forwards; }
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* Utilitários */
+        .chart-wrapper { position: relative; height: 250px; width: 100%; }
+        .spacer { height: 100px; width: 100%; display: block; flex-shrink: 0; }
+        .hidden { display: none !important; }
         
-        /* LOCK SCREEN */
-        #lock-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 99999; display: none; flex-direction: column; align-items: center; justify-content: center; }
-        #lock-overlay.active { display: flex; }
-        .lock-input { font-size: 2rem; letter-spacing: 10px; text-align: center; width: 200px; padding: 15px; border-radius: 12px; border: 2px solid var(--accent); margin: 20px 0; background: var(--card); color: var(--text); }
+        /* Lock Screen */
+        #lock-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg); z-index: 99999;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+        .lock-input { font-size: 2rem; text-align: center; letter-spacing: 10px; width: 200px; margin: 20px 0; }
     </style>
 </head>
 <body data-theme="light">
 
-    <div id="lock-overlay">
+    <input type="file" id="file-restore-trigger" style="display: none;" accept=".json">
+
+    <div id="lock-screen" class="hidden">
         <h2>🔒 Bloqueado</h2>
+        <p style="opacity: 0.7;">Wesley Finanças</p>
         <input type="tel" id="pin-input" class="lock-input" maxlength="4" placeholder="••••">
-        <button class="btn btn-primary" onclick="unlockApp()" style="width: 200px;">Acessar</button>
-        <p id="lock-msg" style="color:var(--danger); margin-top:10px;"></p>
+        <button class="btn btn-primary" onclick="unlockApp()" style="width: 200px;">Entrar</button>
+        <p id="lock-msg" style="color:var(--danger); height: 20px;"></p>
     </div>
 
-    <div class="container">
+    <div class="scroll-container">
+        
         <header class="header">
             <h2>Wesley Fin.</h2>
             <div class="header-controls">
                 <div class="month-nav">
                     <button class="nav-btn" onclick="mudarMes(-1)">‹</button>
-                    <span id="label-mes" style="font-weight:700; min-width:50px; text-align:center; font-size:0.9rem;">--</span>
+                    <span id="label-mes">--</span>
                     <button class="nav-btn" onclick="mudarMes(1)">›</button>
                 </div>
                 <div class="header-actions">
@@ -164,112 +179,109 @@
             </div>
         </header>
 
-        <div id="view-dash" class="view-section show">
+        <div id="view-dash">
             <div class="card">
                 <label>Saldo Líquido</label>
-                <div id="kpi-saldo" style="font-size:2.2rem; font-weight:800; margin:5px 0;">---</div>
-                <div class="row">
-                    <div class="col"><label>Receitas</label><span id="kpi-receitas" style="color:var(--success); font-weight:700; font-size:1.1rem;">---</span></div>
-                    <div class="col"><label>Despesas</label><span id="kpi-despesas" style="color:var(--danger); font-weight:700; font-size:1.1rem;">---</span></div>
+                <div id="kpi-saldo" style="font-size:2.4rem; font-weight:800; margin:10px 0;">R$ 0,00</div>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                    <div><label>Entradas</label><span id="kpi-rec" class="color-success" style="font-weight:700;">R$ 0,00</span></div>
+                    <div><label>Saídas</label><span id="kpi-desp" class="color-danger" style="font-weight:700;">R$ 0,00</span></div>
                 </div>
             </div>
 
-            <div class="card" style="border-left:5px solid var(--accent)">
-                <div style="display:flex; justify-content:space-between;">
-                    <label style="color:var(--accent)">🛡️ Reserva</label>
-                    <span id="reserva-percent" style="font-weight:bold;">0%</span>
+            <div class="card" style="border-left: 5px solid var(--accent);">
+                <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                    <span style="font-weight:700; color:var(--accent)">🛡️ Reserva</span>
+                    <span id="reserva-percent" style="font-weight:700;">0%</span>
                 </div>
-                <div class="progress-bg"><div id="reserva-bar" class="progress-fill" style="background:var(--accent); width:0%"></div></div>
+                <div style="background:var(--border); height:10px; border-radius:5px; overflow:hidden;">
+                    <div id="reserva-bar" style="background:var(--accent); width:0%; height:100%;"></div>
+                </div>
                 <div id="reserva-msg" style="font-size:0.8rem; margin-top:5px; opacity:0.7;">Calculando...</div>
             </div>
 
             <div class="card">
-                <label>Gastos por Categoria</label>
-                <div class="chart-wrapper"><canvas id="grafico-cat"></canvas></div>
+                <label>Por Categoria</label>
+                <div class="chart-wrapper"><canvas id="chart-cat"></canvas></div>
             </div>
 
-            <div class="backup-area" style="text-align:center; padding:20px; border:2px dashed var(--border); border-radius:16px;">
-                <label>⚙️ Manutenção</label>
-                <button class="btn btn-outline" onclick="clonarMesAnterior()">🔁 Copiar do Mês Passado</button>
-                <div class="row" style="margin-top:10px;">
-                    <button class="btn btn-outline" onclick="baixarBackup()">⬇️ Backup</button>
-                    <label class="btn btn-outline" style="display:flex; align-items:center; justify-content:center; margin:0;">
-                        ⬆️ Restaurar <input type="file" onchange="restaurarBackup(this)" style="display:none;">
-                    </label>
+            <div class="card" style="text-align:center; border:2px dashed var(--border);">
+                <label>Manutenção</label>
+                <button class="btn btn-outline" onclick="clonarMesAnterior()">🔁 Copiar Mês Anterior</button>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:10px;">
+                    <button class="btn btn-outline" onclick="baixarBackup()">⬇️ Baixar</button>
+                    <button class="btn btn-outline" onclick="triggerRestore()">⬆️ Restaurar</button>
                 </div>
             </div>
         </div>
 
-        <div id="view-list" class="view-section hidden">
+        <div id="view-extrato" class="hidden">
             <div class="card">
                 <h3>Extrato</h3>
-                <input type="text" id="search-bar" placeholder="🔍 Buscar..." onkeyup="renderExtrato()" style="margin-top:15px; width:100%; padding:14px; border-radius:12px; border:1px solid var(--border); background:var(--bg); color:var(--text);">
+                <input type="text" id="search-bar" placeholder="🔍 Buscar..." onkeyup="renderExtrato()" style="margin-top:15px;">
                 <div id="lista-transacoes"></div>
             </div>
         </div>
 
-        <div id="view-add" class="view-section hidden">
+        <div id="view-novo" class="hidden">
             <div class="card">
-                <h3>Novo Lançamento</h3>
+                <h3>Lançamento</h3>
                 
-                <div class="row" style="margin-top:15px; gap:10px;">
-                    <button class="btn" id="btn-rec" onclick="setFormType('receita')" style="margin:0; background:var(--border); color:var(--text);">Receita</button>
-                    <button class="btn" id="btn-desp" onclick="setFormType('despesa')" style="margin:0; background:var(--danger); color:white;">Despesa</button>
+                <div class="type-grid">
+                    <button class="type-btn active-rec" id="btn-rec" onclick="setType('receita')">Receita</button>
+                    <button class="type-btn" id="btn-desp" onclick="setType('despesa')">Despesa</button>
                 </div>
 
-                <div style="margin-top:15px;">
+                <div style="margin-bottom:15px;">
                     <label>Data</label>
-                    <input type="date" id="input-data">
+                    <input type="date" id="in-date">
                 </div>
-
-                <div style="margin-top:15px;">
+                <div style="margin-bottom:15px;">
                     <label>Valor (R$)</label>
-                    <input type="number" id="input-valor" placeholder="0,00" step="0.01" inputmode="decimal">
+                    <input type="number" id="in-val" step="0.01" inputmode="decimal" placeholder="0,00">
                 </div>
-
-                <div style="margin-top:15px;">
+                <div style="margin-bottom:15px;">
                     <label>Descrição</label>
-                    <input type="text" id="input-desc" placeholder="Ex: Netflix">
+                    <input type="text" id="in-desc" placeholder="Ex: Mercado">
                 </div>
-
-                <div style="margin-top:15px;" id="div-cat">
+                <div style="margin-bottom:15px;" id="div-cat">
                     <label>Categoria</label>
-                    <select id="input-cat"></select>
+                    <select id="in-cat"></select>
                 </div>
 
                 <button class="btn btn-primary" onclick="salvarTransacao()">Confirmar</button>
             </div>
         </div>
 
-        <div id="view-anual" class="view-section hidden">
+        <div id="view-anual" class="hidden">
             <div class="card">
-                <h3>📅 Relatório Anual</h3>
-                <div class="chart-wrapper"><canvas id="grafico-anual"></canvas></div>
+                <h3>Anual (6 Meses)</h3>
+                <div class="chart-wrapper"><canvas id="chart-anual"></canvas></div>
             </div>
         </div>
 
-        <div id="view-metas" class="view-section hidden">
+        <div id="view-metas" class="hidden">
             <div class="card">
-                <h3>🎯 Metas</h3>
-                <div style="margin-top:15px;">
+                <h3>Definir Meta</h3>
+                <div style="margin-bottom:15px;">
                     <label>Categoria</label>
                     <select id="meta-cat"></select>
                 </div>
-                <div style="margin-top:15px;">
-                    <label>Limite Mensal (R$)</label>
-                    <input type="number" id="meta-valor" placeholder="Ex: 500">
+                <div style="margin-bottom:15px;">
+                    <label>Limite (R$)</label>
+                    <input type="number" id="meta-val" inputmode="decimal">
                 </div>
                 <button class="btn btn-primary" onclick="salvarMeta()">Salvar Meta</button>
             </div>
-            <div class="card" id="lista-metas"></div>
+            <div id="lista-metas"></div>
         </div>
 
-        <div id="view-invest" class="view-section hidden">
+        <div id="view-inv" class="hidden">
             <div class="card">
-                <h3>Meus Ativos</h3>
-                <div style="margin-top:15px;">
+                <h3>Atualizar Patrimônio</h3>
+                <div style="margin-bottom:15px;">
                     <label>Tipo</label>
-                    <select id="inv-tipo">
+                    <select id="inv-type">
                         <option value="Reserva">🛡️ Reserva (Liquidez)</option>
                         <option value="Renda Fixa">🔒 Renda Fixa</option>
                         <option value="Ações">📈 Ações/FIIs</option>
@@ -277,233 +289,280 @@
                         <option value="Veículos">🚙 Veículos</option>
                     </select>
                 </div>
-                <div style="margin-top:15px;">
+                <div style="margin-bottom:15px;">
                     <label>Saldo Total (R$)</label>
-                    <input type="number" id="inv-valor" step="0.01">
+                    <input type="number" id="inv-val" step="0.01" inputmode="decimal">
                 </div>
                 <button class="btn btn-success" onclick="salvarInvestimento()">Atualizar</button>
             </div>
-            <div class="card" id="lista-investimentos"></div>
+            <div class="card" id="lista-invest"></div>
         </div>
+
+        <div class="spacer"></div>
     </div>
 
     <nav class="bottom-nav">
-        <button class="nav-icon active" onclick="navTo('view-dash', this)">
-            <span class="nav-emoji">📊</span><span class="nav-label">Dash</span>
-        </button>
-        <button class="nav-icon" onclick="navTo('view-list', this)">
-            <span class="nav-emoji">📑</span><span class="nav-label">Extrato</span>
-        </button>
-        <button class="nav-icon" onclick="navTo('view-add', this)">
-            <span class="nav-emoji">➕</span><span class="nav-label">Novo</span>
-        </button>
-        <button class="nav-icon" onclick="navTo('view-anual', this)">
-            <span class="nav-emoji">📅</span><span class="nav-label">Anual</span>
-        </button>
-        <button class="nav-icon" onclick="navTo('view-metas', this)">
-            <span class="nav-emoji">🎯</span><span class="nav-label">Metas</span>
-        </button>
-        <button class="nav-icon" onclick="navTo('view-invest', this)">
-            <span class="nav-emoji">📈</span><span class="nav-label">Inv.</span>
-        </button>
+        <button class="nav-item active" onclick="navTo('view-dash', this)"><span class="nav-icon">📊</span><span class="nav-label">Dash</span></button>
+        <button class="nav-item" onclick="navTo('view-extrato', this)"><span class="nav-icon">📑</span><span class="nav-label">Extrato</span></button>
+        <button class="nav-item" onclick="navTo('view-novo', this)"><span class="nav-icon">➕</span><span class="nav-label">Novo</span></button>
+        <button class="nav-item" onclick="navTo('view-anual', this)"><span class="nav-icon">📅</span><span class="nav-label">Anual</span></button>
+        <button class="nav-item" onclick="navTo('view-metas', this)"><span class="nav-icon">🎯</span><span class="nav-label">Metas</span></button>
+        <button class="nav-item" onclick="navTo('view-inv', this)"><span class="nav-icon">📈</span><span class="nav-label">Inv.</span></button>
     </nav>
 
     <script>
-        // --- DADOS ---
-        const CATEGORIAS = ["🏠 Moradia", "🍔 Alimentação", "🚗 Transporte", "📱 Celular/Net", "🎬 Streaming", "🏦 Banco", "💊 Saúde", "📚 Educação", "🎉 Lazer", "🛍️ Compras", "🐾 Pets", "⚙️ Outros"];
-        let db = JSON.parse(localStorage.getItem('wesley_fin_final')) || { config: {metas:{}} };
-        if(!db.config) db.config = {metas:{}};
+        // CONFIG
+        const CATS = ["🏠 Moradia", "🍔 Alimentação", "🚗 Transporte", "📱 Celular/Net", "🎬 Streaming", "🏦 Banco", "💊 Saúde", "📚 Educação", "🎉 Lazer", "🛍️ Compras", "🐾 Pets", "🎁 Presentes", "⚙️ Outros"];
+        let db = JSON.parse(localStorage.getItem('wesley_db_v1')) || { config: { metas: {} } };
+        if(!db.config) db.config = { metas: {} };
         let curMonth = new Date().toISOString().slice(0, 7);
-        let activeType = 'despesa';
+        let activeType = 'receita';
         let privacy = localStorage.getItem('privacy') === 'true';
         let pin = localStorage.getItem('pin');
-        let myChart = null, chartAnual = null;
+        let chartCat = null, chartAnual = null;
 
+        // INIT
         window.onload = () => {
-            if(pin) { document.getElementById('lock-overlay').classList.add('active'); document.getElementById('pin-input').focus(); }
+            // Lock Screen Check
+            if(pin) document.getElementById('lock-screen').classList.remove('hidden');
+            
+            // Theme
             if(localStorage.getItem('theme')==='dark') document.body.setAttribute('data-theme', 'dark');
             
-            // Popula selects
-            const opts = CATEGORIAS.map(c => `<option value="${c}">${c}</option>`).join('');
-            document.getElementById('input-cat').innerHTML = opts;
+            // Setup
+            const opts = CATS.map(c => `<option value="${c}">${c}</option>`).join('');
+            document.getElementById('in-cat').innerHTML = opts;
             document.getElementById('meta-cat').innerHTML = opts;
-            document.getElementById('input-data').value = new Date().toISOString().split('T')[0];
+            document.getElementById('in-date').value = new Date().toISOString().split('T')[0];
             
+            // Trigger do Restore
+            document.getElementById('file-restore-trigger').addEventListener('change', processarRestore);
+
             updateEye();
             render();
         };
 
-        // --- NAVEGAÇÃO ---
-        function navTo(view, btn) {
-            document.querySelectorAll('.view-section').forEach(e => { e.classList.remove('show'); e.classList.add('hidden'); });
-            document.getElementById(view).classList.remove('hidden');
-            document.getElementById(view).classList.add('show');
-            
-            document.querySelectorAll('.nav-icon').forEach(e => e.classList.remove('active'));
-            if(btn) btn.classList.add('active');
-            
-            if(view === 'view-anual') renderAnual();
+        // --- SISTEMA DE RESTORE CORRIGIDO ---
+        function triggerRestore() {
+            // Clica no input invisível via JS (Funciona 100% no iPhone)
+            document.getElementById('file-restore-trigger').click();
+        }
+
+        function processarRestore(e) {
+            const file = e.target.files[0];
+            if(!file) return;
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                try {
+                    const json = JSON.parse(ev.target.result);
+                    if(confirm("Substituir todos os dados atuais pelo backup?")) {
+                        db = json;
+                        if(!db.config) db.config = { metas: {} };
+                        save();
+                        location.reload(); // Recarrega para limpar estado
+                    }
+                } catch(err) {
+                    alert("Erro: Arquivo de backup inválido.");
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function baixarBackup() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(db));
+            const node = document.createElement('a');
+            node.setAttribute("href", dataStr);
+            node.setAttribute("download", `backup_financas_${new Date().toISOString().slice(0,10)}.json`);
+            document.body.appendChild(node); node.click(); node.remove();
+        }
+
+        // --- NAVEGAÇÃO E UI ---
+        function navTo(viewId, btn) {
+            // Esconde todas as views
+            ['view-dash', 'view-extrato', 'view-novo', 'view-anual', 'view-metas', 'view-inv'].forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+            });
+            // Mostra a desejada
+            document.getElementById(viewId).classList.remove('hidden');
+            window.scrollTo(0,0); // Topo
+
+            // Menu ativo
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            btn.classList.add('active');
+
+            if(viewId === 'view-anual') renderChartAnual();
         }
 
         function mudarMes(d) {
             let [y, m] = curMonth.split('-').map(Number);
-            m += d;
-            if(m > 12) { m=1; y++; } else if(m < 1) { m=12; y--; }
+            m += d; if(m>12){m=1;y++} else if(m<1){m=12;y--};
             curMonth = `${y}-${String(m).padStart(2,'0')}`;
             render();
         }
 
-        function setFormType(t) {
+        function setType(t) {
             activeType = t;
             const r = document.getElementById('btn-rec'), d = document.getElementById('btn-desp'), c = document.getElementById('div-cat');
-            if(t==='receita') {
-                r.style.background='var(--success)'; r.style.color='white';
-                d.style.background='var(--border)'; d.style.color='var(--text)';
-                c.style.display='none';
-            } else {
-                r.style.background='var(--border)'; r.style.color='var(--text)';
-                d.style.background='var(--danger)'; d.style.color='white';
-                c.style.display='block';
-            }
+            r.className = t==='receita' ? 'type-btn active-rec' : 'type-btn';
+            d.className = t==='despesa' ? 'type-btn active-desp' : 'type-btn';
+            c.style.display = t==='despesa' ? 'block' : 'none';
         }
 
-        // --- LÓGICA ---
+        // --- CORE ---
         function getM() { if(!db[curMonth]) db[curMonth]={t:[], i:[]}; return db[curMonth]; }
-        function save() { localStorage.setItem('wesley_fin_final', JSON.stringify(db)); }
+        function save() { localStorage.setItem('wesley_db_v1', JSON.stringify(db)); }
         function fmt(v) { return privacy ? '🙈' : v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'}); }
 
+        // --- SALVAR ---
         function salvarTransacao() {
-            const dt=document.getElementById('input-data').value, vl=parseFloat(document.getElementById('input-valor').value), desc=document.getElementById('input-desc').value;
-            if(!dt || !vl || !desc) return alert("Preencha tudo!");
-            
-            const cat = activeType==='despesa' ? document.getElementById('input-cat').value : 'Entrada';
-            getM().t.push({id:Date.now(), type:activeType, date:dt, val:vl, desc, cat});
+            const dt = document.getElementById('in-date').value;
+            const vl = parseFloat(document.getElementById('in-val').value);
+            const desc = document.getElementById('in-desc').value;
+            if(!dt || !vl || !desc) return alert("Preencha todos os campos");
+
+            const cat = activeType==='receita' ? 'Entrada' : document.getElementById('in-cat').value;
+            getM().t.push({ id:Date.now(), type:activeType, date:dt, val:vl, desc, cat });
             save();
             
             // Check meta
             if(activeType==='despesa' && db.config.metas[cat]) {
                 const total = getM().t.filter(x=>x.cat===cat).reduce((a,b)=>a+b.val,0);
-                if(total > db.config.metas[cat]) alert(`⚠️ Cuidado: Meta de ${cat} estourada!`);
+                if(total > db.config.metas[cat]) alert(`⚠️ Atenção: Meta de ${cat} atingida!`);
             } else alert("Salvo!");
-            
-            document.getElementById('input-valor').value='';
-            document.getElementById('input-desc').value='';
+
+            document.getElementById('in-val').value = '';
+            document.getElementById('in-desc').value = '';
             render();
         }
 
         function salvarMeta() {
-            const c = document.getElementById('meta-cat').value, v = parseFloat(document.getElementById('meta-valor').value);
+            const c = document.getElementById('meta-cat').value, v = parseFloat(document.getElementById('meta-val').value);
             if(!v) return;
-            db.config.metas[c] = v; save(); render(); alert("Meta definida!");
+            db.config.metas[c] = v; save(); render(); alert("Meta salva!");
+            document.getElementById('meta-val').value='';
         }
 
         function salvarInvestimento() {
-            const tp = document.getElementById('inv-tipo').value, vl = parseFloat(document.getElementById('inv-valor').value);
-            if(!vl && vl!==0) return;
-            let m = getM(); m.i = m.i.filter(x => x.type !== tp);
-            m.i.push({id:Date.now(), type:tp, val:vl});
+            const t = document.getElementById('inv-type').value, v = parseFloat(document.getElementById('inv-val').value);
+            if(!v && v!==0) return;
+            let m = getM();
+            m.i = m.i.filter(x=>x.type!==t); // Substitui anterior
+            m.i.push({ id:Date.now(), type:t, val:v });
             save(); render(); alert("Atualizado!");
         }
 
-        function del(id, list) {
+        function del(id, ctx) {
+            if(!confirm("Apagar?")) return;
             let m = getM();
-            if(list==='t') m.t = m.t.filter(x=>x.id!==id);
+            if(ctx==='t') m.t = m.t.filter(x=>x.id!==id);
             else m.i = m.i.filter(x=>x.id!==id);
             save(); render();
         }
 
-        // --- RENDERIZADORES ---
+        function delMeta(c) {
+            if(!confirm("Apagar meta?")) return;
+            delete db.config.metas[c]; save(); render();
+        }
+
+        // --- RENDER ---
         function render() {
             const m = getM();
-            const dObj = new Date(curMonth+'-02');
-            document.getElementById('label-mes').innerText = dObj.toLocaleDateString('pt-BR',{month:'short',year:'numeric'});
+            const dStr = new Date(curMonth+'-02');
+            document.getElementById('label-mes').innerText = dStr.toLocaleDateString('pt-BR',{month:'short',year:'numeric'});
 
-            // KPIs
+            // Calc
             const rec = m.t.filter(x=>x.type==='receita').reduce((a,b)=>a+b.val,0);
             const desp = m.t.filter(x=>x.type==='despesa').reduce((a,b)=>a+b.val,0);
-            document.getElementById('kpi-saldo').innerText = fmt(rec - desp);
-            document.getElementById('kpi-receitas').innerText = '+ '+fmt(rec);
-            document.getElementById('kpi-despesas').innerText = '- '+fmt(desp);
+            
+            // Dash
+            document.getElementById('kpi-saldo').innerText = fmt(rec-desp);
+            document.getElementById('kpi-rec').innerText = '+ '+fmt(rec);
+            document.getElementById('kpi-desp').innerText = '- '+fmt(desp);
 
             // Reserva
             const custo = desp || 1;
             const resVal = m.i.filter(x=>x.type==='Reserva').reduce((a,b)=>a+b.val,0);
+            const cob = (resVal/custo).toFixed(1);
             const pct = Math.min((resVal/(custo*6))*100, 100);
             document.getElementById('reserva-bar').style.width = pct+'%';
             document.getElementById('reserva-percent').innerText = Math.round(pct)+'%';
-            document.getElementById('reserva-msg').innerText = privacy ? 'Oculto' : `${(resVal/custo).toFixed(1)} meses garantidos`;
+            document.getElementById('reserva-msg').innerText = privacy ? 'Oculto' : `${cob} meses de custo cobertos`;
+
+            // Chart Cat
+            const cats = {};
+            m.t.filter(x=>x.type==='despesa').forEach(x => cats[x.cat] = (cats[x.cat]||0)+x.val);
+            if(chartCat) chartCat.destroy();
+            chartCat = new Chart(document.getElementById('chart-cat'), {
+                type: 'doughnut',
+                data: { labels: Object.keys(cats), datasets: [{ data: Object.values(cats), backgroundColor: ['#3b82f6','#22c55e','#eab308','#ef4444','#a855f7','#06b6d4','#64748b'], borderWidth:0 }] },
+                options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{position:'right', labels:{boxWidth:12}}} }
+            });
 
             // Listas
             renderExtrato();
-            
-            // Metas
-            const ml = document.getElementById('lista-metas'); ml.innerHTML='';
-            const cats = {}; 
-            m.t.filter(x=>x.type==='despesa').forEach(x => cats[x.cat] = (cats[x.cat]||0)+x.val);
-            
-            Object.keys(db.config.metas).forEach(c => {
-                const limit = db.config.metas[c], used = cats[c]||0, p = Math.min((used/limit)*100,100);
-                const clr = p>90 ? 'var(--danger)' : (p>70 ? 'var(--warning)' : 'var(--success)');
-                ml.innerHTML += `
-                <div class="card" style="padding:15px; margin-bottom:10px;">
-                    <div style="display:flex; justify-content:space-between; font-weight:600; font-size:0.9rem;">
-                        <span>${c}</span><span>${fmt(used)} / ${fmt(limit)}</span>
-                    </div>
-                    <div class="progress-bg"><div class="progress-fill" style="width:${p}%; background:${clr}"></div></div>
-                    <button onclick="if(confirm('Apagar meta?')){delete db.config.metas['${c}'];save();render();}" style="border:none; background:none; font-size:0.7rem; color:#888; margin-top:5px;">Excluir</button>
-                </div>`;
-            });
-
-            // Invest
-            const il = document.getElementById('lista-investimentos'); il.innerHTML='';
-            m.i.forEach(x => {
-                il.innerHTML += `<div class="transaction-item"><div class="t-info"><span class="t-desc">${x.type}</span></div><div style="text-align:right;"><span class="t-desc">${fmt(x.val)}</span><br><button onclick="del(${x.id},'i')" style="color:red; border:none; background:none;">Excluir</button></div></div>`;
-            });
-
-            // Chart
-            const ctx = document.getElementById('grafico-cat').getContext('2d');
-            if(myChart) myChart.destroy();
-            myChart = new Chart(ctx, {
-                type: 'doughnut',
-                data: { labels: Object.keys(cats), datasets: [{ data: Object.values(cats), backgroundColor: ['#3b82f6','#22c55e','#eab308','#ef4444','#a855f7','#06b6d4','#64748b'] }] },
-                options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{position:'right'}} }
-            });
+            renderMetas(cats);
+            renderInv(m.i);
         }
 
         function renderExtrato() {
-            const el = document.getElementById('lista-transacoes'); el.innerHTML='';
-            const m = getM();
+            const list = document.getElementById('lista-transacoes'); list.innerHTML='';
             const q = document.getElementById('search-bar').value.toLowerCase();
-            const arr = m.t.sort((a,b)=>new Date(b.date)-new Date(a.date)).filter(x => x.desc.toLowerCase().includes(q) || x.cat.toLowerCase().includes(q));
+            const arr = getM().t.sort((a,b)=>new Date(b.date)-new Date(a.date)).filter(x=>x.desc.toLowerCase().includes(q));
             
-            if(arr.length===0) el.innerHTML='<div style="text-align:center; padding:20px; opacity:0.5">Vazio</div>';
+            if(arr.length===0) list.innerHTML='<div style="text-align:center;padding:20px;opacity:0.5">Vazio</div>';
             
             arr.forEach(x => {
                 const d = x.date.split('-')[2];
-                const cl = x.type==='receita'?'is-income':'is-expense';
+                const cl = x.type==='receita'?'color-success':'color-danger';
                 const sig = x.type==='receita'?'+':'-';
-                el.innerHTML += `
+                list.innerHTML += `
                 <div class="transaction-item">
-                    <div class="t-info">
-                        <span class="t-cat">${d} • ${x.cat}</span>
-                        <span class="t-desc">${x.desc}</span>
-                    </div>
-                    <div style="text-align:right">
-                        <span class="t-val ${cl}">${sig} ${fmt(x.val)}</span><br>
-                        <button onclick="del(${x.id},'t')" style="color:#ccc; border:none; background:none; font-size:0.8rem;">x</button>
-                    </div>
+                    <div class="t-info"><span class="t-cat">${d} • ${x.cat}</span><span class="t-desc">${x.desc}</span></div>
+                    <div style="text-align:right"><span class="t-val ${cl}">${sig} ${fmt(x.val)}</span><br><span style="font-size:0.8rem;color:#888" onclick="del(${x.id},'t')">Excluir</span></div>
                 </div>`;
             });
         }
 
-        function renderAnual() {
-            const ctx = document.getElementById('grafico-anual').getContext('2d');
+        function renderMetas(cats) {
+            const list = document.getElementById('lista-metas'); list.innerHTML='';
+            if(Object.keys(db.config.metas).length===0) list.innerHTML='<div class="card" style="text-align:center;opacity:0.5">Sem metas</div>';
+            
+            for(let c in db.config.metas) {
+                const limit = db.config.metas[c];
+                const used = cats[c]||0;
+                const p = Math.min((used/limit)*100, 100);
+                const clr = p>90 ? 'var(--danger)' : (p>75 ? 'var(--warning)' : 'var(--success)');
+                
+                list.innerHTML += `
+                <div class="card" style="padding:15px; margin-bottom:10px;">
+                    <div style="display:flex; justify-content:space-between; font-weight:700; font-size:0.9rem; margin-bottom:5px;">
+                        <span>${c}</span><span>${fmt(used)} / ${fmt(limit)}</span>
+                    </div>
+                    <div style="background:var(--border); height:8px; border-radius:4px; overflow:hidden;">
+                        <div style="width:${p}%; background:${clr}; height:100%"></div>
+                    </div>
+                    <button onclick="delMeta('${c}')" style="border:none; background:none; color:#888; font-size:0.75rem; margin-top:5px;">Remover</button>
+                </div>`;
+            }
+        }
+
+        function renderInv(arr) {
+            const list = document.getElementById('lista-invest'); list.innerHTML='';
+            arr.forEach(x => {
+                list.innerHTML += `
+                <div class="transaction-item">
+                    <div class="t-info"><span class="t-desc">${x.type}</span></div>
+                    <div style="text-align:right"><span class="t-val">${fmt(x.val)}</span><br><span style="font-size:0.8rem;color:#888" onclick="del(${x.id},'i')">Excluir</span></div>
+                </div>`;
+            });
+        }
+
+        function renderChartAnual() {
+            const ctx = document.getElementById('chart-anual').getContext('2d');
             const lbs=[], dts=[];
             let [y, m] = curMonth.split('-').map(Number);
-            
             for(let i=5; i>=0; i--) {
-                let tm=m-i, ty=y;
-                if(tm<=0){ tm+=12; ty--; }
+                let tm=m-i, ty=y; if(tm<=0){tm+=12; ty--}
                 const k = `${ty}-${String(tm).padStart(2,'0')}`;
                 lbs.push(`${tm}/${ty}`);
                 if(db[k]) {
@@ -512,26 +571,25 @@
                     dts.push(r-d);
                 } else dts.push(0);
             }
-
             if(chartAnual) chartAnual.destroy();
             chartAnual = new Chart(ctx, {
                 type:'bar',
-                data: { labels:lbs, datasets:[{ label:'Saldo', data:dts, backgroundColor:dts.map(v=>v>=0?'#16a34a':'#dc2626'), borderRadius:4 }] },
-                options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{y:{beginAtZero:true}} }
+                data:{labels:lbs, datasets:[{label:'Saldo', data:dts, backgroundColor:dts.map(v=>v>=0?'#16a34a':'#dc2626'), borderRadius:4}]},
+                options:{responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{y:{beginAtZero:true}}}
             });
         }
 
-        // --- UTIL ---
+        // --- MANUTENÇÃO ---
         function clonarMesAnterior() {
             if(!confirm("Clonar mês anterior?")) return;
             let [y, m] = curMonth.split('-').map(Number);
-            m--; if(m<1){m=12;y--;}
-            const pk = `${y}-${String(m).padStart(2,'0')}`;
-            if(!db[pk] || !db[pk].t.length) return alert("Sem dados.");
-            db[pk].t.forEach(x => {
-                getM().t.push({ ...x, id:Date.now()+Math.random(), date: curMonth+'-'+x.date.split('-')[2], desc: x.desc+' (Cópia)' });
+            m--; if(m<1){m=12;y--}
+            const k = `${y}-${String(m).padStart(2,'0')}`;
+            if(!db[k] || !db[k].t.length) return alert("Mês anterior vazio.");
+            db[k].t.forEach(x => {
+                getM().t.push({ ...x, id:Date.now()+Math.random(), date: curMonth+'-'+x.date.split('-')[2], desc: x.desc+' (Clone)' });
             });
-            save(); render(); alert("Feito!");
+            save(); render(); alert("Clonado!");
         }
 
         function togglePrivacy() { privacy=!privacy; localStorage.setItem('privacy', privacy); updateEye(); render(); }
@@ -540,27 +598,20 @@
         function configurarSenha() {
             if(pin) {
                 if(prompt("Senha atual:")===pin) { localStorage.removeItem('pin'); pin=null; alert("Senha removida."); }
-                else alert("Erro.");
             } else {
-                const n = prompt("Nova senha (4 dígitos):");
-                if(n && n.length===4) { localStorage.setItem('pin', n); pin=n; alert("Senha definida."); }
+                const p = prompt("Novo PIN (4 dígitos):");
+                if(p && p.length===4) { localStorage.setItem('pin', p); pin=p; alert("Protegido!"); }
             }
         }
+        
         function unlockApp() {
-            if(document.getElementById('pin-input').value===pin) { document.getElementById('lock-overlay').classList.remove('active'); }
-            else document.getElementById('lock-msg').innerText = "Senha incorreta.";
+            if(document.getElementById('pin-input').value === pin) {
+                document.getElementById('lock-screen').classList.add('hidden');
+            } else {
+                document.getElementById('lock-msg').innerText = "Senha incorreta";
+            }
         }
 
-        function baixarBackup() {
-            const a = document.createElement('a');
-            a.href = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(db));
-            a.download = "backup_financas.json"; a.click();
-        }
-        function restaurarBackup(input) {
-            const fr = new FileReader();
-            fr.onload = e => { db=JSON.parse(e.target.result); if(!db.config)db.config={metas:{}}; save(); render(); alert("Ok!"); };
-            if(input.files[0]) fr.readAsText(input.files[0]);
-        }
         function toggleTheme() {
             const b = document.body;
             b.hasAttribute('data-theme') ? b.removeAttribute('data-theme') : b.setAttribute('data-theme','dark');
