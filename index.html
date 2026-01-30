@@ -4,179 +4,169 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="theme-color" content="#0f172a">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Wesley Finance AI | Enterprise v3.0</title>
+    <title>Wesley Finance AI | Ultimate v4.0</title>
     
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
-        /* === SYSTEM DESIGN V3.0 === */
+        /* === SYSTEM DESIGN V4.0 === */
         :root {
-            --bg-app: #0a0e1a;
-            --bg-card: rgba(30, 41, 59, 0.7);
-            --bg-nav: rgba(10, 14, 26, 0.95);
+            --bg-app: #0f172a;
+            --bg-surface: #1e293b;
+            --bg-elevated: #334155;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
             
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
+            --brand-primary: #6366f1;
+            --brand-glow: rgba(99, 102, 241, 0.4);
             
-            --brand: #6366f1;
-            --success: #10b981;
-            --danger: #ef4444;
-            --warning: #f59e0b;
+            --color-success: #10b981;
+            --color-danger: #ef4444;
+            --color-warning: #f59e0b;
+            --color-info: #0ea5e9;
             
-            --gradient-brand: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-            --border: rgba(255,255,255,0.08);
+            --border: 1px solid rgba(255,255,255,0.08);
+            --radius: 16px;
             
             --safe-top: env(safe-area-inset-top);
             --safe-bottom: env(safe-area-inset-bottom);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; margin: 0; padding: 0; }
         
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--bg-app);
-            color: var(--text-main);
+            color: var(--text-primary);
             height: 100dvh;
-            display: flex; flex-direction: column;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
         }
 
-        /* --- BACKGROUND FX --- */
-        body::before {
-            content: ''; position: fixed; inset: 0; z-index: -1;
-            background: radial-gradient(circle at 50% -20%, rgba(99,102,241,0.15), transparent 70%);
-        }
+        /* Scroll Customizado */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-thumb { background: var(--bg-elevated); border-radius: 4px; }
 
-        /* --- LAYOUT --- */
-        .app-container {
+        /* Container Principal */
+        .app-shell {
             flex: 1;
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
             padding: 20px;
-            padding-top: calc(var(--safe-top) + 60px); /* Espaço para Status Bar + Header */
-            padding-bottom: calc(var(--safe-bottom) + 80px); /* Espaço para Nav Bar */
+            padding-top: calc(var(--safe-top) + 20px);
+            padding-bottom: 140px;
             max-width: 600px;
             margin: 0 auto;
             width: 100%;
         }
 
-        /* --- AGENT BAR (Status IA) --- */
-        .agent-bar {
-            position: fixed; top: 0; left: 0; right: 0;
-            height: 4px; background: var(--gradient-brand);
-            z-index: 2000; box-shadow: 0 2px 10px rgba(99,102,241,0.5);
-        }
-        .agent-status {
-            position: fixed; top: calc(var(--safe-top) + 10px); right: 20px;
-            background: rgba(15,23,42,0.9); border: 1px solid var(--border);
-            padding: 6px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600;
-            color: var(--success); backdrop-filter: blur(10px); z-index: 2000;
-            display: flex; align-items: center; gap: 6px;
-        }
-        .agent-dot { width: 8px; height: 8px; background: var(--success); border-radius: 50%; animation: pulse 2s infinite; }
-
-        /* --- HEADER --- */
+        /* Header */
         .header {
-            position: fixed; top: 0; left: 0; right: 0;
-            padding: calc(var(--safe-top) + 10px) 20px 10px;
-            background: rgba(10,14,26,0.8); backdrop-filter: blur(20px);
-            z-index: 1000; border-bottom: 1px solid var(--border);
             display: flex; justify-content: space-between; align-items: center;
-            max-width: 600px; margin: 0 auto;
+            margin-bottom: 24px; padding: 0 4px;
         }
         .brand { display: flex; align-items: center; gap: 12px; }
-        .brand-icon { font-size: 1.5rem; }
+        .brand-icon { 
+            width: 44px; height: 44px; 
+            background: linear-gradient(135deg, var(--brand-primary), #8b5cf6);
+            border-radius: 12px; display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem; box-shadow: 0 0 20px var(--brand-glow);
+        }
         .brand-text h1 { font-size: 1.1rem; font-weight: 800; line-height: 1.1; }
-        .brand-text p { font-size: 0.7rem; color: var(--text-muted); font-weight: 500; }
+        .brand-text span { font-size: 0.7rem; color: var(--text-secondary); font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
 
-        /* --- CARDS --- */
+        /* Cards */
         .card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 24px;
-            padding: 24px;
-            margin-bottom: 20px;
+            background: var(--bg-surface);
+            border: var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 16px;
             position: relative;
             overflow: hidden;
         }
 
-        /* CARD PRINCIPAL (Agent Card) */
-        .agent-card {
-            background: linear-gradient(160deg, rgba(30,41,59,0.8), rgba(15,23,42,0.9));
+        /* Saldo Card (Destaque) */
+        .balance-card {
+            background: linear-gradient(160deg, rgba(30,41,59,0.9), rgba(15,23,42,0.95));
             border: 1px solid rgba(99,102,241,0.3);
         }
-        .agent-card::after {
-            content: ''; position: absolute; top: 0; right: 0; width: 150px; height: 150px;
-            background: radial-gradient(circle, rgba(99,102,241,0.2), transparent 70%);
-            pointer-events: none;
+        .balance-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, var(--brand-primary), #ec4899);
         }
 
-        .balance-label { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; letter-spacing: 1px; }
-        .balance-value { font-size: 2.5rem; font-weight: 800; margin: 8px 0 16px; letter-spacing: -1px; background: linear-gradient(to right, #fff, #a5b4fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .label { font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px; }
+        .amount-lg { font-size: 2.5rem; font-weight: 800; margin: 8px 0 16px; letter-spacing: -1px; }
         
-        .stats-row { display: flex; gap: 20px; }
-        .stat-item span { display: block; }
-        .stat-val { font-weight: 700; font-size: 1rem; }
-        .text-up { color: var(--success); }
-        .text-down { color: var(--danger); }
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .stat-box { background: rgba(255,255,255,0.03); padding: 12px; border-radius: 12px; }
+        .amount-sm { font-size: 1.1rem; font-weight: 700; display: block; margin-top: 4px; }
+        .text-green { color: var(--color-success); }
+        .text-red { color: var(--color-danger); }
 
-        /* --- ALERT (Insights) --- */
-        .alert-box {
-            background: rgba(99,102,241,0.1);
-            border-left: 4px solid var(--brand);
-            padding: 16px; border-radius: 12px;
-            display: flex; gap: 12px; align-items: start;
-            margin-bottom: 24px;
+        /* AI Insight Box */
+        .ai-box {
+            background: rgba(99, 102, 241, 0.1);
+            border-left: 3px solid var(--brand-primary);
+            padding: 16px; border-radius: 8px;
+            margin-bottom: 24px; display: flex; gap: 12px; align-items: start;
         }
-        .alert-icon { font-size: 1.2rem; }
-        .alert-content strong { display: block; margin-bottom: 4px; color: var(--brand); }
-        .alert-content p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.4; margin: 0; }
+        .ai-icon { font-size: 1.2rem; }
+        .ai-text strong { color: #a5b4fc; display: block; margin-bottom: 4px; font-size: 0.9rem; }
+        .ai-text p { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4; }
 
-        /* --- LISTA --- */
-        .tx-list { display: flex; flex-direction: column; gap: 12px; }
+        /* Lista de Transações */
+        .tx-list { display: flex; flex-direction: column; gap: 10px; }
         .tx-item {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 16px; background: rgba(255,255,255,0.03);
-            border-radius: 16px; border: 1px solid var(--border);
+            background: var(--bg-surface); padding: 16px;
+            border-radius: 16px; border: var(--border);
+            transition: transform 0.1s;
         }
-        .tx-icon { width: 40px; height: 40px; background: rgba(255,255,255,0.05); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; margin-right: 12px; }
-        .tx-info h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: 2px; }
-        .tx-info span { font-size: 0.75rem; color: var(--text-muted); }
+        .tx-item:active { transform: scale(0.98); background: var(--bg-elevated); }
+        
+        .tx-left { display: flex; align-items: center; gap: 14px; }
+        .tx-icon { 
+            width: 42px; height: 42px; background: rgba(255,255,255,0.05); 
+            border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; 
+        }
+        .tx-info h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 2px; color: var(--text-primary); }
+        .tx-info p { font-size: 0.75rem; color: var(--text-secondary); }
         .tx-val { font-weight: 700; font-size: 1rem; }
 
-        /* --- FORMS (View Add) --- */
+        /* Formulários e Inputs */
         .input-group { margin-bottom: 20px; }
-        .input-label { display: block; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 8px; font-weight: 600; text-transform: uppercase; }
         .input-field {
-            width: 100%; height: 56px; background: rgba(255,255,255,0.03);
-            border: 1px solid var(--border); border-radius: 16px;
-            padding: 0 16px; color: white; font-size: 1rem;
+            width: 100%; height: 56px; background: var(--bg-surface);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 16px;
+            padding: 0 16px; color: white; font-size: 1rem; font-family: 'Inter';
             transition: border-color 0.3s;
         }
-        .input-field:focus { border-color: var(--brand); }
+        .input-field:focus { border-color: var(--brand-primary); }
 
-        .type-toggle { display: flex; background: rgba(255,255,255,0.05); padding: 4px; border-radius: 16px; margin-bottom: 24px; }
-        .type-btn { flex: 1; padding: 12px; text-align: center; border-radius: 12px; font-weight: 600; color: var(--text-muted); cursor: pointer; transition: 0.2s; }
-        .type-btn.active.rec { background: var(--success); color: white; }
-        .type-btn.active.desp { background: var(--danger); color: white; }
+        .type-tabs { display: flex; background: var(--bg-surface); padding: 4px; border-radius: 16px; margin-bottom: 24px; border: var(--border); }
+        .tab { flex: 1; padding: 12px; text-align: center; font-weight: 600; color: var(--text-secondary); border-radius: 12px; cursor: pointer; transition: 0.2s; }
+        
+        /* CORES CORRIGIDAS PARA BOTÕES ATIVOS */
+        .tab.active.rec { background: var(--color-success); color: white; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); }
+        .tab.active.desp { background: var(--color-danger); color: white; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3); }
 
         .btn-primary {
-            width: 100%; height: 56px; background: var(--gradient-brand);
+            width: 100%; height: 56px; background: linear-gradient(135deg, var(--brand-primary), #4f46e5);
             border: none; border-radius: 16px; color: white; font-weight: 700; font-size: 1rem;
-            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
-            box-shadow: 0 4px 20px rgba(99,102,241,0.4);
+            cursor: pointer; box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
+            display: flex; align-items: center; justify-content: center; gap: 8px;
         }
         .btn-primary:active { transform: scale(0.98); }
 
-        /* --- NAV BAR --- */
-        .nav-bar {
+        /* Menu Inferior (Dock) */
+        .nav-dock {
             position: fixed; bottom: 0; left: 0; right: 0;
-            background: var(--bg-nav); backdrop-filter: blur(20px);
-            border-top: 1px solid var(--border);
+            background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(20px);
+            border-top: var(--border);
             display: grid; grid-template-columns: repeat(5, 1fr);
             padding-bottom: max(10px, env(safe-area-inset-bottom));
             padding-top: 10px; z-index: 1000;
@@ -184,339 +174,386 @@
         .nav-item {
             background: none; border: none;
             display: flex; flex-direction: column; align-items: center; gap: 4px;
-            color: var(--text-muted); cursor: pointer;
+            color: var(--text-secondary); cursor: pointer; padding: 4px 0;
         }
-        .nav-item.active { color: var(--brand); }
+        .nav-item.active { color: var(--brand-primary); }
         .nav-icon { font-size: 1.4rem; }
-        
-        .nav-fab {
-            width: 56px; height: 56px; background: var(--gradient-brand);
+        .nav-label { font-size: 0.65rem; font-weight: 600; }
+
+        .fab {
+            width: 56px; height: 56px; background: linear-gradient(135deg, #10b981, #059669);
             border-radius: 50%; border: 4px solid var(--bg-app);
             display: flex; align-items: center; justify-content: center;
-            color: white; font-size: 2rem; margin-top: -28px;
-            box-shadow: 0 0 20px rgba(99,102,241,0.5);
+            color: white; font-size: 2rem; margin-top: -30px;
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.4); cursor: pointer;
         }
 
-        /* --- UTILS --- */
+        /* Utilitários */
         .hidden { display: none !important; }
         .fade-in { animation: fadeIn 0.3s ease-out; }
         @keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
-        @keyframes pulse { 0%{opacity:1} 50%{opacity:0.5} 100%{opacity:1} }
     </style>
 </head>
 <body>
 
-    <div class="agent-bar"></div>
-    <div class="agent-status"><div class="agent-dot"></div>IA Ativa</div>
-
-    <div class="header">
-        <div class="brand">
-            <div class="brand-icon">🤖</div>
-            <div class="brand-text">
-                <h1>Wesley Finance</h1>
-                <p>Enterprise AI v3.0</p>
-            </div>
-        </div>
-        <div style="display:flex; gap:10px;">
-            <button onclick="App.reset()" style="background:none; border:none; font-size:1.2rem;">⚠️</button>
-        </div>
-    </div>
-
-    <div class="app-container">
+    <div class="app-shell">
         
+        <header class="header">
+            <div class="brand">
+                <div class="brand-icon">🧠</div>
+                <div class="brand-text">
+                    <h1>Wesley AI</h1>
+                    <span>Finance Pro v4.0</span>
+                </div>
+            </div>
+            <button onclick="App.resetData()" style="background:none; border:none; color:var(--color-danger); font-size:1.2rem;">⚠️</button>
+        </header>
+
         <div id="view-dash" class="fade-in">
-            <div class="card agent-card">
-                <div class="balance-label">Fluxo de Caixa (Jan 2026)</div>
-                <div class="balance-value" id="dash-saldo">R$ 0,00</div>
-                <div class="stats-row">
-                    <div class="stat-item">
-                        <span class="stat-val text-up" id="dash-rec">R$ 0,00</span>
-                        <span class="balance-label" style="font-size:0.7rem;">Entradas</span>
+            <div class="card balance-card">
+                <div class="label">Saldo Atual</div>
+                <div class="amount-lg" id="dash-saldo">R$ ...</div>
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <span class="label">Entradas</span>
+                        <span class="amount-sm text-green" id="dash-inc">...</span>
                     </div>
-                    <div class="stat-item">
-                        <span class="stat-val text-down" id="dash-desp">R$ 0,00</span>
-                        <span class="balance-label" style="font-size:0.7rem;">Saídas</span>
+                    <div class="stat-box">
+                        <span class="label">Saídas</span>
+                        <span class="amount-sm text-red" id="dash-exp">...</span>
                     </div>
                 </div>
             </div>
 
-            <div class="alert-box" id="ai-insight-box">
-                <div class="alert-icon">💡</div>
-                <div class="alert-content" id="ai-insight-content">
-                    <strong>Analisando dados...</strong>
-                    <p>O agente está processando suas transações.</p>
+            <div class="ai-box">
+                <div class="ai-icon">🤖</div>
+                <div class="ai-text" id="ai-insight-text">
+                    <strong>Analisando seus hábitos...</strong>
+                    <p>Processando transações para gerar dicas personalizadas.</p>
                 </div>
             </div>
 
             <div class="card">
-                <div class="balance-label">Tendência Financeira</div>
-                <div style="position: relative; height: 200px; width: 100%;">
-                    <canvas id="mainChart"></canvas>
+                <div class="label" style="margin-bottom: 16px;">Raio-X de Gastos</div>
+                <div style="position:relative; height:200px; width:100%">
+                    <canvas id="chart-main"></canvas>
                 </div>
             </div>
 
             <div>
-                <h3 style="margin-bottom: 16px; font-size: 1.1rem;">Atividade Recente</h3>
-                <div id="tx-list" class="tx-list"></div>
+                <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
+                    <h3 style="font-size:1.1rem; font-weight:700;">Recentes</h3>
+                    <button onclick="UI.go('list')" style="background:none; border:none; color:var(--brand-primary); font-weight:600; font-size:0.8rem;">Ver tudo</button>
+                </div>
+                <div id="tx-list-recent" class="tx-list"></div>
             </div>
         </div>
 
-        <div id="view-add" class="fade-in hidden">
-            <h2 style="margin-bottom: 20px;">Novo Lançamento</h2>
+        <div id="view-add" class="hidden fade-in">
+            <h2 style="margin-bottom:24px; text-align:center;">Nova Transação</h2>
             
-            <div class="type-toggle">
-                <div class="type-btn active rec" id="btn-rec" onclick="UI.setType('receita')">Receita</div>
-                <div class="type-btn" id="btn-desp" onclick="UI.setType('despesa')">Despesa</div>
+            <div class="type-tabs">
+                <div class="tab active rec" id="tab-rec" onclick="UI.setTyp('receita')">Entrada</div>
+                <div class="tab" id="tab-desp" onclick="UI.setTyp('despesa')">Saída</div>
             </div>
 
             <form id="form-add">
                 <div class="input-group">
-                    <label class="input-label">Valor</label>
-                    <input type="number" id="in-val" class="input-field" step="0.01" placeholder="0,00" required>
+                    <label class="label">Valor (R$)</label>
+                    <input type="number" id="in-val" class="input-field" step="0.01" placeholder="0,00" required inputmode="decimal">
                 </div>
                 <div class="input-group">
-                    <label class="input-label">Descrição (IA Categoriza)</label>
-                    <input type="text" id="in-desc" class="input-field" placeholder="Ex: Uber, Mercado, Salário..." required>
+                    <label class="label">Descrição (IA Categoriza Automático)</label>
+                    <input type="text" id="in-desc" class="input-field" placeholder="Ex: Jantar no Sushi, Uber, Oxxo..." required autocomplete="off">
                 </div>
                 <div class="input-group">
-                    <label class="input-label">Data</label>
+                    <label class="label">Data</label>
                     <input type="date" id="in-date" class="input-field" required>
                 </div>
-                <button type="submit" class="btn-primary">Confirmar</button>
+                <button type="submit" class="btn-primary">
+                    <span>✨ Confirmar Lançamento</span>
+                </button>
             </form>
         </div>
 
-        <div id="view-list" class="fade-in hidden">
-            <h2 style="margin-bottom: 20px;">Histórico Completo</h2>
+        <div id="view-list" class="hidden fade-in">
+            <h2 style="margin-bottom:20px;">Histórico Completo</h2>
+            <div class="input-group">
+                <input type="text" id="search" class="input-field" placeholder="🔍 Buscar..." onkeyup="UI.renderList()">
+            </div>
             <div id="tx-list-full" class="tx-list"></div>
         </div>
 
     </div>
 
-    <nav class="nav-bar">
+    <nav class="nav-dock">
         <button class="nav-item active" onclick="UI.go('dash', this)">
-            <span class="nav-icon">📊</span>
-            <span style="font-size:0.6rem;">Dash</span>
+            <span class="nav-icon">📊</span><span class="nav-label">Home</span>
         </button>
         <button class="nav-item" onclick="UI.go('list', this)">
-            <span class="nav-icon">📑</span>
-            <span style="font-size:0.6rem;">Extrato</span>
+            <span class="nav-icon">📑</span><span class="nav-label">Extrato</span>
         </button>
-        
-        <div class="nav-fab" onclick="UI.go('add')">+</div>
-        
-        <button class="nav-item" onclick="alert('Funcionalidade em desenvolvimento')">
-            <span class="nav-icon">🎯</span>
-            <span style="font-size:0.6rem;">Metas</span>
+        <div class="fab" onclick="UI.go('add')">+</div>
+        <button class="nav-item" onclick="alert('Em breve!')">
+            <span class="nav-icon">🎯</span><span class="nav-label">Metas</span>
         </button>
-        <button class="nav-item" onclick="alert('Funcionalidade em desenvolvimento')">
-            <span class="nav-icon">⚙️</span>
-            <span style="font-size:0.6rem;">Config</span>
+        <button class="nav-item" onclick="alert('Em breve!')">
+            <span class="nav-icon">📈</span><span class="nav-label">Invest</span>
         </button>
     </nav>
 
     <script>
-        // --- 1. DADOS PADRÃO (BACKUP JANEIRO 2026) ---
-        const SEED_DATA = {
-            "transacoes": [
-                {id: 1, tipo: 'receita', data: '2026-01-05', valor: 1488.25, desc: 'Pagamento Localiza', cat: 'Salário'},
-                {id: 2, tipo: 'despesa', data: '2026-01-15', valor: 323.80, desc: 'Nubank Negociação', cat: 'Bancos'},
-                {id: 3, tipo: 'despesa', data: '2026-01-15', valor: 35.00, desc: 'Vivo Móvel', cat: 'Moradia'},
-                {id: 4, tipo: 'despesa', data: '2026-01-15', valor: 93.06, desc: 'Vivo Fixo', cat: 'Moradia'},
-                {id: 5, tipo: 'despesa', data: '2026-01-15', valor: 313.31, desc: 'Itaú Cartão', cat: 'Bancos'},
-                {id: 6, tipo: 'despesa', data: '2026-01-16', valor: 123.68, desc: 'Supermercado', cat: 'Alimentação'},
-                {id: 7, tipo: 'despesa', data: '2026-01-22', valor: 41.56, desc: 'Despedida Giselle', cat: 'Lazer'},
-                {id: 8, tipo: 'despesa', data: '2026-01-15', valor: 100.00, desc: 'Recarga Bilhete', cat: 'Transporte'}
-            ]
-        };
+        /* === 1. DADOS ORIGINAIS (BACKUP) === */
+        const SEED_JSON = {"transacoes":[{"id":1,"tipo":"receita","data":"2026-01-05","valor":1488.25,"desc":"Pagamento Localiza","cat":"Salário"},{"id":2,"tipo":"despesa","data":"2026-01-15","valor":323.8,"desc":"Nubank Negociação","cat":"Bancos"},{"id":3,"tipo":"despesa","data":"2026-01-15","valor":35,"desc":"Vivo Móvel","cat":"Moradia"},{"id":4,"tipo":"despesa","data":"2026-01-15","valor":93.06,"desc":"Vivo Fixo","cat":"Moradia"},{"id":5,"tipo":"despesa","data":"2026-01-15","valor":100,"desc":"Devolução Irene","cat":"Outros"},{"id":6,"tipo":"despesa","data":"2026-01-15","valor":313.31,"desc":"Itaú Cartão","cat":"Bancos"},{"id":7,"tipo":"despesa","data":"2026-01-15","valor":39.99,"desc":"Jantar","cat":"Alimentação"},{"id":8,"tipo":"despesa","data":"2026-01-16","valor":123.68,"desc":"Supermercado","cat":"Alimentação"},{"id":9,"tipo":"despesa","data":"2026-01-22","valor":41.56,"desc":"Despedida Giselle","cat":"Lazer"},{"id":10,"tipo":"despesa","data":"2026-01-19","valor":53.17,"desc":"Almoço Shimatzu","cat":"Alimentação"},{"id":11,"tipo":"despesa","data":"2026-01-21","valor":25.4,"desc":"Almoço Shimatzu","cat":"Alimentação"},{"id":12,"tipo":"despesa","data":"2026-01-15","valor":100,"desc":"Recarga Bilhete","cat":"Transporte"},{"id":13,"tipo":"despesa","data":"2026-01-05","valor":1111.84,"desc":"Itaú Limite","cat":"Bancos"}]};
 
-        // --- 2. CÉREBRO IA (CLASSIFICAÇÃO) ---
-        const AgentBrain = {
+        /* === 2. CÉREBRO DE IA (HYPER-CATEGORIZATION) === */
+        const Brain = {
             rules: {
-                'Salário': ['salário', 'pagamento', 'localiza', 'holerite'],
-                'Alimentação': ['mercado', 'ifood', 'restaurante', 'almoço', 'jantar', 'shimatzu'],
-                'Transporte': ['uber', '99', 'posto', 'gasolina', 'recarga', 'bilhete'],
-                'Moradia': ['vivo', 'claro', 'net', 'luz', 'agua', 'aluguel'],
-                'Bancos': ['nubank', 'itaú', 'santander', 'taxa'],
-                'Lazer': ['netflix', 'spotify', 'cinema', 'bar', 'despedida']
+                'Alimentação': ['mercado', 'ifood', 'rappi', 'restaurante', 'almoço', 'jantar', 'café', 'padaria', 'pão', 'leite', 'carrefour', 'extra', 'dia', 'oxxo', 'assai', 'atacadão', 'pizza', 'sushi', 'hamburguer', 'bk', 'mcdonalds', 'burguer', 'subway', 'sorvete', 'açaí', 'doce', 'bolo', 'churrasco', 'espeto', 'bar', 'cerveja', 'comida', 'lanche', 'food', 'shimatzu'],
+                'Transporte': ['uber', '99', 'taxi', 'pop', 'indrive', 'posto', 'gasolina', 'etanol', 'combustível', 'abastecimento', 'ônibus', 'metro', 'trem', 'bilhete', 'recarga', 'estacionamento', 'ipva', 'pedágio', 'sem parar', 'oficina', 'mecânico', 'pneu'],
+                'Moradia': ['aluguel', 'condomínio', 'luz', 'energia', 'enel', 'água', 'sabesp', 'internet', 'claro', 'vivo', 'tim', 'oi', 'net', 'gás', 'iptu', 'limpeza', 'faxina', 'casa', 'manutenção'],
+                'Saúde': ['farmácia', 'droga', 'remédio', 'médico', 'consulta', 'exame', 'laboratório', 'dentista', 'psicólogo', 'terapia', 'academia', 'smartfit', 'bluefit', 'suplemento', 'creatina', 'whey'],
+                'Lazer': ['netflix', 'spotify', 'prime', 'hbo', 'disney', 'cinema', 'ingresso', 'show', 'teatro', 'jogo', 'steam', 'playstation', 'xbox', 'clube', 'viagem', 'hotel', 'airbnb', 'passeio'],
+                'Compras': ['shopee', 'amazon', 'mercado livre', 'shein', 'magalu', 'casas bahia', 'ponto frio', 'roupa', 'tênis', 'sapato', 'eletrônico', 'celular', 'acessório', 'presente', 'loja'],
+                'Educação': ['curso', 'faculdade', 'escola', 'livro', 'material', 'papelaria', 'udemy', 'alura', 'idioma', 'inglês'],
+                'Bancos': ['nubank', 'itaú', 'bradesco', 'santander', 'inter', 'c6', 'taxa', 'tarifa', 'anuidade', 'juros', 'emprestimo', 'financiamento', 'fatura'],
+                'Pets': ['pet', 'ração', 'banho', 'tosa', 'veterinário', 'cachorro', 'gato'],
+                'Salário': ['salário', 'pagamento', 'holerite', 'adiantamento', '13º', 'férias', 'bônus', 'localiza', 'empresa', 'serviço', 'freela', 'extra']
             },
-            predict(desc) {
-                const d = desc.toLowerCase();
+            
+            predict(text) {
+                const t = text.toLowerCase();
                 for (const [cat, keys] of Object.entries(this.rules)) {
-                    if (keys.some(k => d.includes(k))) return cat;
+                    if (keys.some(k => t.includes(k))) return cat;
                 }
                 return 'Outros';
             },
+
             getIcon(cat) {
-                const icons = {'Salário':'💰', 'Alimentação':'🍔', 'Transporte':'🚗', 'Moradia':'🏠', 'Bancos':'🏦', 'Lazer':'🎉'};
-                return icons[cat] || '📝';
+                const map = {'Alimentação':'🍔', 'Transporte':'🚗', 'Moradia':'🏠', 'Saúde':'💊', 'Lazer':'🎉', 'Compras':'🛍️', 'Educação':'📚', 'Bancos':'🏦', 'Pets':'🐾', 'Salário':'💰', 'Outros':'📝'};
+                return map[cat] || '📝';
             },
-            generateInsight(txs) {
-                const totalDesp = txs.filter(t=>t.tipo==='despesa').reduce((a,b)=>a+b.valor,0);
-                const maiorGasto = txs.filter(t=>t.tipo==='despesa').sort((a,b)=>b.valor-a.valor)[0];
+
+            analyze(txs) {
+                const desp = txs.filter(t => t.tipo === 'despesa');
+                if (desp.length === 0) return { title: "Olá!", msg: "Comece adicionando seus gastos." };
                 
-                if(!maiorGasto) return "Sem dados suficientes para análise.";
-                
-                return `<strong>Alerta de Orçamento:</strong> Seu maior gasto recente foi 
-                        <span style="color:var(--danger)">${maiorGasto.desc}</span> 
-                        (${((maiorGasto.valor/totalDesp)*100).toFixed(0)}% das despesas). 
-                        Fique atento aos gastos com ${maiorGasto.cat}.`;
+                // Top Categoria
+                const cats = {};
+                desp.forEach(t => cats[t.cat] = (cats[t.cat] || 0) + t.valor);
+                const topCat = Object.keys(cats).sort((a,b) => cats[b] - cats[a])[0];
+                const total = desp.reduce((a,b) => a + b.valor, 0);
+                const pct = Math.round((cats[topCat] / total) * 100);
+
+                return {
+                    title: `Atenção aos gastos com ${topCat}!`,
+                    msg: `Você gastou <strong>${pct}%</strong> do seu orçamento nesta categoria. Tente economizar aqui.`
+                };
             }
         };
 
-        // --- 3. DATA STORE ---
-        const Store = {
-            getKey: () => JSON.parse(localStorage.getItem('wesley_ent_v3')) || SEED_DATA,
-            setKey: (data) => localStorage.setItem('wesley_ent_v3', JSON.stringify(data)),
-            add: (tx) => {
-                const data = Store.getKey();
-                data.transacoes.unshift(tx);
-                Store.setKey(data);
+        // --- 3. DATA MANAGER ---
+        const DB = {
+            key: 'wesley_v4_pro',
+            data: [],
+            
+            init() {
+                const stored = localStorage.getItem(this.key);
+                if (stored) {
+                    this.data = JSON.parse(stored);
+                } else {
+                    // Carrega dados do JSON Semente se for a primeira vez
+                    this.data = SEED_JSON.transacoes;
+                    this.save();
+                }
             },
-            reset: () => {
-                localStorage.removeItem('wesley_ent_v3');
-                location.reload();
+            
+            save() {
+                localStorage.setItem(this.key, JSON.stringify(this.data));
+                UI.update();
+            },
+            
+            add(tx) {
+                this.data.unshift(tx);
+                this.save();
+            },
+            
+            delete(id) {
+                if(confirm("Remover item?")) {
+                    this.data = this.data.filter(t => t.id !== id);
+                    this.save();
+                }
+            },
+
+            reset() {
+                if(confirm("ATENÇÃO: Restaurar dados originais?")) {
+                    localStorage.removeItem(this.key);
+                    location.reload();
+                }
             }
         };
 
         // --- 4. UI CONTROLLER ---
         const UI = {
-            currentType: 'receita',
+            type: 'receita',
             chart: null,
 
             init() {
-                // Fix Data Hoje (Timezone Brasil)
+                // Setup Data
                 const now = new Date();
-                const off = now.getTimezoneOffset() * 60000;
-                document.getElementById('in-date').value = new Date(now - off).toISOString().split('T')[0];
+                const offset = now.getTimezoneOffset() * 60000;
+                document.getElementById('in-date').value = new Date(now - offset).toISOString().split('T')[0];
                 
-                this.render();
-                this.setupForm();
-            },
-
-            formatMoney: (v) => v.toLocaleString('pt-BR', {style:'currency', currency:'BRL'}),
-
-            go(viewId, btn) {
-                document.querySelectorAll('#view-dash, #view-add, #view-list').forEach(el => el.classList.add('hidden'));
-                document.getElementById('view-'+viewId).classList.remove('hidden');
-                if(btn) {
-                    document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                }
-                if(viewId === 'dash') this.render();
-                window.scrollTo(0,0);
-            },
-
-            setType(t) {
-                this.currentType = t;
-                const r = document.getElementById('btn-rec'), d = document.getElementById('btn-desp');
-                if(t==='receita') { r.classList.add('active', 'rec'); d.classList.remove('active', 'desp'); }
-                else { r.classList.remove('active', 'rec'); d.classList.add('active', 'desp'); }
-            },
-
-            setupForm() {
-                document.getElementById('form-add').addEventListener('submit', (e) => {
+                // Form Listener
+                document.getElementById('form-add').addEventListener('submit', e => {
                     e.preventDefault();
-                    const val = parseFloat(document.getElementById('in-val').value);
-                    const desc = document.getElementById('in-desc').value;
-                    const date = document.getElementById('in-date').value;
-                    
-                    const cat = AgentBrain.predict(desc);
-                    
-                    const tx = {
-                        id: Date.now(),
-                        tipo: this.currentType,
-                        valor: val,
-                        desc: desc,
-                        data: date,
-                        cat: cat
-                    };
-                    
-                    Store.add(tx);
-                    alert(`✅ Salvo! IA categorizou como: ${cat}`);
-                    document.getElementById('form-add').reset();
-                    this.go('dash');
+                    this.submit();
                 });
+
+                this.update();
             },
 
-            render() {
-                const data = Store.getKey();
-                const txs = data.transacoes;
-
-                // Totals
-                const rec = txs.filter(t=>t.tipo==='receita').reduce((a,b)=>a+b.valor,0);
-                const desp = txs.filter(t=>t.tipo==='despesa').reduce((a,b)=>a+b.valor,0);
+            update() {
+                const txs = DB.data;
                 
-                document.getElementById('dash-saldo').textContent = this.formatMoney(rec - desp);
-                document.getElementById('dash-rec').textContent = '+ ' + this.formatMoney(rec);
-                document.getElementById('dash-desp').textContent = '- ' + this.formatMoney(desp);
+                // 1. Totais
+                const inc = txs.filter(t=>t.tipo==='receita').reduce((a,b)=>a+b.valor,0);
+                const exp = txs.filter(t=>t.tipo==='despesa').reduce((a,b)=>a+b.valor,0);
+                
+                document.getElementById('dash-saldo').textContent = this.fmt(inc - exp);
+                document.getElementById('dash-inc').textContent = this.fmt(inc);
+                document.getElementById('dash-exp').textContent = this.fmt(exp);
 
-                // Insight
-                document.getElementById('ai-insight-content').innerHTML = AgentBrain.generateInsight(txs);
+                // 2. Listas
+                this.renderList('tx-list-recent', txs.slice(0, 5));
+                this.renderList('tx-list-full', txs);
 
-                // List
-                const listHtml = txs.slice(0,5).map(t => this.createItem(t)).join('');
-                document.getElementById('tx-list').innerHTML = listHtml;
-                document.getElementById('tx-list-full').innerHTML = txs.map(t => this.createItem(t)).join('');
+                // 3. IA Insight
+                const insight = Brain.analyze(txs);
+                document.getElementById('ai-insight-text').innerHTML = `<strong>${insight.title}</strong><p>${insight.msg}</p>`;
 
-                // Chart
+                // 4. Gráfico
                 this.renderChart(txs);
             },
 
-            createItem(t) {
-                const icon = AgentBrain.getIcon(t.cat);
-                const color = t.tipo==='receita' ? 'var(--success)' : 'var(--danger)';
-                const sign = t.tipo==='receita' ? '+' : '-';
-                const date = t.data.split('-').reverse().slice(0,2).join('/');
+            renderList(id, list) {
+                const el = document.getElementById(id);
+                if (!el) return;
                 
-                return `
-                <div class="tx-item">
-                    <div style="display:flex; align-items:center;">
-                        <div class="tx-icon">${icon}</div>
-                        <div class="tx-info">
-                            <h4>${t.desc}</h4>
-                            <span>${date} • ${t.cat}</span>
+                // Filtro de busca se for a lista completa
+                if (id === 'tx-list-full') {
+                    const term = document.getElementById('search').value.toLowerCase();
+                    list = list.filter(t => t.desc.toLowerCase().includes(term));
+                }
+
+                el.innerHTML = list.map(t => {
+                    const icon = Brain.getIcon(t.cat);
+                    const color = t.tipo === 'receita' ? 'var(--color-success)' : 'var(--color-danger)';
+                    const sign = t.tipo === 'receita' ? '+' : '-';
+                    const date = t.data.split('-').reverse().slice(0,2).join('/');
+                    
+                    return `
+                    <div class="tx-item" onclick="DB.delete(${t.id})">
+                        <div class="tx-left">
+                            <div class="tx-icon">${icon}</div>
+                            <div class="tx-info">
+                                <h3>${t.desc}</h3>
+                                <p>${date} • ${t.cat}</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="tx-val" style="color:${color}">${sign} ${this.formatMoney(t.valor)}</div>
-                </div>`;
+                        <div class="tx-val" style="color:${color}">${sign} ${this.fmt(t.valor)}</div>
+                    </div>`;
+                }).join('');
             },
 
             renderChart(txs) {
-                const ctx = document.getElementById('mainChart').getContext('2d');
+                const ctx = document.getElementById('chart-main');
+                if(!ctx) return;
+                
                 if(this.chart) this.chart.destroy();
                 
                 const cats = {};
-                txs.filter(t=>t.tipo==='despesa').forEach(t => {
-                    cats[t.cat] = (cats[t.cat] || 0) + t.valor;
-                });
-
+                txs.filter(t=>t.tipo==='despesa').forEach(t => cats[t.cat] = (cats[t.cat] || 0) + t.valor);
+                
                 this.chart = new Chart(ctx, {
                     type: 'doughnut',
                     data: {
                         labels: Object.keys(cats),
                         datasets: [{
                             data: Object.values(cats),
-                            backgroundColor: ['#6366f1', '#10b981', '#f59e0b', '#ef4444', '#06b6d4'],
+                            backgroundColor: ['#6366f1', '#10b981', '#f59e0b', '#ef4444', '#0ea5e9', '#ec4899', '#8b5cf6'],
                             borderWidth: 0
                         }]
                     },
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
-                        plugins: { legend: { position: 'right', labels: { color: '#94a3b8' } } }
+                        plugins: { legend: { position: 'right', labels: { color: '#94a3b8', boxWidth: 10 } } }
                     }
                 });
-            }
+            },
+
+            submit() {
+                const val = parseFloat(document.getElementById('in-val').value);
+                const desc = document.getElementById('in-desc').value;
+                const date = document.getElementById('in-date').value;
+                
+                if(!val || !desc) return;
+
+                const cat = Brain.predict(desc);
+                
+                DB.add({
+                    id: Date.now(),
+                    tipo: this.type,
+                    valor: val,
+                    desc: desc,
+                    data: date,
+                    cat: cat
+                });
+
+                alert(`✅ Classificado como: ${cat}`);
+                
+                document.getElementById('in-val').value = '';
+                document.getElementById('in-desc').value = '';
+                this.go('dash');
+            },
+
+            setTyp(t) {
+                this.type = t;
+                const r = document.getElementById('tab-rec');
+                const d = document.getElementById('tab-desp');
+                
+                if(t === 'receita') {
+                    r.className = 'tab active rec';
+                    d.className = 'tab';
+                } else {
+                    r.className = 'tab';
+                    d.className = 'tab active desp';
+                }
+            },
+
+            go(page, btn) {
+                document.querySelectorAll('#view-dash, #view-add, #view-list').forEach(e => e.classList.add('hidden'));
+                document.getElementById('view-'+page).classList.remove('hidden');
+                
+                if(btn) {
+                    document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                }
+                
+                window.scrollTo(0,0);
+                if(page === 'list') this.renderList('tx-list-full', DB.data); // Force refresh list
+            },
+
+            fmt(v) { return v.toLocaleString('pt-BR', {style:'currency', currency:'BRL'}); }
         };
 
-        const App = {
-            reset: () => {
-                if(confirm("Reiniciar dados para o padrão de Janeiro/2026?")) Store.reset();
-            }
-        };
+        const App = { reset: () => DB.reset() };
 
-        window.onload = () => UI.init();
+        // Start
+        DB.init();
+        UI.init();
+
     </script>
 </body>
 </html>
