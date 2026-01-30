@@ -11,14 +11,13 @@
         :root {
             --bg: #f8fafc; --card: #ffffff; --text: #0f172a;
             --accent: #2563eb; 
-            --success: #059669; /* Verde */
+            --success: #059669; /* Verde Esmeralda */
             --danger: #881337;  /* Vinho */
             --warning: #ca8a04;
             --border: #e2e8f0; --radius: 18px;
         }
         [data-theme="dark"] {
-            --bg: #000000; 
-            --card: #1c1c1e; --text: #f2f2f7; --border: #2c2c2e;
+            --bg: #000000; --card: #1c1c1e; --text: #f2f2f7; --border: #2c2c2e;
         }
         
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; outline: none; }
@@ -29,8 +28,7 @@
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
             background: var(--bg); color: var(--text); 
             display: flex; flex-direction: column;
-            overflow-y: auto; 
-            -webkit-overflow-scrolling: touch;
+            overflow-y: auto; -webkit-overflow-scrolling: touch;
         }
         
         .container { 
@@ -67,8 +65,7 @@
         input, select { 
             width: 100%; padding: 0 16px; height: 50px;
             border: 1px solid var(--border); border-radius: 12px; 
-            font-size: 17px; 
-            background: var(--bg); color: var(--text); appearance: none; 
+            font-size: 17px; background: var(--bg); color: var(--text); appearance: none; 
         }
         input:focus, select:focus { border-color: var(--accent); }
 
@@ -100,7 +97,7 @@
         .color-success { color: var(--success) !important; }
         .color-danger { color: var(--danger) !important; }
 
-        /* --- MENU INFERIOR --- */
+        /* MENU INFERIOR */
         .bottom-nav { 
             position: fixed; bottom: 0; left: 0; width: 100%; 
             background: rgba(255,255,255,0.96); 
@@ -121,30 +118,22 @@
             margin: 0; cursor: pointer;
         }
         .nav-icon.active { color: var(--accent); opacity: 1; }
-        
         .nav-emoji { font-size: 1.4rem; line-height: 1; }
         .nav-label { font-size: 0.6rem; font-weight: 600; letter-spacing: -0.2px; }
 
-        /* --- ÍCONE DE CALENDÁRIO DINÂMICO --- */
+        /* CALENDARIO ICONE */
         .live-calendar {
-            width: 24px; height: 24px;
-            background: var(--bg);
-            border: 1.5px solid currentColor;
-            border-radius: 5px;
-            position: relative;
-            display: flex; align-items: center; justify-content: center;
-            margin-bottom: 1px;
+            width: 24px; height: 24px; background: var(--bg);
+            border: 1.5px solid currentColor; border-radius: 5px;
+            position: relative; display: flex; align-items: center; justify-content: center; margin-bottom: 1px;
         }
         .live-calendar::before {
             content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px;
             background: var(--danger); border-radius: 3px 3px 0 0;
         }
-        #cal-day-num {
-            font-size: 11px; font-weight: 800; margin-top: 5px;
-            font-family: -apple-system, sans-serif;
-        }
+        #cal-day-num { font-size: 11px; font-weight: 800; margin-top: 5px; font-family: -apple-system, sans-serif; }
 
-        /* Utilitários */
+        /* UTIL */
         .chart-wrapper { position: relative; height: 250px; width: 100%; }
         .progress-bg { background: var(--border); height: 10px; border-radius: 5px; overflow: hidden; margin-top: 10px; }
         .progress-fill { height: 100%; transition: width 0.5s; border-radius: 5px; }
@@ -274,18 +263,12 @@
         <button class="nav-icon active" onclick="navTo('view-dash', this)"><span class="nav-emoji">📊</span><span class="nav-label">Dash</span></button>
         <button class="nav-icon" onclick="navTo('view-extrato', this)"><span class="nav-emoji">📑</span><span class="nav-label">Extrato</span></button>
         <button class="nav-icon" onclick="navTo('view-novo', this)"><span class="nav-emoji">➕</span><span class="nav-label">Novo</span></button>
-        
-        <button class="nav-icon" onclick="navTo('view-anual', this)">
-            <div class="live-calendar"><span id="cal-day-num">--</span></div>
-            <span class="nav-label">Anual</span>
-        </button>
-        
+        <button class="nav-icon" onclick="navTo('view-anual', this)"><div class="live-calendar"><span id="cal-day-num">--</span></div><span class="nav-label">Anual</span></button>
         <button class="nav-icon" onclick="navTo('view-metas', this)"><span class="nav-emoji">🎯</span><span class="nav-label">Metas</span></button>
         <button class="nav-icon" onclick="navTo('view-invest', this)"><span class="nav-emoji">📈</span><span class="nav-label">Inv.</span></button>
     </nav>
 
     <script>
-        // --- DADOS DO BACKUP (JÁ INCLUÍDOS) ---
         const DADOS_INICIAIS = {
             "2026-01": {
                 "transacoes": [
@@ -310,7 +293,7 @@
         const CATS = ["🏠 Moradia", "🍔 Alimentação", "🚗 Transporte", "📱 Celular/Net", "🎬 Streaming", "🏦 Banco", "💊 Saúde", "📚 Educação", "🎉 Lazer", "🛍️ Compras", "🐾 Pets", "🎁 Presentes", "⚙️ Outros"];
         
         let curMonth = new Date().toISOString().slice(0, 7);
-        let db = JSON.parse(localStorage.getItem('wesley_fin_v11')) || DADOS_INICIAIS;
+        let db = JSON.parse(localStorage.getItem('wesley_fin_v12')) || DADOS_INICIAIS;
         if(!db.config) db.config = { metas: {} };
         
         let activeType = 'receita';
@@ -326,14 +309,10 @@
             document.getElementById('in-cat').innerHTML = opts;
             document.getElementById('meta-cat').innerHTML = opts;
             
-            // DATA HOJE - CORREÇÃO DE FUSO E ICÔNE DINÂMICO
-            const today = new Date();
-            const y = today.getFullYear();
-            const m = String(today.getMonth() + 1).padStart(2, '0');
-            const d = String(today.getDate()).padStart(2, '0');
-            
-            document.getElementById('in-date').value = `${y}-${m}-${d}`;
-            document.getElementById('cal-day-num').innerText = today.getDate(); // Atualiza ícone
+            const now = new Date();
+            const localDate = new Date(now.getTime() - (now.getTimezoneOffset() * 60000)).toISOString().split('T')[0];
+            document.getElementById('in-date').value = localDate;
+            document.getElementById('cal-day-num').innerText = now.getDate();
             
             document.getElementById('file-restore-trigger').addEventListener('change', processarRestore);
 
@@ -341,7 +320,6 @@
             render();
         };
 
-        // --- SISTEMA ---
         function triggerRestore() { document.getElementById('file-restore-trigger').click(); }
         function processarRestore(e) {
             const file = e.target.files[0];
@@ -354,7 +332,7 @@
                         db = json; if(!db.config) db.config={metas:{}};
                         save(); location.reload();
                     }
-                } catch(err) { alert("Arquivo inválido"); }
+                } catch(err) { alert("Backup inválido"); }
             }; reader.readAsText(file);
         }
         function baixarBackup() {
@@ -364,19 +342,22 @@
             document.body.appendChild(a); a.click(); a.remove();
         }
 
-        // --- NAV (CORRIGIDA) ---
         function navTo(viewId, btn) {
-            // Agora view-invest está no array correto
+            // Esconde todas
             ['view-dash','view-extrato','view-novo','view-anual','view-metas','view-invest'].forEach(id => {
                 const el = document.getElementById(id);
                 if(el) el.classList.add('hidden');
             });
+            // Mostra alvo
             const target = document.getElementById(viewId);
             if(target) target.classList.remove('hidden');
             
             window.scrollTo(0, 0);
             document.querySelectorAll('.nav-icon').forEach(el => el.classList.remove('active'));
             btn.classList.add('active');
+            
+            // FORÇA ATUALIZAÇÃO AO NAVEGAR PARA GARANTIR DADOS FRESCOS
+            if(viewId === 'view-dash' || viewId === 'view-extrato') render();
             if(viewId === 'view-anual') renderChartAnual();
         }
 
@@ -397,28 +378,36 @@
             }
         }
 
-        // --- CORE ---
-        function getM() { if(!db[curMonth]) db[curMonth]={transacoes:[], investimentos:[]}; return db[curMonth]; }
-        function save() { localStorage.setItem('wesley_fin_v11', JSON.stringify(db)); }
+        function getM(month) { 
+            const k = month || curMonth;
+            if(!db[k]) db[k]={transacoes:[], investimentos:[]}; 
+            return db[k]; 
+        }
+        function save() { localStorage.setItem('wesley_fin_v12', JSON.stringify(db)); }
         function fmt(v) { return privacy ? '🙈' : v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'}); }
 
-        // --- AÇÕES ---
         function salvarTransacao() {
             const dt=document.getElementById('in-date').value, vl=parseFloat(document.getElementById('in-val').value), desc=document.getElementById('in-desc').value;
             if(!dt || !vl || !desc) return alert("Preencha tudo");
             
+            // LÓGICA DE COFRE INTELIGENTE: Salva no mês da data, não no mês da tela
+            const monthKey = dt.slice(0, 7); 
             const cat = activeType==='receita' ? 'Entrada' : document.getElementById('in-cat').value;
-            let m = getM(); if(!m.transacoes) m.transacoes=[];
+            
+            let m = getM(monthKey); 
+            if(!m.transacoes) m.transacoes=[];
             m.transacoes.push({id:Date.now(), type:activeType, data:dt, valor:vl, desc, cat});
             save();
             
             if(activeType==='despesa' && db.config.metas[cat]) {
                 const total = m.transacoes.filter(x=>x.cat===cat).reduce((a,b)=>a+b.valor,0);
-                if(total > db.config.metas[cat]) alert(`⚠️ Meta de ${cat} estourada!`);
-            } else alert("Salvo!");
+                if(total > db.config.metas[cat]) alert(`⚠️ Meta de ${cat} atingida!`);
+            } else alert("Salvo em " + monthKey);
             
             document.getElementById('in-val').value=''; document.getElementById('in-desc').value='';
-            render();
+            
+            // Só renderiza se estivermos olhando para o mês que foi alterado
+            if(monthKey === curMonth) render();
         }
 
         function salvarMeta() {
@@ -448,7 +437,6 @@
             if(confirm('Apagar meta?')){delete db.config.metas[c];save();render();}
         }
 
-        // --- RENDER ---
         function render() {
             const m = getM();
             const ts = m.transacoes || (m.t || []);
@@ -495,13 +483,16 @@
                 il.innerHTML += `<div class="transaction-item"><div class="t-info"><span class="t-desc">${x.type}</span></div><div style="text-align:right;"><span class="t-val">${fmt(x.val)}</span><br><button onclick="del(${x.id},'i')" style="color:red; border:none; background:none;">Excluir</button></div></div>`;
             });
 
-            const ctx = document.getElementById('chart-cat').getContext('2d');
-            if(chartCat) chartCat.destroy();
-            chartCat = new Chart(ctx, {
-                type: 'doughnut',
-                data: { labels: Object.keys(cats), datasets: [{ data: Object.values(cats), backgroundColor: ['#3b82f6','#22c55e','#eab308','#ef4444','#a855f7','#06b6d4','#64748b'], borderWidth:0 }] },
-                options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{position:'right', labels:{boxWidth:12}}} }
-            });
+            // PROTEÇÃO DO GRÁFICO
+            const ctx = document.getElementById('chart-cat');
+            if(ctx && !document.getElementById('view-dash').classList.contains('hidden')) {
+                if(chartCat) chartCat.destroy();
+                chartCat = new Chart(ctx.getContext('2d'), {
+                    type: 'doughnut',
+                    data: { labels: Object.keys(cats), datasets: [{ data: Object.values(cats), backgroundColor: ['#3b82f6','#22c55e','#eab308','#ef4444','#a855f7','#06b6d4','#64748b'], borderWidth:0 }] },
+                    options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{position:'right', labels:{boxWidth:12}}} }
+                });
+            }
         }
 
         function renderExtrato(data) {
@@ -525,7 +516,8 @@
         }
 
         function renderChartAnual() {
-            const ctx = document.getElementById('chart-anual').getContext('2d');
+            const ctx = document.getElementById('chart-anual');
+            if(!ctx) return;
             const lbs=[], dts=[];
             let [y, m] = curMonth.split('-').map(Number);
             for(let i=5; i>=0; i--) {
@@ -539,7 +531,7 @@
                 } else dts.push(0);
             }
             if(chartAnual) chartAnual.destroy();
-            chartAnual = new Chart(ctx, {
+            chartAnual = new Chart(ctx.getContext('2d'), {
                 type:'bar',
                 data:{labels:lbs, datasets:[{label:'Saldo', data:dts, backgroundColor:dts.map(v=>v>=0?'#16a34a':'#dc2626'), borderRadius:4}]},
                 options:{responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{y:{beginAtZero:true}}}
