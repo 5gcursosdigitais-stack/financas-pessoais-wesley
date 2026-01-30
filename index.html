@@ -4,419 +4,519 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="theme-color" content="#0f172a">
-    <meta name="description" content="Wesley Finance AI Enterprise - Multiagente IA com Fluxo de Caixa, Orçamentos, Alertas e Insights Predicitivos">
-    <title>🤖 Wesley Finance AI | Enterprise Pro v3.0</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Wesley Finance AI | Enterprise v3.0</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="manifest" href="data:application/manifest+json,{
-        'name': 'Wesley Finance AI Pro',
-        'short_name': 'Wesley AI',
-        'start_url': '.',
-        'display': 'standalone',
-        'background_color': '#0f172a',
-        'theme_color': '#6366f1',
-        'icons': [{'src': 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiByeD0iMjQiIGZpbGw9IiM2MzY2ZjEiLz4KPHRleHQgeD0iOTYiIHk9IjExMiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9IjAuM2VtIiBmb250LWZhbWlseT0iSW50ZXIsIHNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSI4MDAiIGZvbnQtc2l6ZT0iNjQiIGZpbGw9IndoaXRlIj7wn6xgPC90ZXh0Pgo8L3N2Zz4K', 'sizes': '192x192', 'type': 'image/svg+xml'}]
-    }">
 
     <style>
-        /* === ENTERPRISE DESIGN SYSTEM v3.0 - MULTIAGENTE === */
+        /* === SYSTEM DESIGN V3.0 === */
         :root {
-            --color-bg: #0a0e1a;
-            --color-surface: #111827;
-            --color-surface-2: #1f2937;
-            --color-glass: rgba(255,255,255,0.03);
-            --color-border: rgba(255,255,255,0.08);
+            --bg-app: #0a0e1a;
+            --bg-card: rgba(30, 41, 59, 0.7);
+            --bg-nav: rgba(10, 14, 26, 0.95);
             
-            --color-brand: #6366f1;
-            --color-success: #10b981;
-            --color-danger: #ef4444;
-            --color-warning: #f59e0b;
-            --color-info: #06b6d4;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
             
-            --color-text-1: #f9fafb;
-            --color-text-2: #d1d5db;
-            --color-text-3: #9ca3af;
+            --brand: #6366f1;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
             
-            --gradient-brand: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
-            --gradient-ai: linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%);
+            --gradient-brand: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            --border: rgba(255,255,255,0.08);
             
-            --radius-sm: 12px;
-            --radius-md: 16px;
-            --radius-lg: 24px;
-            --shadow-glow: 0 0 32px rgba(99,102,241,0.4);
+            --safe-top: env(safe-area-inset-top);
+            --safe-bottom: env(safe-area-inset-bottom);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
+        
         body {
             font-family: 'Inter', sans-serif;
-            background: var(--color-bg);
-            color: var(--color-text-1);
-            line-height: 1.6;
-            overflow-x: hidden;
-            min-height: 100vh;
+            background-color: var(--bg-app);
+            color: var(--text-main);
+            height: 100dvh;
+            display: flex; flex-direction: column;
+            overflow: hidden;
         }
 
-        /* === AGENT STATUS BAR === */
-        .agent-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: var(--gradient-brand);
-            z-index: 10000;
-            box-shadow: 0 2px 8px rgba(99,102,241,0.3);
+        /* --- BACKGROUND FX --- */
+        body::before {
+            content: ''; position: fixed; inset: 0; z-index: -1;
+            background: radial-gradient(circle at 50% -20%, rgba(99,102,241,0.15), transparent 70%);
         }
 
-        .agent-status {
-            position: fixed;
-            top: 8px;
-            right: 20px;
-            background: rgba(17,24,39,0.95);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--color-border);
-            border-radius: var(--radius-sm);
-            padding: 8px 16px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--color-success);
-            z-index: 10001;
-        }
-
-        /* === MAIN LAYOUT === */
+        /* --- LAYOUT --- */
         .app-container {
-            max-width: 450px;
+            flex: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            padding: 20px;
+            padding-top: calc(var(--safe-top) + 60px); /* Espaço para Status Bar + Header */
+            padding-bottom: calc(var(--safe-bottom) + 80px); /* Espaço para Nav Bar */
+            max-width: 600px;
             margin: 0 auto;
-            min-height: 100vh;
-            padding: 80px 20px 120px;
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
+            width: 100%;
         }
 
-        /* === HEADER === */
+        /* --- AGENT BAR (Status IA) --- */
+        .agent-bar {
+            position: fixed; top: 0; left: 0; right: 0;
+            height: 4px; background: var(--gradient-brand);
+            z-index: 2000; box-shadow: 0 2px 10px rgba(99,102,241,0.5);
+        }
+        .agent-status {
+            position: fixed; top: calc(var(--safe-top) + 10px); right: 20px;
+            background: rgba(15,23,42,0.9); border: 1px solid var(--border);
+            padding: 6px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600;
+            color: var(--success); backdrop-filter: blur(10px); z-index: 2000;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .agent-dot { width: 8px; height: 8px; background: var(--success); border-radius: 50%; animation: pulse 2s infinite; }
+
+        /* --- HEADER --- */
         .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px 0;
+            position: fixed; top: 0; left: 0; right: 0;
+            padding: calc(var(--safe-top) + 10px) 20px 10px;
+            background: rgba(10,14,26,0.8); backdrop-filter: blur(20px);
+            z-index: 1000; border-bottom: 1px solid var(--border);
+            display: flex; justify-content: space-between; align-items: center;
+            max-width: 600px; margin: 0 auto;
         }
+        .brand { display: flex; align-items: center; gap: 12px; }
+        .brand-icon { font-size: 1.5rem; }
+        .brand-text h1 { font-size: 1.1rem; font-weight: 800; line-height: 1.1; }
+        .brand-text p { font-size: 0.7rem; color: var(--text-muted); font-weight: 500; }
 
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .brand-icon {
-            width: 56px;
-            height: 56px;
-            background: var(--gradient-brand);
-            border-radius: var(--radius-lg);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            font-weight: 900;
-            box-shadow: var(--shadow-glow);
-        }
-
-        /* === AGENT CARDS === */
-        .agent-card {
-            background: linear-gradient(145deg, rgba(17,24,39,0.9), rgba(31,41,55,0.9));
-            backdrop-filter: blur(24px);
-            border: 1px solid rgba(99,102,241,0.2);
-            border-radius: var(--radius-lg);
+        /* --- CARDS --- */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 24px;
             padding: 24px;
+            margin-bottom: 20px;
             position: relative;
             overflow: hidden;
         }
 
-        .agent-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: var(--gradient-brand);
+        /* CARD PRINCIPAL (Agent Card) */
+        .agent-card {
+            background: linear-gradient(160deg, rgba(30,41,59,0.8), rgba(15,23,42,0.9));
+            border: 1px solid rgba(99,102,241,0.3);
+        }
+        .agent-card::after {
+            content: ''; position: absolute; top: 0; right: 0; width: 150px; height: 150px;
+            background: radial-gradient(circle, rgba(99,102,241,0.2), transparent 70%);
+            pointer-events: none;
         }
 
-        .agent-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 16px;
-        }
+        .balance-label { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; letter-spacing: 1px; }
+        .balance-value { font-size: 2.5rem; font-weight: 800; margin: 8px 0 16px; letter-spacing: -1px; background: linear-gradient(to right, #fff, #a5b4fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        .stats-row { display: flex; gap: 20px; }
+        .stat-item span { display: block; }
+        .stat-val { font-weight: 700; font-size: 1rem; }
+        .text-up { color: var(--success); }
+        .text-down { color: var(--danger); }
 
-        .agent-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            font-weight: 700;
-        }
-
-        .agent-balance {
-            font-size: 2.5rem;
-            font-weight: 900;
-            background: var(--gradient-brand);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 8px;
-        }
-
-        /* === INPUTS === */
-        .input-tabs {
-            display: flex;
-            background: var(--color-surface);
-            border-radius: var(--radius-lg);
-            padding: 1px;
-            border: 1px solid var(--color-border);
+        /* --- ALERT (Insights) --- */
+        .alert-box {
+            background: rgba(99,102,241,0.1);
+            border-left: 4px solid var(--brand);
+            padding: 16px; border-radius: 12px;
+            display: flex; gap: 12px; align-items: start;
             margin-bottom: 24px;
         }
+        .alert-icon { font-size: 1.2rem; }
+        .alert-content strong { display: block; margin-bottom: 4px; color: var(--brand); }
+        .alert-content p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.4; margin: 0; }
 
-        .tab-btn {
-            flex: 1;
-            padding: 16px;
-            border: none;
-            background: transparent;
-            color: var(--color-text-3);
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border-radius: var(--radius-lg);
-            position: relative;
-        }
-
-        .tab-btn.active {
-            background: var(--gradient-brand);
-            color: white;
-            box-shadow: var(--shadow-glow);
-        }
-
-        .form-input {
-            width: 100%;
-            height: 56px;
-            background: var(--color-surface);
-            border: 2px solid var(--color-border);
-            border-radius: var(--radius-md);
-            padding: 0 20px;
-            color: var(--color-text-1);
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .form-input:focus {
-            border-color: var(--color-brand);
-            box-shadow: 0 0 0 4px rgba(99,102,241,0.1);
-            outline: none;
-        }
-
-        /* === CHARTS === */
-        .chart-container {
-            height: 200px;
-            position: relative;
-            margin: 20px 0;
-        }
-
-        /* === TRANSACTION LIST === */
-        .tx-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            max-height: 300px;
-            overflow-y: auto;
-            padding: 8px 0;
-        }
-
+        /* --- LISTA --- */
+        .tx-list { display: flex; flex-direction: column; gap: 12px; }
         .tx-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px;
-            background: var(--color-glass);
-            border-radius: var(--radius-sm);
-            border: 1px solid var(--color-border);
-            transition: all 0.2s ease;
-            cursor: pointer;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 16px; background: rgba(255,255,255,0.03);
+            border-radius: 16px; border: 1px solid var(--border);
         }
+        .tx-icon { width: 40px; height: 40px; background: rgba(255,255,255,0.05); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; margin-right: 12px; }
+        .tx-info h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: 2px; }
+        .tx-info span { font-size: 0.75rem; color: var(--text-muted); }
+        .tx-val { font-weight: 700; font-size: 1rem; }
 
-        .tx-item:hover {
-            background: rgba(99,102,241,0.1);
-            border-color: var(--color-brand);
+        /* --- FORMS (View Add) --- */
+        .input-group { margin-bottom: 20px; }
+        .input-label { display: block; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 8px; font-weight: 600; text-transform: uppercase; }
+        .input-field {
+            width: 100%; height: 56px; background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border); border-radius: 16px;
+            padding: 0 16px; color: white; font-size: 1rem;
+            transition: border-color 0.3s;
         }
+        .input-field:focus { border-color: var(--brand); }
 
-        /* === ALERTS === */
-        .alert {
-            background: rgba(16,185,129,0.15);
-            border: 1px solid rgba(16,185,129,0.3);
-            border-radius: var(--radius-md);
-            padding: 16px;
-            margin: 16px 0;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            animation: slideDown 0.4s ease;
+        .type-toggle { display: flex; background: rgba(255,255,255,0.05); padding: 4px; border-radius: 16px; margin-bottom: 24px; }
+        .type-btn { flex: 1; padding: 12px; text-align: center; border-radius: 12px; font-weight: 600; color: var(--text-muted); cursor: pointer; transition: 0.2s; }
+        .type-btn.active.rec { background: var(--success); color: white; }
+        .type-btn.active.desp { background: var(--danger); color: white; }
+
+        .btn-primary {
+            width: 100%; height: 56px; background: var(--gradient-brand);
+            border: none; border-radius: 16px; color: white; font-weight: 700; font-size: 1rem;
+            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
+            box-shadow: 0 4px 20px rgba(99,102,241,0.4);
         }
+        .btn-primary:active { transform: scale(0.98); }
 
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* === NAV BAR === */
+        /* --- NAV BAR --- */
         .nav-bar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(10,14,26,0.98);
-            backdrop-filter: blur(32px);
-            border-top: 1px solid var(--color-border);
-            display: grid;
-            grid-template-columns: 1fr 1fr auto 1fr 1fr;
-            padding: 16px;
-            gap: 12px;
-            z-index: 1000;
+            position: fixed; bottom: 0; left: 0; right: 0;
+            background: var(--bg-nav); backdrop-filter: blur(20px);
+            border-top: 1px solid var(--border);
+            display: grid; grid-template-columns: repeat(5, 1fr);
+            padding-bottom: max(10px, env(safe-area-inset-bottom));
+            padding-top: 10px; z-index: 1000;
         }
-
+        .nav-item {
+            background: none; border: none;
+            display: flex; flex-direction: column; align-items: center; gap: 4px;
+            color: var(--text-muted); cursor: pointer;
+        }
+        .nav-item.active { color: var(--brand); }
+        .nav-icon { font-size: 1.4rem; }
+        
         .nav-fab {
-            width: 64px;
-            height: 64px;
-            background: var(--gradient-brand);
-            border-radius: 50%;
-            border: 4px solid var(--color-bg);
-            color: white;
-            font-size: 1.8rem;
-            font-weight: 900;
-            box-shadow: var(--shadow-glow);
-            margin: -12px 0;
-            grid-column: 3;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            width: 56px; height: 56px; background: var(--gradient-brand);
+            border-radius: 50%; border: 4px solid var(--bg-app);
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 2rem; margin-top: -28px;
+            box-shadow: 0 0 20px rgba(99,102,241,0.5);
         }
 
-        .nav-fab:hover {
-            transform: scale(1.05);
-        }
+        /* --- UTILS --- */
+        .hidden { display: none !important; }
+        .fade-in { animation: fadeIn 0.3s ease-out; }
+        @keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+        @keyframes pulse { 0%{opacity:1} 50%{opacity:0.5} 100%{opacity:1} }
     </style>
 </head>
 <body>
+
     <div class="agent-bar"></div>
-    <div class="agent-status" id="agent-status">
-        🧠 Multiagentes Ativos
-    </div>
+    <div class="agent-status"><div class="agent-dot"></div>IA Ativa</div>
 
-    <div class="app-container">
-        <header class="header">
-            <div class="brand">
-                <div class="brand-icon">🤖</div>
-                <div>
-                    <h1 style="font-size: 1.4rem; font-weight: 900; margin: 0;">Wesley Finance Pro</h1>
-                    <div style="font-size: 0.8rem; color: var(--color-text-3); font-weight: 500;">v3.0 Enterprise</div>
-                </div>
+    <div class="header">
+        <div class="brand">
+            <div class="brand-icon">🤖</div>
+            <div class="brand-text">
+                <h1>Wesley Finance</h1>
+                <p>Enterprise AI v3.0</p>
             </div>
-        </header>
-
-        <div id="content-area">
-            <div class="agent-card">
-                <div class="agent-header">
-                    <div class="agent-icon" style="background: rgba(16,185,129,0.2); color: var(--color-success);">💰</div>
-                    <div>
-                        <div style="font-size: 0.8rem; color: var(--color-text-3);">Fluxo de Caixa</div>
-                        <div style="font-weight: 700;">Março 2026</div>
-                    </div>
-                </div>
-                <div class="agent-balance">R$ 12.450,00</div>
-                <div style="display: flex; gap: 8px;">
-                    <span style="font-size: 0.8rem; color: var(--color-success);">+ R$ 15.000 (Entradas)</span>
-                    <span style="font-size: 0.8rem; color: var(--color-danger);">- R$ 2.550 (Saídas)</span>
-                </div>
-            </div>
-
-            <div class="alert">
-                <span>🤖</span>
-                <div style="font-size: 0.9rem;">
-                    <strong>Insight de IA:</strong> Seus gastos com "Lazer" aumentaram 15% em relação à média. Considere ajustar o orçamento.
-                </div>
-            </div>
-
-            <div class="chart-container">
-                <canvas id="mainChart"></canvas>
-            </div>
-
-            <h3 style="margin-top: 24px; margin-bottom: 12px; font-size: 1.1rem;">Últimas Atividades</h3>
-            <div class="tx-list">
-                <div class="tx-item">
-                    <div>
-                        <div style="font-weight: 600;">Supermercado</div>
-                        <div style="font-size: 0.8rem; color: var(--color-text-3);">Alimentação • Hoje</div>
-                    </div>
-                    <div style="font-weight: 700; color: var(--color-danger);">- R$ 450,00</div>
-                </div>
-                <div class="tx-item">
-                    <div>
-                        <div style="font-weight: 600;">Salário</div>
-                        <div style="font-size: 0.8rem; color: var(--color-text-3);">Renda • Ontem</div>
-                    </div>
-                    <div style="font-weight: 700; color: var(--color-success);">+ R$ 8.500,00</div>
-                </div>
-            </div>
+        </div>
+        <div style="display:flex; gap:10px;">
+            <button onclick="App.reset()" style="background:none; border:none; font-size:1.2rem;">⚠️</button>
         </div>
     </div>
 
+    <div class="app-container">
+        
+        <div id="view-dash" class="fade-in">
+            <div class="card agent-card">
+                <div class="balance-label">Fluxo de Caixa (Jan 2026)</div>
+                <div class="balance-value" id="dash-saldo">R$ 0,00</div>
+                <div class="stats-row">
+                    <div class="stat-item">
+                        <span class="stat-val text-up" id="dash-rec">R$ 0,00</span>
+                        <span class="balance-label" style="font-size:0.7rem;">Entradas</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-val text-down" id="dash-desp">R$ 0,00</span>
+                        <span class="balance-label" style="font-size:0.7rem;">Saídas</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alert-box" id="ai-insight-box">
+                <div class="alert-icon">💡</div>
+                <div class="alert-content" id="ai-insight-content">
+                    <strong>Analisando dados...</strong>
+                    <p>O agente está processando suas transações.</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="balance-label">Tendência Financeira</div>
+                <div style="position: relative; height: 200px; width: 100%;">
+                    <canvas id="mainChart"></canvas>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="margin-bottom: 16px; font-size: 1.1rem;">Atividade Recente</h3>
+                <div id="tx-list" class="tx-list"></div>
+            </div>
+        </div>
+
+        <div id="view-add" class="fade-in hidden">
+            <h2 style="margin-bottom: 20px;">Novo Lançamento</h2>
+            
+            <div class="type-toggle">
+                <div class="type-btn active rec" id="btn-rec" onclick="UI.setType('receita')">Receita</div>
+                <div class="type-btn" id="btn-desp" onclick="UI.setType('despesa')">Despesa</div>
+            </div>
+
+            <form id="form-add">
+                <div class="input-group">
+                    <label class="input-label">Valor</label>
+                    <input type="number" id="in-val" class="input-field" step="0.01" placeholder="0,00" required>
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Descrição (IA Categoriza)</label>
+                    <input type="text" id="in-desc" class="input-field" placeholder="Ex: Uber, Mercado, Salário..." required>
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Data</label>
+                    <input type="date" id="in-date" class="input-field" required>
+                </div>
+                <button type="submit" class="btn-primary">Confirmar</button>
+            </form>
+        </div>
+
+        <div id="view-list" class="fade-in hidden">
+            <h2 style="margin-bottom: 20px;">Histórico Completo</h2>
+            <div id="tx-list-full" class="tx-list"></div>
+        </div>
+
+    </div>
+
     <nav class="nav-bar">
-        <button style="background:none; border:none; color:var(--color-text-3); font-size:1.5rem;">📊</button>
-        <button style="background:none; border:none; color:var(--color-text-3); font-size:1.5rem;">📑</button>
-        <button class="nav-fab">+</button>
-        <button style="background:none; border:none; color:var(--color-text-3); font-size:1.5rem;">🎯</button>
-        <button style="background:none; border:none; color:var(--color-text-3); font-size:1.5rem;">⚙️</button>
+        <button class="nav-item active" onclick="UI.go('dash', this)">
+            <span class="nav-icon">📊</span>
+            <span style="font-size:0.6rem;">Dash</span>
+        </button>
+        <button class="nav-item" onclick="UI.go('list', this)">
+            <span class="nav-icon">📑</span>
+            <span style="font-size:0.6rem;">Extrato</span>
+        </button>
+        
+        <div class="nav-fab" onclick="UI.go('add')">+</div>
+        
+        <button class="nav-item" onclick="alert('Funcionalidade em desenvolvimento')">
+            <span class="nav-icon">🎯</span>
+            <span style="font-size:0.6rem;">Metas</span>
+        </button>
+        <button class="nav-item" onclick="alert('Funcionalidade em desenvolvimento')">
+            <span class="nav-icon">⚙️</span>
+            <span style="font-size:0.6rem;">Config</span>
+        </button>
     </nav>
 
     <script>
-        // Chart.js Example Configuration
-        const ctx = document.getElementById('mainChart').getContext('2d');
-        new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
-                datasets: [{
-                    label: 'Saldo Acumulado',
-                    data: [12000, 19000, 3000, 5000, 2000, 3000],
-                    borderColor: '#6366f1',
-                    backgroundColor: 'rgba(99, 102, 241, 0.1)',
-                    tension: 0.4,
-                    fill: true
-                }]
+        // --- 1. DADOS PADRÃO (BACKUP JANEIRO 2026) ---
+        const SEED_DATA = {
+            "transacoes": [
+                {id: 1, tipo: 'receita', data: '2026-01-05', valor: 1488.25, desc: 'Pagamento Localiza', cat: 'Salário'},
+                {id: 2, tipo: 'despesa', data: '2026-01-15', valor: 323.80, desc: 'Nubank Negociação', cat: 'Bancos'},
+                {id: 3, tipo: 'despesa', data: '2026-01-15', valor: 35.00, desc: 'Vivo Móvel', cat: 'Moradia'},
+                {id: 4, tipo: 'despesa', data: '2026-01-15', valor: 93.06, desc: 'Vivo Fixo', cat: 'Moradia'},
+                {id: 5, tipo: 'despesa', data: '2026-01-15', valor: 313.31, desc: 'Itaú Cartão', cat: 'Bancos'},
+                {id: 6, tipo: 'despesa', data: '2026-01-16', valor: 123.68, desc: 'Supermercado', cat: 'Alimentação'},
+                {id: 7, tipo: 'despesa', data: '2026-01-22', valor: 41.56, desc: 'Despedida Giselle', cat: 'Lazer'},
+                {id: 8, tipo: 'despesa', data: '2026-01-15', valor: 100.00, desc: 'Recarga Bilhete', cat: 'Transporte'}
+            ]
+        };
+
+        // --- 2. CÉREBRO IA (CLASSIFICAÇÃO) ---
+        const AgentBrain = {
+            rules: {
+                'Salário': ['salário', 'pagamento', 'localiza', 'holerite'],
+                'Alimentação': ['mercado', 'ifood', 'restaurante', 'almoço', 'jantar', 'shimatzu'],
+                'Transporte': ['uber', '99', 'posto', 'gasolina', 'recarga', 'bilhete'],
+                'Moradia': ['vivo', 'claro', 'net', 'luz', 'agua', 'aluguel'],
+                'Bancos': ['nubank', 'itaú', 'santander', 'taxa'],
+                'Lazer': ['netflix', 'spotify', 'cinema', 'bar', 'despedida']
             },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { display: false }
-                },
-                scales: {
-                    x: { grid: { display: false }, ticks: { color: '#9ca3af' } },
-                    y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#9ca3af' } }
+            predict(desc) {
+                const d = desc.toLowerCase();
+                for (const [cat, keys] of Object.entries(this.rules)) {
+                    if (keys.some(k => d.includes(k))) return cat;
                 }
+                return 'Outros';
+            },
+            getIcon(cat) {
+                const icons = {'Salário':'💰', 'Alimentação':'🍔', 'Transporte':'🚗', 'Moradia':'🏠', 'Bancos':'🏦', 'Lazer':'🎉'};
+                return icons[cat] || '📝';
+            },
+            generateInsight(txs) {
+                const totalDesp = txs.filter(t=>t.tipo==='despesa').reduce((a,b)=>a+b.valor,0);
+                const maiorGasto = txs.filter(t=>t.tipo==='despesa').sort((a,b)=>b.valor-a.valor)[0];
+                
+                if(!maiorGasto) return "Sem dados suficientes para análise.";
+                
+                return `<strong>Alerta de Orçamento:</strong> Seu maior gasto recente foi 
+                        <span style="color:var(--danger)">${maiorGasto.desc}</span> 
+                        (${((maiorGasto.valor/totalDesp)*100).toFixed(0)}% das despesas). 
+                        Fique atento aos gastos com ${maiorGasto.cat}.`;
             }
-        });
+        };
+
+        // --- 3. DATA STORE ---
+        const Store = {
+            getKey: () => JSON.parse(localStorage.getItem('wesley_ent_v3')) || SEED_DATA,
+            setKey: (data) => localStorage.setItem('wesley_ent_v3', JSON.stringify(data)),
+            add: (tx) => {
+                const data = Store.getKey();
+                data.transacoes.unshift(tx);
+                Store.setKey(data);
+            },
+            reset: () => {
+                localStorage.removeItem('wesley_ent_v3');
+                location.reload();
+            }
+        };
+
+        // --- 4. UI CONTROLLER ---
+        const UI = {
+            currentType: 'receita',
+            chart: null,
+
+            init() {
+                // Fix Data Hoje (Timezone Brasil)
+                const now = new Date();
+                const off = now.getTimezoneOffset() * 60000;
+                document.getElementById('in-date').value = new Date(now - off).toISOString().split('T')[0];
+                
+                this.render();
+                this.setupForm();
+            },
+
+            formatMoney: (v) => v.toLocaleString('pt-BR', {style:'currency', currency:'BRL'}),
+
+            go(viewId, btn) {
+                document.querySelectorAll('#view-dash, #view-add, #view-list').forEach(el => el.classList.add('hidden'));
+                document.getElementById('view-'+viewId).classList.remove('hidden');
+                if(btn) {
+                    document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                }
+                if(viewId === 'dash') this.render();
+                window.scrollTo(0,0);
+            },
+
+            setType(t) {
+                this.currentType = t;
+                const r = document.getElementById('btn-rec'), d = document.getElementById('btn-desp');
+                if(t==='receita') { r.classList.add('active', 'rec'); d.classList.remove('active', 'desp'); }
+                else { r.classList.remove('active', 'rec'); d.classList.add('active', 'desp'); }
+            },
+
+            setupForm() {
+                document.getElementById('form-add').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const val = parseFloat(document.getElementById('in-val').value);
+                    const desc = document.getElementById('in-desc').value;
+                    const date = document.getElementById('in-date').value;
+                    
+                    const cat = AgentBrain.predict(desc);
+                    
+                    const tx = {
+                        id: Date.now(),
+                        tipo: this.currentType,
+                        valor: val,
+                        desc: desc,
+                        data: date,
+                        cat: cat
+                    };
+                    
+                    Store.add(tx);
+                    alert(`✅ Salvo! IA categorizou como: ${cat}`);
+                    document.getElementById('form-add').reset();
+                    this.go('dash');
+                });
+            },
+
+            render() {
+                const data = Store.getKey();
+                const txs = data.transacoes;
+
+                // Totals
+                const rec = txs.filter(t=>t.tipo==='receita').reduce((a,b)=>a+b.valor,0);
+                const desp = txs.filter(t=>t.tipo==='despesa').reduce((a,b)=>a+b.valor,0);
+                
+                document.getElementById('dash-saldo').textContent = this.formatMoney(rec - desp);
+                document.getElementById('dash-rec').textContent = '+ ' + this.formatMoney(rec);
+                document.getElementById('dash-desp').textContent = '- ' + this.formatMoney(desp);
+
+                // Insight
+                document.getElementById('ai-insight-content').innerHTML = AgentBrain.generateInsight(txs);
+
+                // List
+                const listHtml = txs.slice(0,5).map(t => this.createItem(t)).join('');
+                document.getElementById('tx-list').innerHTML = listHtml;
+                document.getElementById('tx-list-full').innerHTML = txs.map(t => this.createItem(t)).join('');
+
+                // Chart
+                this.renderChart(txs);
+            },
+
+            createItem(t) {
+                const icon = AgentBrain.getIcon(t.cat);
+                const color = t.tipo==='receita' ? 'var(--success)' : 'var(--danger)';
+                const sign = t.tipo==='receita' ? '+' : '-';
+                const date = t.data.split('-').reverse().slice(0,2).join('/');
+                
+                return `
+                <div class="tx-item">
+                    <div style="display:flex; align-items:center;">
+                        <div class="tx-icon">${icon}</div>
+                        <div class="tx-info">
+                            <h4>${t.desc}</h4>
+                            <span>${date} • ${t.cat}</span>
+                        </div>
+                    </div>
+                    <div class="tx-val" style="color:${color}">${sign} ${this.formatMoney(t.valor)}</div>
+                </div>`;
+            },
+
+            renderChart(txs) {
+                const ctx = document.getElementById('mainChart').getContext('2d');
+                if(this.chart) this.chart.destroy();
+                
+                const cats = {};
+                txs.filter(t=>t.tipo==='despesa').forEach(t => {
+                    cats[t.cat] = (cats[t.cat] || 0) + t.valor;
+                });
+
+                this.chart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: Object.keys(cats),
+                        datasets: [{
+                            data: Object.values(cats),
+                            backgroundColor: ['#6366f1', '#10b981', '#f59e0b', '#ef4444', '#06b6d4'],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { position: 'right', labels: { color: '#94a3b8' } } }
+                    }
+                });
+            }
+        };
+
+        const App = {
+            reset: () => {
+                if(confirm("Reiniciar dados para o padrão de Janeiro/2026?")) Store.reset();
+            }
+        };
+
+        window.onload = () => UI.init();
     </script>
 </body>
 </html>
