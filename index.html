@@ -2,35 +2,30 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#0f172a">
     <meta name="description" content="Wesley Finance AI Enterprise - Sistema Financeiro Inteligente com IA Agentic">
-    <title>🤖 Wesley Finance AI | Enterprise Edition v2.0</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>🤖 Wesley Finance AI | Enterprise Edition v2.1</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="manifest" href="data:application/manifest+json,{
-        'name': 'Wesley Finance AI',
-        'short_name': 'Wesley AI',
-        'start_url': '.',
-        'display': 'standalone',
-        'background_color': '#0f172a',
-        'theme_color': '#6366f1',
-        'icons': [{'src': 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiByeD0iMjQiIGZpbGw9IiM2MzY2ZjEiLz4KPHRleHQgeD0iOTYiIHk9IjExMiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9IjAuM2VtIiBmb250LWZhbWlseT0iSW50ZXIsIHNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSI4MDAiIGZvbnQtc2l6ZT0iNjQiIGZpbGw9IndoaXRlIj7wn6xgPC90ZXh0Pgo8L3N2Zz4K', 'sizes': '192x192', 'type': 'image/svg+xml'}]
-    }">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+    
+    <link rel="manifest" href='data:application/manifest+json,{"name":"Wesley Finance AI","short_name":"Wesley AI","start_url":".","display":"standalone","background_color":"#0f172a","theme_color":"#6366f1","icons":[{"src":"data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiByeD0iMjQiIGZpbGw9IiM2MzY2ZjEiLz4KPHRleHQgeD0iOTYiIHk9IjExMiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9IjAuM2VtIiBmb250LWZhbWlseT0iSW50ZXIsIHNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSI4MDAiIGZvbnQtc2l6ZT0iNjQiIGZpbGw9IndoaXRlIj7wn6xgPC90ZXh0Pgo8L3N2Zz4K","sizes":"192x192","type":"image/svg+xml"}]}'>
 
     <style>
-        /* === ENTERPRISE DESIGN SYSTEM v2.0 === */
+        /* === ENTERPRISE DESIGN SYSTEM v2.1 === */
         :root {
             /* Core Colors (Deep Space Theme) */
             --color-bg: #0a0e1a;
             --color-surface: #111827;
             --color-surface-2: #1f2937;
             --color-surface-hover: #374151;
-            --color-border: rgba(255,255,255,0.06);
-            --color-border-hover: rgba(99,102,241,0.3);
+            --color-border: rgba(255,255,255,0.08);
+            --color-border-hover: rgba(99,102,241,0.4);
             
             /* Semantic Colors */
             --color-brand: #6366f1;
@@ -47,7 +42,7 @@
             
             /* Gradients */
             --gradient-brand: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
-            --gradient-glow: 0 0 32px rgba(99,102,241,0.4);
+            --gradient-glow: 0 0 32px rgba(99,102,241,0.25);
             
             /* Components */
             --radius-xs: 8px;
@@ -57,9 +52,9 @@
             --radius-xl: 32px;
             
             /* Shadows */
-            --shadow-1: 0 1px 3px 0 rgba(0,0,0,0.1), 0 1px 2px -1px rgba(0,0,0,0.1);
-            --shadow-2: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
-            --shadow-3: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1);
+            --shadow-1: 0 1px 3px 0 rgba(0,0,0,0.2), 0 1px 2px -1px rgba(0,0,0,0.1);
+            --shadow-2: 0 4px 6px -1px rgba(0,0,0,0.3), 0 2px 4px -2px rgba(0,0,0,0.2);
+            --shadow-3: 0 10px 15px -3px rgba(0,0,0,0.4), 0 4px 6px -4px rgba(0,0,0,0.3);
             --shadow-glow: var(--gradient-glow);
         }
 
@@ -69,18 +64,16 @@
             padding: 0;
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
-            scrollbar-width: thin;
-            scrollbar-color: rgba(99,102,241,0.3) transparent;
         }
 
-        /* Custom Scrollbar */
-        *::-webkit-scrollbar { width: 6px; }
-        *::-webkit-scrollbar-track { background: transparent; }
-        *::-webkit-scrollbar-thumb { 
+        /* Scrollbar customizada */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { 
             background: rgba(99,102,241,0.3); 
             border-radius: 3px; 
         }
-        *::-webkit-scrollbar-thumb:hover { background: rgba(99,102,241,0.5); }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(99,102,241,0.5); }
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -89,40 +82,39 @@
             line-height: 1.6;
             overflow-x: hidden;
             min-height: 100vh;
+            /* Fallback para dvh */
+            min-height: -webkit-fill-available;
             position: relative;
         }
 
-        /* Animated Background */
+        /* Background Animado Otimizado */
         body::before {
             content: '';
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            inset: 0;
             background-image: 
-                radial-gradient(circle at 20% 80%, rgba(120,119,198,0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(255,119,198,0.1) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(120,219,226,0.1) 0%, transparent 50%);
+                radial-gradient(circle at 20% 80%, rgba(120,119,198,0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255,119,198,0.08) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(120,219,226,0.08) 0%, transparent 50%);
             pointer-events: none;
             z-index: -1;
-            animation: float 20s ease-in-out infinite;
+            will-change: transform;
+            animation: float 25s ease-in-out infinite;
         }
 
         @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            33% { transform: translateY(-20px) rotate(120deg); }
-            66% { transform: translateY(20px) rotate(240deg); }
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
         }
 
         /* === APP SHELL === */
         .app-shell {
-            max-width: 450px;
+            max-width: 480px;
             margin: 0 auto;
             min-height: 100vh;
             padding: 24px 20px;
-            padding-bottom: env(safe-area-inset-bottom);
-            padding-top: calc(24px + env(safe-area-inset-top));
+            padding-bottom: env(safe-area-inset-bottom, 24px);
+            padding-top: calc(24px + env(safe-area-inset-top, 0px));
             display: flex;
             flex-direction: column;
             gap: 28px;
@@ -133,7 +125,6 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0;
         }
 
         .brand {
@@ -164,6 +155,14 @@
             background: var(--color-bg);
             border-radius: var(--radius-xl);
         }
+        
+        .brand-icon span {
+            position: relative;
+            z-index: 2;
+            background: var(--gradient-brand);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
         .brand-title {
             font-size: 1.4rem;
@@ -172,51 +171,78 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             letter-spacing: -0.02em;
+            line-height: 1.2;
         }
 
         .brand-subtitle {
             font-size: 0.75rem;
             color: var(--color-text-3);
-            font-weight: 500;
+            font-weight: 600;
             letter-spacing: 0.05em;
             text-transform: uppercase;
         }
 
+        .header-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            color: var(--color-text-2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 1.2rem;
+        }
+        
+        .btn-icon:hover {
+            background: var(--color-surface-hover);
+            color: var(--color-text-1);
+            border-color: var(--color-border-hover);
+        }
+
         /* === CARDS === */
         .card {
-            background: rgba(17, 24, 39, 0.85);
-            backdrop-filter: blur(24px);
+            background: rgba(17, 24, 39, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--color-border);
             border-radius: var(--radius-lg);
-            padding: 32px;
-            box-shadow: var(--shadow-3);
+            padding: 24px;
+            box-shadow: var(--shadow-2);
             position: relative;
             overflow: hidden;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
         }
 
         .card::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
+            top: 0; left: 0; right: 0;
             height: 1px;
             background: linear-gradient(90deg, transparent, var(--color-brand), transparent);
-            opacity: 0.5;
+            opacity: 0.3;
         }
 
         .card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-3);
             border-color: var(--color-border-hover);
         }
 
         /* === BALANCE CARD === */
         .balance-card {
-            background: linear-gradient(145deg, rgba(17,24,39,0.95), rgba(10,14,26,0.98));
-            border: 1px solid rgba(99,102,241,0.3);
+            background: linear-gradient(145deg, rgba(17,24,39,0.9), rgba(10,14,26,0.95));
+            border: 1px solid rgba(99,102,241,0.2);
             text-align: center;
+            padding: 32px 24px;
         }
 
         .balance-label {
@@ -224,52 +250,55 @@
             font-weight: 700;
             color: var(--color-text-3);
             text-transform: uppercase;
-            letter-spacing: 0.08em;
+            letter-spacing: 0.1em;
             margin-bottom: 12px;
         }
 
         .balance-amount {
-            font-size: clamp(2.25rem, 8vw, 3.75rem);
-            font-weight: 900;
+            font-size: clamp(2.5rem, 10vw, 3.5rem);
+            font-weight: 800;
             background: var(--gradient-brand);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            letter-spacing: -0.03em;
+            letter-spacing: -0.04em;
             margin-bottom: 24px;
-            position: relative;
+            line-height: 1;
         }
 
         .stats-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px;
+            gap: 16px;
         }
 
         .stat-card {
-            background: rgba(255,255,255,0.02);
+            background: rgba(255,255,255,0.03);
             border: 1px solid var(--color-border);
             border-radius: var(--radius-md);
-            padding: 20px;
+            padding: 16px;
             text-align: center;
-            transition: all 0.2s ease;
         }
 
         .stat-value {
-            font-size: 1.5rem;
-            font-weight: 800;
+            font-size: 1.25rem;
+            font-weight: 700;
             display: block;
             margin-bottom: 4px;
+            letter-spacing: -0.02em;
         }
 
         .stat-label {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: var(--color-text-3);
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.05em;
         }
 
-        /* === INPUTS === */
+        .text-success { color: var(--color-success); }
+        .text-danger { color: var(--color-danger); }
+
+        /* === INPUTS & FORMS === */
         .input-tabs {
             display: flex;
             background: var(--color-surface-2);
@@ -277,12 +306,11 @@
             padding: 4px;
             border: 1px solid var(--color-border);
             margin-bottom: 24px;
-            overflow: hidden;
         }
 
         .tab-btn {
             flex: 1;
-            padding: 16px;
+            padding: 14px;
             border: none;
             background: transparent;
             color: var(--color-text-3);
@@ -290,24 +318,23 @@
             font-size: 0.95rem;
             cursor: pointer;
             transition: all 0.2s ease;
-            border-radius: var(--radius-lg);
-            position: relative;
-            overflow: hidden;
+            border-radius: calc(var(--radius-lg) - 4px);
         }
 
         .tab-btn.active {
-            background: var(--gradient-brand);
-            color: white;
-            box-shadow: var(--shadow-glow);
+            background: var(--color-surface);
+            color: var(--color-text-1);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
+        
+        .tab-btn.active[data-type="receita"] { color: var(--color-success); }
+        .tab-btn.active[data-type="despesa"] { color: var(--color-danger); }
 
-        .form-group {
-            margin-bottom: 20px;
-        }
+        .form-group { margin-bottom: 20px; }
 
         .form-label {
             display: block;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 700;
             color: var(--color-text-3);
             margin-bottom: 8px;
@@ -319,13 +346,14 @@
             width: 100%;
             height: 56px;
             background: var(--color-surface);
-            border: 2px solid var(--color-border);
+            border: 1px solid var(--color-border);
             border-radius: var(--radius-md);
             padding: 0 20px;
             color: var(--color-text-1);
-            font-size: 1rem;
+            font-size: 1.1rem;
             font-weight: 500;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.2s ease;
+            font-family: inherit;
         }
 
         .form-input:focus {
@@ -335,9 +363,7 @@
             outline: none;
         }
 
-        .form-input::placeholder {
-            color: var(--color-text-3);
-        }
+        .form-input::placeholder { color: rgba(255,255,255,0.2); }
 
         .btn-primary {
             width: 100%;
@@ -354,7 +380,7 @@
             justify-content: center;
             gap: 12px;
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 8px 25px rgba(99,102,241,0.4);
+            box-shadow: 0 8px 25px -8px rgba(99,102,241,0.6);
             text-transform: uppercase;
             letter-spacing: 0.05em;
             position: relative;
@@ -363,107 +389,119 @@
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 12px 35px rgba(99,102,241,0.5);
+            box-shadow: 0 12px 30px -8px rgba(99,102,241,0.7);
         }
 
-        .btn-primary:active {
-            transform: translateY(0);
+        .btn-primary:active { transform: translateY(0); }
+
+        .btn-primary:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
         }
 
-        .btn-primary.loading {
-            background: var(--color-surface);
-            color: var(--color-text-2);
-            cursor: wait;
-        }
-
+        /* Spinner Loader */
         .spinner {
-            width: 24px;
-            height: 24px;
-            border: 3px solid rgba(255,255,255,0.2);
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
             border-top-color: white;
             border-radius: 50%;
-            animation: spin 1s linear infinite;
+            animation: spin 0.8s linear infinite;
+            display: none;
         }
+        
+        .btn-primary.loading .spinner { display: block; }
+        .btn-primary.loading span { display: none; }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* === TRANSACTIONS === */
+        /* === TRANSACTIONS LIST === */
         .tx-list {
             display: flex;
             flex-direction: column;
-            gap: 16px;
-            max-height: 400px;
+            gap: 12px;
+            max-height: 500px;
             overflow-y: auto;
+            padding-right: 4px;
         }
 
         .tx-card {
             background: var(--color-surface);
             border: 1px solid var(--color-border);
             border-radius: var(--radius-md);
-            padding: 20px;
+            padding: 16px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             cursor: pointer;
             transition: all 0.2s ease;
-            position: relative;
         }
 
         .tx-card:hover {
             background: var(--color-surface-hover);
+            border-color: var(--color-border-hover);
             transform: translateX(4px);
         }
 
-        .tx-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: var(--radius-md);
+        .tx-left {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .category-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: var(--radius-sm);
+            background: rgba(255,255,255,0.05);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.3rem;
-            margin-right: 16px;
+            font-size: 1.4rem;
             flex-shrink: 0;
         }
 
-        .tx-info h4 {
+        .tx-details h4 {
             font-size: 1rem;
             font-weight: 600;
             margin-bottom: 4px;
-            line-height: 1.3;
+            color: var(--color-text-1);
         }
 
         .tx-meta {
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             color: var(--color-text-3);
             display: flex;
-            gap: 12px;
-            margin-top: 4px;
+            align-items: center;
+            gap: 8px;
         }
 
         .tx-amount {
-            font-size: 1.25rem;
-            font-weight: 800;
+            font-weight: 700;
+            font-size: 1.1rem;
             white-space: nowrap;
         }
 
-        /* === NAV BAR === */
+        /* === NAVIGATION BAR === */
         .nav-bar {
             position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(10,14,26,0.98);
-            backdrop-filter: blur(32px);
-            border-top: 1px solid var(--color-border);
-            display: grid;
-            grid-template-columns: 1fr 1fr auto 1fr 1fr;
-            padding: 16px 20px;
-            padding-bottom: calc(20px + env(safe-area-inset-bottom));
-            gap: 8px;
-            z-index: 1000;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 40px);
+            max-width: 420px;
+            background: rgba(17, 24, 39, 0.9);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: var(--radius-xl);
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            padding: 12px;
+            z-index: 100;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
 
         .nav-item {
@@ -472,24 +510,27 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
             color: var(--color-text-3);
             cursor: pointer;
-            padding: 8px;
+            padding: 8px 12px;
             border-radius: var(--radius-sm);
             transition: all 0.2s ease;
-            font-size: 0.9rem;
-            font-weight: 600;
         }
 
-        .nav-item:hover, .nav-item.active {
+        .nav-item:hover { color: var(--color-text-1); }
+        
+        .nav-item.active {
             color: var(--color-brand);
             background: rgba(99,102,241,0.1);
         }
 
+        .nav-icon { font-size: 1.4rem; line-height: 1; }
+        .nav-label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.02em; }
+
         .nav-fab {
-            width: 64px;
-            height: 64px;
+            width: 56px;
+            height: 56px;
             background: var(--gradient-brand);
             border-radius: 50%;
             border: 4px solid var(--color-bg);
@@ -498,81 +539,77 @@
             justify-content: center;
             font-size: 1.8rem;
             color: white;
-            box-shadow: var(--shadow-glow), 0 8px 32px rgba(99,102,241,0.4);
-            margin: -16px 0;
-            grid-column: 3;
-            z-index: 10;
-            transition: all 0.2s ease;
+            box-shadow: var(--shadow-glow);
+            margin-top: -32px;
+            cursor: pointer;
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        .nav-fab:hover {
-            transform: scale(1.05);
-            box-shadow: 0 16px 48px rgba(99,102,241,0.5);
-        }
+        .nav-fab:hover { transform: scale(1.1) rotate(90deg); }
 
-        /* === UTILITIES === */
-        .hidden { display: none !important; }
-        .fade-in { animation: fadeIn 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
-        .slide-up { animation: slideUp 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(16px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(32px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* === RESPONSIVE === */
-        @media (max-width: 480px) {
-            .app-shell { padding: 16px 12px; }
-            .card { padding: 24px 20px; }
-        }
-
-        /* === PWA INSTALL PROMPT === */
+        /* === INSTALL PROMPT === */
         .install-prompt {
             position: fixed;
             bottom: 100px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--gradient-brand);
-            color: white;
-            padding: 20px 32px;
-            border-radius: var(--radius-xl);
-            box-shadow: var(--shadow-glow);
-            display: none;
+            left: 20px;
+            right: 20px;
+            margin: 0 auto;
+            max-width: 400px;
+            background: var(--color-surface);
+            border: 1px solid var(--color-brand);
+            padding: 20px;
+            border-radius: var(--radius-lg);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
             z-index: 2000;
-            text-align: center;
-            backdrop-filter: blur(20px);
+            display: none;
+            animation: slideUp 0.4s ease-out;
         }
+
+        .install-prompt.visible { display: block; }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Utils */
+        .hidden { display: none !important; }
+        .fade-in { animation: fadeIn 0.3s ease-out forwards; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
     </style>
 </head>
 <body>
+
     <div class="app-shell">
-        <!-- Header -->
-        <header class="header slide-up">
+        
+        <header class="header">
             <div class="brand">
-                <div class="brand-icon">🤖</div>
+                <div class="brand-icon">
+                    <span>🤖</span>
+                </div>
                 <div>
-                    <div class="brand-title">Wesley Finance AI</div>
-                    <div class="brand-subtitle">Enterprise v2.0</div>
+                    <div class="brand-title">Wesley AI</div>
+                    <div class="brand-subtitle">Finance Enterprise</div>
                 </div>
             </div>
             <div class="header-actions">
-                <button class="btn-icon" onclick="App.exportData()" title="Exportar Backup" style="margin-right: 8px;">💾</button>
-                <button class="btn-icon" onclick="App.resetData()" title="Reset Dados" style="color: var(--color-danger);">⚠️</button>
+                <button class="btn-icon" onclick="App.exportData()" aria-label="Exportar Backup">💾</button>
+                <button class="btn-icon" onclick="App.resetData()" aria-label="Resetar Dados" style="color: var(--color-danger);">⚠️</button>
             </div>
         </header>
 
-        <!-- Main Content -->
         <main id="main-content">
-            <!-- Dashboard -->
+            
             <div id="view-dashboard" class="fade-in">
                 <div class="card balance-card">
                     <div class="balance-label">Saldo Disponível</div>
                     <div class="balance-amount" id="display-saldo">R$ 0,00</div>
+                    
                     <div class="stats-grid">
                         <div class="stat-card">
                             <span class="stat-value text-success" id="display-receitas">R$ 0,00</span>
@@ -585,24 +622,24 @@
                     </div>
                 </div>
 
-                <div class="card">
-                    <div class="balance-label" style="margin-bottom: 24px;">Distribuição de Gastos</div>
-                    <div style="position: relative; height: 240px;">
+                <div class="card" style="margin-top: 24px;">
+                    <div class="balance-label" style="margin-bottom: 20px;">Análise de Gastos</div>
+                    <div style="position: relative; height: 220px; width: 100%;">
                         <canvas id="chart-gastos"></canvas>
                     </div>
                 </div>
 
-                <div class="card">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                        <h3 style="font-size: 1.2rem; font-weight: 800;">Últimas Transações</h3>
-                        <span style="font-size: 0.85rem; color: var(--color-text-3); cursor: pointer;" onclick="UI.showAll()">Ver tudo →</span>
+                <div style="margin-top: 32px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 16px;">
+                        <h3 style="font-size: 1.1rem; font-weight: 700;">Recentes</h3>
+                        <button style="font-size: 0.85rem; color: var(--color-brand); background: none; border: none; cursor: pointer; font-weight: 600;" onclick="UI.navigate('extrato')">Ver tudo →</button>
                     </div>
-                    <div id="list-recentes" class="tx-list"></div>
+                    <div id="list-recentes" class="tx-list">
+                        </div>
                 </div>
             </div>
 
-            <!-- Nova Transação -->
-            <div id="view-add" class="hidden">
+            <div id="view-add" class="hidden fade-in">
                 <div class="card">
                     <h2 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 32px; text-align: center;">Nova Transação</h2>
                     
@@ -613,460 +650,511 @@
 
                     <form id="form-transacao">
                         <div class="form-group">
-                            <label class="form-label">Valor (R$)</label>
+                            <label class="form-label" for="input-valor">Valor (R$)</label>
                             <input type="number" id="input-valor" class="form-input" placeholder="0,00" step="0.01" inputmode="decimal" required>
                         </div>
                         
                         <div class="form-group">
-                            <label class="form-label">Descrição</label>
-                            <input type="text" id="input-desc" class="form-input" placeholder="Ex: 'Localiza salário', 'Shopee tênis', 'SmartFit'..." required>
+                            <label class="form-label" for="input-desc">Descrição</label>
+                            <input type="text" id="input-desc" class="form-input" placeholder="Ex: 'Localiza', 'Uber', 'Mercado'..." required autocomplete="off">
                         </div>
 
                         <div class="form-group">
-                            <label class="form-label">Data</label>
+                            <label class="form-label" for="input-data">Data</label>
                             <input type="date" id="input-data" class="form-input" required>
                         </div>
 
                         <button type="submit" class="btn-primary" id="btn-submit">
-                            <span class="spinner" id="spinner"></span>
-                            <span id="btn-text">🤖 Analisar IA & Salvar</span>
+                            <div class="spinner"></div>
+                            <span>Analisar IA & Salvar</span>
                         </button>
                     </form>
                 </div>
             </div>
 
-            <!-- Extrato Completo -->
-            <div id="view-extrato" class="hidden">
-                <div class="card" style="position: sticky; top: 20px; z-index: 10; margin-bottom: 24px;">
-                    <input type="text" id="search-input" class="form-input" placeholder="🔍 Pesquisar transações (Shopee, Localiza, etc.)..." style="font-size: 1rem;">
+            <div id="view-extrato" class="hidden fade-in">
+                <div class="card" style="position: sticky; top: 0; z-index: 10; margin-bottom: 24px; padding: 16px;">
+                    <input type="text" id="search-input" class="form-input" placeholder="🔍 Pesquisar..." onkeyup="UI.renderListaCompleta()">
                 </div>
                 <div id="list-completa" class="tx-list"></div>
             </div>
 
-            <!-- Analytics -->
-            <div id="view-analytics" class="hidden">
+            <div id="view-analytics" class="hidden fade-in">
                 <div class="card">
-                    <h2 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 32px;">📊 Inteligência Financeira</h2>
-                    <div style="position: relative; height: 280px; margin-bottom: 32px;">
+                    <h2 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 24px;">Insights IA</h2>
+                    <div style="position: relative; height: 260px; margin-bottom: 24px;">
                         <canvas id="chart-analytics"></canvas>
                     </div>
-                    <div id="ai-insights" style="font-size: 1rem; line-height: 1.6; color: var(--color-text-2);"></div>
+                    <div id="ai-insights" style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px; font-size: 0.95rem; line-height: 1.6; border-left: 4px solid var(--color-brand);">
+                        <p style="color: var(--color-text-2);">Aguardando dados suficientes para análise comportamental...</p>
+                    </div>
                 </div>
             </div>
+
         </main>
     </div>
 
-    <!-- Navigation -->
     <nav class="nav-bar">
-        <button class="nav-item active" data-view="dashboard">
+        <button class="nav-item active" data-view="dashboard" onclick="UI.navigate('dashboard', this)" aria-label="Dashboard">
             <span class="nav-icon">📊</span>
             <span class="nav-label">Home</span>
         </button>
-        <button class="nav-item" data-view="extrato">
+        <button class="nav-item" data-view="extrato" onclick="UI.navigate('extrato', this)" aria-label="Extrato">
             <span class="nav-icon">📋</span>
             <span class="nav-label">Extrato</span>
         </button>
-        <button class="nav-fab" data-view="add">+</button>
-        <button class="nav-item" data-view="analytics">
-            <span class="nav-icon">📈</span>
+        <button class="nav-fab" data-view="add" onclick="UI.navigate('add')" aria-label="Adicionar">
+            <span>+</span>
+        </button>
+        <button class="nav-item" data-view="analytics" onclick="UI.navigate('analytics', this)" aria-label="Analytics">
+            <span class="nav-icon">🧠</span>
             <span class="nav-label">IA</span>
         </button>
     </nav>
 
-    <!-- PWA Install Prompt -->
     <div class="install-prompt" id="install-prompt">
-        <div style="font-size: 1.1rem; font-weight: 700; margin-bottom: 8px;">🚀 Instalar Wesley Finance AI</div>
-        <div style="font-size: 0.9rem; opacity: 0.95; margin-bottom: 16px;">Use como App nativo no seu celular</div>
+        <div style="margin-bottom: 16px;">
+            <h3 style="margin-bottom: 4px;">Instalar App</h3>
+            <p style="font-size: 0.9rem; color: var(--color-text-2);">Adicione à tela inicial para melhor experiência.</p>
+        </div>
         <div style="display: flex; gap: 12px;">
-            <button onclick="PWA.install()" class="btn-primary" style="height: 44px; flex: 1; font-size: 0.9rem;">Instalar</button>
-            <button onclick="PWA.hide()" style="height: 44px; flex: 1; background: rgba(255,255,255,0.2);">Cancelar</button>
+            <button onclick="PWA.install()" class="btn-primary" style="height: 44px; font-size: 0.9rem;">Instalar Agora</button>
+            <button onclick="PWA.hide()" style="height: 44px; flex: 1; background: transparent; border: 1px solid var(--color-border); color: var(--color-text-2); border-radius: var(--radius-md); font-weight: 600; cursor: pointer;">Depois</button>
         </div>
     </div>
 
     <script>
-        // === ENTERPRISE AI AGENT SYSTEM ===
-        class FinanceAIAgent {
-            constructor() {
-                this.rules = {
-                    receita: {
-                        'Salário': ['salário', 'localiza', 'movida', 'jbs', 'sesc', 'holerite', 'proventos', 'pgto', 'pix recebido'],
-                        'Investimentos': ['juros', 'dividendos', 'rendimento', 'cdb', 'lca', 'lci', 'fii'],
-                        'Freelance': ['freelance', 'freela', 'extra', 'consultoria', 'projeto']
-                    },
-                    despesa: {
-                        'Alimentação': ['mercado', 'supermercado', 'ifood', 'shimatzu', 'padaria', 'açougue', 'almoço', 'jantar', 'café'],
-                        'Fitness/Saúde': ['academia', 'smartfit', 'gym', 'farmácia', 'remédio', 'médico', 'consulta'],
-                        'Compras': ['shopee', 'mercado livre', 'amazon', 'magalu', 'shein', 'roupa', 'tênis'],
-                        'Transporte': ['uber', '99', 'gasolina', 'ônibus', 'bilhete único', 'estacionamento', 'ipva'],
-                        'Moradia': ['aluguel', 'condomínio', 'luz', 'água', 'internet', 'net', 'vivo', 'claro'],
-                        'Lazer': ['netflix', 'spotify', 'cinema', 'vinho', 'jantar casal', 'bar', 'show'],
-                        'Financeiro': ['itaú', 'nubank', 'tarifa', 'anuidade', 'cartão']
-                    }
-                };
-                
-                this.emojis = {
-                    'Salário': '💰', 'Investimentos': '📈', 'Freelance': '👨‍💻',
-                    'Alimentação': '🍽️', 'Fitness/Saúde': '🏋️', 'Compras': '🛍️',
-                    'Transporte': '🚗', 'Moradia': '🏠', 'Lazer': '🎉', 'Financeiro': '🏦'
-                };
-            }
+        // === HELPERS & FORMATTERS ===
+        const Utils = {
+            formatCurrency: (value) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value),
+            
+            formatDate: (dateString) => {
+                const [year, month, day] = dateString.split('-');
+                return `${day}/${month}/${year}`;
+            },
 
-            classify(description, type) {
-                const normalized = description.toLowerCase().trim();
-                const categories = this.rules[type] || {};
+            generateId: () => Date.now().toString(36) + Math.random().toString(36).substr(2, 5)
+        };
+
+        // === AI CLASSIFICATION ENGINE ===
+        const FinanceAI = {
+            categories: {
+                receita: {
+                    'Salário': ['salário', 'pagamento', 'holerite', 'localiza', 'empresa', 'ted recebida', 'pix recebido'],
+                    'Investimento': ['rendimento', 'dividendos', 'juros', 'cdb', 'fii', 'nubank', 'inter'],
+                    'Freelance': ['freela', 'extra', 'serviço', 'projeto']
+                },
+                despesa: {
+                    'Alimentação': ['mercado', 'supermercado', 'ifood', 'padaria', 'restaurante', 'almoço', 'jantar', 'café', 'burger', 'pizza', 'açougue'],
+                    'Transporte': ['uber', '99', 'posto', 'gasolina', 'combustível', 'ônibus', 'metrô', 'bilhete', 'ipva', 'estacionamento', 'pedágio'],
+                    'Moradia': ['aluguel', 'condomínio', 'luz', 'água', 'internet', 'claro', 'vivo', 'tim', 'oi', 'iptu', 'energia'],
+                    'Saúde': ['farmácia', 'drogaria', 'médico', 'consulta', 'exame', 'dentista', 'academia', 'smartfit', 'psicólogo'],
+                    'Lazer': ['netflix', 'spotify', 'prime', 'hbo', 'disney', 'cinema', 'jogo', 'steam', 'bar', 'show'],
+                    'Compras': ['shopee', 'amazon', 'mercado livre', 'magalu', 'shein', 'roupa', 'tênis', 'loja'],
+                    'Educação': ['curso', 'faculdade', 'escola', 'livro', 'udemy', 'alura'],
+                    'Financeiro': ['itaú', 'bradesco', 'santander', 'taxa', 'anuidade', 'tarifa', 'emprestimo']
+                }
+            },
+
+            emojis: {
+                'Salário': '💰', 'Investimento': '📈', 'Freelance': '💻',
+                'Alimentação': '🍔', 'Transporte': '🚗', 'Moradia': '🏠',
+                'Saúde': '💊', 'Lazer': '🎉', 'Compras': '🛍️', 
+                'Educação': '📚', 'Financeiro': '🏦', 'Outros': '📝'
+            },
+
+            predictCategory(description, type) {
+                const normalized = description.toLowerCase();
+                const typeCategories = this.categories[type];
                 
-                for (const [category, keywords] of Object.entries(categories)) {
-                    if (keywords.some(keyword => normalized.includes(keyword))) {
-                        return category;
+                for (const [cat, keywords] of Object.entries(typeCategories)) {
+                    if (keywords.some(k => normalized.includes(k))) {
+                        return cat;
                     }
                 }
                 return 'Outros';
-            }
+            },
 
             getIcon(category) {
                 return this.emojis[category] || '📝';
-            }
+            },
 
-            generateInsights(transactions) {
+            analyzeInsights(transactions) {
                 const despesas = transactions.filter(t => t.tipo === 'despesa');
-                if (despesas.length < 5) return "Adicione mais transações para insights personalizados...";
+                if (despesas.length < 3) return "Continue usando o app para receber insights personalizados da IA.";
 
-                const byCategory = despesas.reduce((acc, t) => {
-                    acc[t.cat] = (acc[t.cat] || 0) + t.valor;
+                // Agrupar
+                const totals = despesas.reduce((acc, t) => {
+                    acc[t.categoria] = (acc[t.categoria] || 0) + t.valor;
                     return acc;
                 }, {});
 
-                const topCategory = Object.entries(byCategory).sort((a, b) => b[1] - a[1])[0];
+                // Sort
+                const sorted = Object.entries(totals).sort((a, b) => b[1] - a[1]);
+                const topCat = sorted[0];
                 const totalDespesas = despesas.reduce((sum, t) => sum + t.valor, 0);
-                const percentTop = ((topCategory[1] / totalDespesas) * 100).toFixed(1);
+                const percent = ((topCat[1] / totalDespesas) * 100).toFixed(0);
 
-                return [
-                    `📊 Sua maior categoria de gasto é <strong>${topCategory[0]}</strong> (${percentTop}% do total)`,
-                    `💡 <em>Dica:</em> Você registrou ${despesas.length} despesas. Mantenha o ritmo!`,
-                    `🚀 IA detectou padrões em suas compras da ${topCategory[0].toLowerCase()}`
-                ].join('<br>');
+                return `
+                    <p style="margin-bottom: 8px;">🚨 <strong>Alerta de Gastos:</strong> Sua maior despesa é com <strong>${topCat[0]}</strong> (${percent}% do total).</p>
+                    <p>💡 <strong>Sugestão IA:</strong> Tente reduzir gastos nesta categoria para otimizar seu orçamento mensal.</p>
+                `;
             }
-        }
+        };
 
-        // === DATABASE ENTERPRISE ===
-        class DatabaseEnterprise {
-            static KEY = 'wesley_finance_ai_v2';
+        // === DATA LAYER ===
+        const DataService = {
+            KEY: 'wesley_finance_enterprise_v2_1',
             
-            static seedData() {
-                return {
-                    receitas: 1488.25, // Localiza
-                    despesas: [
-                        {id: 1, tipo: 'despesa', data: '2026-01-15', valor: 323.80, desc: 'Nubank (Negociação)', cat: 'Financeiro'},
-                        {id: 2, tipo: 'despesa', data: '2026-01-15', valor: 35.00, desc: 'Vivo (Móvel)', cat: 'Moradia'},
-                        {id: 3, tipo: 'despesa', data: '2026-01-15', valor: 93.06, desc: 'Vivo (Fixo)', cat: 'Moradia'},
-                        {id: 4, tipo: 'despesa', data: '2026-01-15', valor: 313.31, desc: 'Itaú Cartão', cat: 'Financeiro'},
-                        {id: 5, tipo: 'despesa', data: '2026-01-16', valor: 123.68, desc: 'Supermercado', cat: 'Alimentação'}
-                    ]
-                };
-            }
-
-            static getAll() {
+            getAll() {
                 try {
                     const data = localStorage.getItem(this.KEY);
                     return data ? JSON.parse(data) : [];
                 } catch {
                     return [];
                 }
-            }
+            },
 
-            static save(data) {
+            save(data) {
                 localStorage.setItem(this.KEY, JSON.stringify(data));
-            }
+            },
 
-            static add(transaction) {
+            addTransaction(tx) {
                 const data = this.getAll();
-                data.unshift(transaction);
+                data.unshift(tx);
                 this.save(data);
-            }
+                return data;
+            },
 
-            static remove(id) {
-                const data = this.getAll().filter(t => t.id != id);
+            removeTransaction(id) {
+                const data = this.getAll().filter(t => t.id !== id);
                 this.save(data);
-            }
+                return data;
+            },
 
-            static reset() {
+            reset() {
                 localStorage.removeItem(this.KEY);
+                location.reload();
             }
-        }
+        };
 
-        // === UI CONTROLLER ENTERPRISE ===
-        class UIController {
-            constructor() {
-                this.aiAgent = new FinanceAIAgent();
-                this.currentType = 'receita';
-                this.chart = null;
-                this.init();
-            }
+        // === UI CONTROLLER ===
+        const UI = {
+            currentType: 'receita',
+            chartDashboard: null,
+            chartAnalytics: null,
 
             init() {
-                this.setupEventListeners();
-                this.setupDateInput();
-                this.navigate('dashboard');
-            }
+                this.setupInputs();
+                this.renderAll();
+            },
 
-            setupDateInput() {
+            setupInputs() {
+                // Data de hoje como padrão
                 const today = new Date().toISOString().split('T')[0];
                 document.getElementById('input-data').value = today;
-            }
 
-            setupEventListeners() {
-                // Form submission
+                // Listeners
                 document.getElementById('form-transacao').addEventListener('submit', (e) => this.handleSubmit(e));
+            },
+
+            navigate(viewId, btnElement) {
+                // Esconder todas views
+                document.querySelectorAll('[id^="view-"]').forEach(el => el.classList.add('hidden'));
                 
-                // Navigation
-                document.querySelectorAll('.nav-item, .nav-fab').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        const view = e.currentTarget.dataset.view || 'add';
-                        this.navigate(view);
-                    });
-                });
+                // Mostrar alvo
+                const target = document.getElementById(`view-${viewId}`);
+                if(target) target.classList.remove('hidden');
 
-                // Search
-                document.getElementById('search-input').addEventListener('input', () => this.renderFullList());
+                // Atualizar Nav
+                if (btnElement || viewId !== 'add') {
+                    document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+                    const navBtn = document.querySelector(`.nav-item[data-view="${viewId}"]`);
+                    if(navBtn) navBtn.classList.add('active');
+                }
 
-                // Tab switching
-                document.querySelectorAll('.tab-btn').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        this.setType(e.target.dataset.type);
-                    });
-                });
-            }
+                // Renderizações específicas
+                if (viewId === 'dashboard') this.renderDashboard();
+                if (viewId === 'extrato') this.renderListaCompleta();
+                if (viewId === 'analytics') this.renderAnalytics();
+
+                window.scrollTo(0,0);
+            },
 
             setType(type) {
                 this.currentType = type;
+                
+                // Toggle active classes
                 document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-                document.querySelector(`[data-type="${type}"]`).classList.add('active');
-            }
+                document.querySelector(`.tab-btn[data-type="${type}"]`).classList.add('active');
+            },
 
             async handleSubmit(e) {
                 e.preventDefault();
                 
                 const btn = document.getElementById('btn-submit');
-                const spinner = document.getElementById('spinner');
-                const btnText = document.getElementById('btn-text');
+                const btnText = btn.querySelector('span');
                 
-                // AI Processing Animation
+                // UI Loading State
                 btn.classList.add('loading');
-                spinner.style.display = 'block';
-                btnText.textContent = '🤖 IA Classificando...';
+                const originalText = btnText.textContent;
+                btnText.textContent = "Processando...";
 
+                // Get values
                 const valor = parseFloat(document.getElementById('input-valor').value);
                 const desc = document.getElementById('input-desc').value.trim();
                 const data = document.getElementById('input-data').value;
 
-                // Simulate AI processing
-                await new Promise(resolve => setTimeout(resolve, 1200));
+                if (!valor || !desc || !data) return;
 
-                const category = this.aiAgent.classify(desc, this.currentType);
-                
-                const transaction = {
-                    id: Date.now(),
+                // Simulate AI processing delay
+                await new Promise(r => setTimeout(r, 800));
+
+                // Predict category
+                const category = FinanceAI.predictCategory(desc, this.currentType);
+
+                const tx = {
+                    id: Utils.generateId(),
                     tipo: this.currentType,
                     valor,
                     desc,
                     data,
-                    cat: category
+                    categoria: category
                 };
 
-                DatabaseEnterprise.add(transaction);
-                
-                // Reset UI
+                DataService.addTransaction(tx);
+
+                // Reset & Feedback
                 btn.classList.remove('loading');
-                spinner.style.display = 'none';
-                btnText.textContent = '✅ Salvo! + Dashboard';
+                btnText.textContent = originalText;
+                document.getElementById('form-transacao').reset();
+                document.getElementById('input-data').value = new Date().toISOString().split('T')[0]; // Reset data
                 
-                setTimeout(() => {
-                    document.getElementById('form-transacao').reset();
-                    this.setupDateInput();
-                    btnText.textContent = '🤖 Analisar IA & Salvar';
-                    this.navigate('dashboard');
-                }, 1500);
-            }
+                alert(`Transação classificada como: ${category}`);
+                this.navigate('dashboard');
+            },
 
-            navigate(view) {
-                document.querySelectorAll('[id^="view-"]').forEach(v => v.classList.add('hidden'));
-                document.getElementById(`view-${view}`).classList.remove('hidden');
-                
-                document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
-                if (view !== 'add') {
-                    document.querySelector(`[data-view="${view}"]`).classList.add('active');
-                }
-
-                if (view === 'dashboard') this.renderDashboard();
-                if (view === 'extrato') this.renderFullList();
-                if (view === 'analytics') this.renderAnalytics();
-            }
+            renderAll() {
+                this.renderDashboard();
+                this.renderListaCompleta();
+            },
 
             renderDashboard() {
-                const data = DatabaseEnterprise.getAll();
-                const receitas = data.filter(t => t.tipo === 'receita').reduce((sum, t) => sum + t.valor, 0);
-                const despesas = data.filter(t => t.tipo === 'despesa').reduce((sum, t) => sum + t.valor, 0);
-                const saldo = receitas - despesas;
-
-                document.getElementById('display-saldo').textContent = saldo.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'});
-                document.getElementById('display-receitas').textContent = receitas.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'});
-                document.getElementById('display-despesas').textContent = despesas.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'});
-
-                this.renderRecentList(data.slice(0, 5));
-                this.renderChart('chart-gastos', data.filter(t => t.tipo === 'despesa'));
-            }
-
-            renderRecentList(data) {
-                const container = document.getElementById('list-recentes');
-                container.innerHTML = data.map(t => this.createTransactionCard(t)).join('');
-            }
-
-            renderFullList() {
-                const data = DatabaseEnterprise.getAll();
-                const search = document.getElementById('search-input').value.toLowerCase();
-                const filtered = data.filter(t => t.desc.toLowerCase().includes(search));
-                document.getElementById('list-completa').innerHTML = filtered.map(t => this.createTransactionCard(t)).join('');
-            }
-
-            renderAnalytics() {
-                const data = DatabaseEnterprise.getAll();
-                this.renderChart('chart-analytics', data);
-                document.getElementById('ai-insights').innerHTML = this.aiAgent.generateInsights(data);
-            }
-
-            createTransactionCard(t) {
-                const icon = this.aiAgent.getIcon(t.cat);
-                const color = t.tipo === 'receita' ? 'var(--color-success)' : 'var(--color-danger)';
-                const sign = t.tipo === 'receita' ? '+' : '-';
-                const date = new Date(t.data).toLocaleDateString('pt-BR', {day: 'numeric', month: 'short'});
-
-                return `
-                    <div class="tx-card" onclick="UIController.instance.deleteTransaction(${t.id})">
-                        <div style="display: flex; align-items: center; gap: 16px;">
-                            <div class="tx-icon" style="background: ${color}20">${icon}</div>
-                            <div class="tx-info">
-                                <h4>${t.desc}</h4>
-                                <div class="tx-meta">
-                                    <span>${date}</span>
-                                    <span>${t.cat}</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tx-amount" style="color: ${color}">${sign} R$ ${t.valor.toFixed(2)}</div>
-                    </div>
-                `;
-            }
-
-            renderChart(canvasId, data) {
-                const canvas = document.getElementById(canvasId);
-                const ctx = canvas.getContext('2d');
+                const data = DataService.getAll();
                 
-                if (this.chart) this.chart.destroy();
+                // Calc Totals
+                const totals = data.reduce((acc, t) => {
+                    if (t.tipo === 'receita') acc.receitas += t.valor;
+                    else acc.despesas += t.valor;
+                    return acc;
+                }, { receitas: 0, despesas: 0 });
 
-                const categories = {};
-                data.forEach(t => {
-                    categories[t.cat] = (categories[t.cat] || 0) + t.valor;
+                const saldo = totals.receitas - totals.despesas;
+
+                // Update DOM
+                document.getElementById('display-saldo').textContent = Utils.formatCurrency(saldo);
+                document.getElementById('display-receitas').textContent = Utils.formatCurrency(totals.receitas);
+                document.getElementById('display-despesas').textContent = Utils.formatCurrency(totals.despesas);
+
+                // Render Recent List
+                const recentList = document.getElementById('list-recentes');
+                recentList.innerHTML = '';
+                data.slice(0, 5).forEach(t => {
+                    recentList.innerHTML += this.createTxCard(t);
                 });
 
-                this.chart = new Chart(ctx, {
-                    type: 'doughnut',
+                // Chart
+                this.renderChart(data, 'chart-gastos', 'doughnut');
+            },
+
+            renderListaCompleta() {
+                const data = DataService.getAll();
+                const list = document.getElementById('list-completa');
+                const term = document.getElementById('search-input').value.toLowerCase();
+                
+                list.innerHTML = '';
+                
+                const filtered = data.filter(t => t.desc.toLowerCase().includes(term));
+                
+                if (filtered.length === 0) {
+                    list.innerHTML = '<div style="text-align: center; padding: 40px; color: var(--color-text-3);">Nenhuma transação encontrada.</div>';
+                    return;
+                }
+
+                filtered.forEach(t => {
+                    list.innerHTML += this.createTxCard(t);
+                });
+            },
+
+            renderAnalytics() {
+                const data = DataService.getAll();
+                this.renderChart(data, 'chart-analytics', 'bar');
+                document.getElementById('ai-insights').innerHTML = FinanceAI.analyzeInsights(data);
+            },
+
+            createTxCard(t) {
+                const icon = FinanceAI.getIcon(t.categoria);
+                const colorClass = t.tipo === 'receita' ? 'text-success' : 'text-danger';
+                const sign = t.tipo === 'receita' ? '+' : '-';
+                
+                return `
+                <div class="tx-card" onclick="UI.deleteTransaction('${t.id}')">
+                    <div class="tx-left">
+                        <div class="category-icon">${icon}</div>
+                        <div class="tx-details">
+                            <h4>${t.desc}</h4>
+                            <div class="tx-meta">
+                                <span>${Utils.formatDate(t.data)}</span>
+                                <span>•</span>
+                                <span>${t.categoria}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tx-amount ${colorClass}">
+                        ${sign} ${Utils.formatCurrency(t.valor)}
+                    </div>
+                </div>`;
+            },
+
+            deleteTransaction(id) {
+                if(confirm('Deseja excluir esta transação permanentemente?')) {
+                    DataService.removeTransaction(id);
+                    this.renderAll();
+                }
+            },
+
+            renderChart(data, canvasId, type) {
+                const ctx = document.getElementById(canvasId);
+                if (!ctx) return;
+
+                const despesas = data.filter(t => t.tipo === 'despesa');
+                
+                // Group by category
+                const cats = despesas.reduce((acc, t) => {
+                    acc[t.categoria] = (acc[t.categoria] || 0) + t.valor;
+                    return acc;
+                }, {});
+
+                const labels = Object.keys(cats);
+                const values = Object.values(cats);
+
+                // Destroy old instance if exists
+                if (canvasId === 'chart-gastos' && this.chartDashboard) this.chartDashboard.destroy();
+                if (canvasId === 'chart-analytics' && this.chartAnalytics) this.chartAnalytics.destroy();
+
+                const config = {
+                    type: type,
                     data: {
-                        labels: Object.keys(categories),
+                        labels: labels,
                         datasets: [{
-                            data: Object.values(categories),
-                            backgroundColor: ['#6366f1', '#10b981', '#f59e0b', '#ef4444', '#06b6d4', '#8b5cf6'],
+                            label: 'Gastos',
+                            data: values,
+                            backgroundColor: [
+                                '#6366f1', '#10b981', '#f59e0b', '#ef4444', 
+                                '#06b6d4', '#8b5cf6', '#ec4899', '#14b8a6'
+                            ],
                             borderWidth: 0,
-                            borderRadius: 8
+                            borderRadius: 6
                         }]
                     },
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
                         plugins: {
-                            legend: {
+                            legend: { 
                                 position: 'bottom',
-                                labels: {
-                                    padding: 20,
+                                labels: { 
+                                    color: '#94a3b8', 
+                                    font: { family: 'Inter' },
                                     usePointStyle: true,
-                                    color: 'rgba(255,255,255,0.8)'
-                                }
+                                    padding: 20
+                                } 
                             }
-                        }
+                        },
+                        scales: type === 'bar' ? {
+                            y: { 
+                                grid: { color: 'rgba(255,255,255,0.05)' },
+                                ticks: { color: '#94a3b8' }
+                            },
+                            x: { 
+                                grid: { display: false },
+                                ticks: { color: '#94a3b8' }
+                            }
+                        } : {}
                     }
-                });
-            }
+                };
 
-            deleteTransaction(id) {
-                if (confirm('Remover esta transação?')) {
-                    DatabaseEnterprise.remove(id);
-                    this.renderDashboard();
-                }
+                const newChart = new Chart(ctx, config);
+                if (canvasId === 'chart-gastos') this.chartDashboard = newChart;
+                if (canvasId === 'chart-analytics') this.chartAnalytics = newChart;
             }
-        }
+        };
 
-        // === GLOBAL APP OBJECT ===
+        // === GLOBAL APP ACTIONS ===
         const App = {
             exportData() {
-                const data = DatabaseEnterprise.getAll();
+                const data = DataService.getAll();
                 const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
-                a.download = `wesley-finance-${new Date().toISOString().split('T')[0]}.json`;
+                a.download = `backup-financeiro-${new Date().toISOString().split('T')[0]}.json`;
+                document.body.appendChild(a);
                 a.click();
-                URL.revokeObjectURL(url);
+                document.body.removeChild(a);
             },
 
             resetData() {
-                if (confirm('⚠️ Resetar todos os dados? Os dados originais serão restaurados.')) {
-                    DatabaseEnterprise.reset();
-                    location.reload();
+                if(confirm('⚠️ TEM CERTEZA? Isso apagará todos os dados locais.')) {
+                    DataService.reset();
                 }
             }
         };
 
-        // === PWA SUPPORT ===
+        // === PWA LOGIC ===
         const PWA = {
-            installPrompt: null,
+            deferredPrompt: null,
             
             init() {
                 window.addEventListener('beforeinstallprompt', (e) => {
                     e.preventDefault();
-                    this.installPrompt = e;
-                    setTimeout(() => this.showInstallPrompt(), 3000);
+                    this.deferredPrompt = e;
+                    this.showPrompt();
                 });
             },
 
-            showInstallPrompt() {
-                document.getElementById('install-prompt').style.display = 'block';
+            showPrompt() {
+                const prompt = document.getElementById('install-prompt');
+                if(prompt) prompt.classList.add('visible');
             },
 
-            install() {
-                if (this.installPrompt) {
-                    this.installPrompt.prompt();
-                    this.installPrompt.userChoice.then(() => {
-                        this.hide();
-                    });
+            async install() {
+                if (this.deferredPrompt) {
+                    this.deferredPrompt.prompt();
+                    const { outcome } = await this.deferredPrompt.userChoice;
+                    if (outcome === 'accepted') {
+                        this.deferredPrompt = null;
+                    }
+                    this.hide();
                 }
             },
 
             hide() {
-                document.getElementById('install-prompt').style.display = 'none';
+                document.getElementById('install-prompt').classList.remove('visible');
             }
         };
 
-        // === INITIALIZATION ===
-        let UIControllerInstance;
-        window.addEventListener('load', () => {
-            UIControllerInstance = new UIController();
-            UIController.instance = UIControllerInstance;
+        // BOOTSTRAP
+        window.addEventListener('DOMContentLoaded', () => {
+            UI.init();
             PWA.init();
         });
 
-        // Expose globals for onclick handlers
-        window.UIController = UIControllerInstance;
+        // Expose to window for inline onclicks
+        window.UI = UI;
         window.App = App;
         window.PWA = PWA;
+
     </script>
 </body>
 </html>
