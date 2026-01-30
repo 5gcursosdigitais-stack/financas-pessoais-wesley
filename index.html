@@ -318,18 +318,105 @@
     </style>
 </head>
 <body>
-    <!-- Agent Status Bar -->
     <div class="agent-bar"></div>
     <div class="agent-status" id="agent-status">
         🧠 Multiagentes Ativos
     </div>
 
     <div class="app-container">
-        <!-- Header -->
         <header class="header">
             <div class="brand">
                 <div class="brand-icon">🤖</div>
                 <div>
                     <h1 style="font-size: 1.4rem; font-weight: 900; margin: 0;">Wesley Finance Pro</h1>
                     <div style="font-size: 0.8rem; color: var(--color-text-3); font-weight: 500;">v3.0 Enterprise</div>
-                </div
+                </div>
+            </div>
+        </header>
+
+        <div id="content-area">
+            <div class="agent-card">
+                <div class="agent-header">
+                    <div class="agent-icon" style="background: rgba(16,185,129,0.2); color: var(--color-success);">💰</div>
+                    <div>
+                        <div style="font-size: 0.8rem; color: var(--color-text-3);">Fluxo de Caixa</div>
+                        <div style="font-weight: 700;">Março 2026</div>
+                    </div>
+                </div>
+                <div class="agent-balance">R$ 12.450,00</div>
+                <div style="display: flex; gap: 8px;">
+                    <span style="font-size: 0.8rem; color: var(--color-success);">+ R$ 15.000 (Entradas)</span>
+                    <span style="font-size: 0.8rem; color: var(--color-danger);">- R$ 2.550 (Saídas)</span>
+                </div>
+            </div>
+
+            <div class="alert">
+                <span>🤖</span>
+                <div style="font-size: 0.9rem;">
+                    <strong>Insight de IA:</strong> Seus gastos com "Lazer" aumentaram 15% em relação à média. Considere ajustar o orçamento.
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="mainChart"></canvas>
+            </div>
+
+            <h3 style="margin-top: 24px; margin-bottom: 12px; font-size: 1.1rem;">Últimas Atividades</h3>
+            <div class="tx-list">
+                <div class="tx-item">
+                    <div>
+                        <div style="font-weight: 600;">Supermercado</div>
+                        <div style="font-size: 0.8rem; color: var(--color-text-3);">Alimentação • Hoje</div>
+                    </div>
+                    <div style="font-weight: 700; color: var(--color-danger);">- R$ 450,00</div>
+                </div>
+                <div class="tx-item">
+                    <div>
+                        <div style="font-weight: 600;">Salário</div>
+                        <div style="font-size: 0.8rem; color: var(--color-text-3);">Renda • Ontem</div>
+                    </div>
+                    <div style="font-weight: 700; color: var(--color-success);">+ R$ 8.500,00</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="nav-bar">
+        <button style="background:none; border:none; color:var(--color-text-3); font-size:1.5rem;">📊</button>
+        <button style="background:none; border:none; color:var(--color-text-3); font-size:1.5rem;">📑</button>
+        <button class="nav-fab">+</button>
+        <button style="background:none; border:none; color:var(--color-text-3); font-size:1.5rem;">🎯</button>
+        <button style="background:none; border:none; color:var(--color-text-3); font-size:1.5rem;">⚙️</button>
+    </nav>
+
+    <script>
+        // Chart.js Example Configuration
+        const ctx = document.getElementById('mainChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
+                datasets: [{
+                    label: 'Saldo Acumulado',
+                    data: [12000, 19000, 3000, 5000, 2000, 3000],
+                    borderColor: '#6366f1',
+                    backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    x: { grid: { display: false }, ticks: { color: '#9ca3af' } },
+                    y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#9ca3af' } }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
