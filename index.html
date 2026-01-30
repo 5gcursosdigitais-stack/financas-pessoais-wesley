@@ -2,515 +2,515 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>💰 Wesley Finance PRO | Agente IA Completo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Gerenciador financeiro pessoal com inteligência artificial para categorização.">
+    <title>Wesley Finance PRO | Enterprise Edition</title>
+    
     <style>
+        /* --- 1. Design Tokens & Reset --- */
         :root {
-            --primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --success: #10b981;
-            --danger: #ef4444;
-            --warning: #f59e0b;
-            --purple: #8b5cf6;
-            --gray: #6b7280;
+            /* Palette */
+            --hue-primary: 250;
+            --color-primary: hsl(var(--hue-primary), 80%, 60%);
+            --color-primary-dark: hsl(var(--hue-primary), 80%, 40%);
+            --color-bg: #0f172a;
+            --color-surface: #1e293b;
+            --color-surface-hover: #334155;
+            --color-text: #f8fafc;
+            --color-text-muted: #94a3b8;
+            
+            /* Semantic Colors */
+            --color-success: #10b981;
+            --color-danger: #ef4444;
+            --color-warning: #f59e0b;
+            
+            /* Spacing & Radius */
+            --radius-md: 12px;
+            --radius-lg: 24px;
+            --space-sm: 0.5rem;
+            --space-md: 1rem;
+            --space-lg: 2rem;
+            
+            /* Effects */
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+            --glass: rgba(30, 41, 59, 0.7);
+            --backdrop: blur(12px);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        /* Reset Moderno */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 100%);
-            color: #e2e8f0;
+            font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+            background-color: var(--color-bg);
+            background-image: radial-gradient(circle at 10% 20%, rgba(100, 100, 255, 0.1) 0%, transparent 20%);
+            color: var(--color-text);
             min-height: 100vh;
-            padding: 20px;
+            padding: var(--space-md);
+            line-height: 1.5;
         }
 
-        .container {
-            max-width: 1200px;
+        /* --- 2. Layout & Typography --- */
+        .app-container {
+            max-width: 1000px;
             margin: 0 auto;
-            background: rgba(255,255,255,0.05);
-            backdrop-filter: blur(20px);
-            border-radius: 24px;
-            border: 1px solid rgba(255,255,255,0.1);
-            overflow: hidden;
-            box-shadow: 0 32px 64px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-lg);
         }
 
         .header {
-            background: var(--primary);
-            padding: 40px;
             text-align: center;
+            margin-bottom: var(--space-md);
         }
 
         .header h1 {
-            font-size: clamp(2rem, 5vw, 3.5rem);
-            background: linear-gradient(45deg, #fff, #e0e7ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 16px;
-        }
-
-        .saldo-card {
-            background: rgba(16, 185, 129, 0.2);
-            border: 1px solid rgba(16, 185, 129, 0.3);
-            border-radius: 20px;
-            padding: 32px;
-            backdrop-filter: blur(10px);
-            margin: 0 20px 40px;
-        }
-
-        #saldo {
-            font-size: clamp(2.5rem, 8vw, 5rem);
-            font-weight: 900;
-            background: linear-gradient(45deg, #10b981, #34d399);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin: 40px 0;
-        }
-
-        .stat-card {
-            background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 16px;
-            padding: 24px;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-4px);
-            background: rgba(255,255,255,0.12);
-        }
-
-        .stat-value {
-            font-size: 2rem;
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
             font-weight: 800;
-            display: block;
-            margin-bottom: 8px;
+            letter-spacing: -0.05em;
+            background: linear-gradient(to right, #fff, #a5b4fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .input-section {
-            background: rgba(255,255,255,0.05);
-            border-radius: 20px;
-            padding: 40px;
-            margin: 40px;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .input-grid {
+        /* --- 3. Components --- */
+        
+        /* Dashboard Cards */
+        .dashboard-grid {
             display: grid;
-            grid-template-columns: 1fr auto 1fr auto 1fr;
-            gap: 20px;
-            align-items: end;
-            margin-bottom: 24px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--space-md);
         }
 
-        .input-group {
+        .card {
+            background: var(--glass);
+            backdrop-filter: var(--backdrop);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
+            box-shadow: var(--shadow-lg);
             position: relative;
+            overflow: hidden;
         }
 
-        input, select {
-            width: 100%;
-            padding: 16px 20px;
-            background: rgba(255,255,255,0.1);
-            border: 2px solid rgba(255,255,255,0.2);
-            border-radius: 12px;
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 4px;
+            background: linear-gradient(90deg, var(--color-primary), transparent);
+            opacity: 0.5;
+        }
+
+        .balance-label {
+            font-size: 0.875rem;
+            color: var(--color-text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+        }
+
+        .balance-amount {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 800;
             color: #fff;
-            font-size: 1.1rem;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
+            margin-top: var(--space-sm);
         }
 
-        input:focus, select:focus {
+        /* Stats Mini Cards */
+        .stats-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-md);
+            margin-top: var(--space-md);
+        }
+
+        .stat-item {
+            background: rgba(255, 255, 255, 0.03);
+            padding: var(--space-md);
+            border-radius: var(--radius-md);
+        }
+
+        .stat-label { font-size: 0.75rem; color: var(--color-text-muted); }
+        .stat-value { font-size: 1.25rem; font-weight: 700; }
+        .text-success { color: var(--color-success); }
+        .text-danger { color: var(--color-danger); }
+
+        /* Form Section */
+        .transaction-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: var(--space-md);
+            background: var(--color-surface);
+            padding: var(--space-md);
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .input-group { position: relative; }
+        
+        .input-field {
+            width: 100%;
+            background: var(--color-bg);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: var(--color-text);
+            padding: 12px 16px;
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        .input-field:focus {
             outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.2);
-            background: rgba(255,255,255,0.15);
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(100, 100, 255, 0.2);
         }
 
-        input::placeholder {
-            color: rgba(255,255,255,0.6);
-        }
+        /* Custom Select */
+        select.input-field { appearance: none; cursor: pointer; }
 
-        .btn {
-            padding: 16px 32px;
+        /* Button */
+        .btn-primary {
+            background: var(--color-primary);
+            color: white;
             border: none;
-            border-radius: 12px;
-            font-size: 1.1rem;
-            font-weight: 700;
+            padding: 0 var(--space-lg);
+            border-radius: var(--radius-md);
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: filter 0.2s;
+            height: 48px;
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 8px;
-            text-decoration: none;
         }
 
-        .btn-primary {
-            background: var(--primary);
-            color: white;
-            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+        .btn-primary:hover { filter: brightness(1.1); }
+        .btn-primary:active { transform: scale(0.98); }
+
+        /* Transaction List */
+        .list-container {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
         }
 
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 32px rgba(102, 126, 234, 0.6);
-        }
-
-        .historico-section {
-            padding: 40px;
-            margin: 0 40px 40px;
-        }
-
-        .transacao {
+        .transaction-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px;
-            margin-bottom: 16px;
-            background: rgba(255,255,255,0.08);
-            border-radius: 16px;
-            border: 1px solid rgba(255,255,255,0.1);
-            transition: all 0.3s ease;
-            animation: slideIn 0.3s ease;
+            padding: var(--space-md);
+            background: var(--color-surface);
+            border-radius: var(--radius-md);
+            border-left: 4px solid transparent;
+            transition: transform 0.2s;
         }
 
-        .transacao:hover {
-            background: rgba(255,255,255,0.12);
-            transform: translateX(8px);
-        }
+        .transaction-item:hover { transform: translateX(4px); background: var(--color-surface-hover); }
+        .transaction-item.receita { border-left-color: var(--color-success); }
+        .transaction-item.despesa { border-left-color: var(--color-danger); }
 
-        .transacao.receita {
-            border-left: 5px solid var(--success);
-        }
+        .t-info h4 { font-size: 1rem; font-weight: 600; margin-bottom: 2px; }
+        .t-meta { font-size: 0.75rem; color: var(--color-text-muted); display: flex; gap: 8px; align-items: center; }
+        .badge { background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 99px; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        
+        .t-amount { font-weight: 700; font-size: 1.1rem; }
 
-        .transacao.despesa {
-            border-left: 5px solid var(--danger);
-        }
-
-        .categoria {
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
-
-        .categoria-salario { background: rgba(16,185,129,0.2); color: var(--success); }
-        .categoria-fitness { background: rgba(245,158,11,0.2); color: var(--warning); }
-        .categoria-compras { background: rgba(139,92,246,0.2); color: var(--purple); }
-        .categoria-supermercado { background: rgba(34,197,94,0.2); color: var(--success); }
-        .categoria-lazer { background: rgba(245,158,11,0.2); color: var(--warning); }
-        .categoria-delivery { background: rgba(239,68,68,0.2); color: var(--danger); }
-
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateX(-20px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-
+        /* Responsive */
         @media (max-width: 768px) {
-            .input-grid {
-                grid-template-columns: 1fr;
-                gap: 16px;
-            }
-            .container { margin: 10px; border-radius: 16px; }
+            .transaction-form { grid-template-columns: 1fr; }
+            .btn-primary { width: 100%; }
+        }
+
+        /* Utility: Empty State */
+        .empty-state {
+            text-align: center;
+            padding: var(--space-lg);
+            color: var(--color-text-muted);
+            font-style: italic;
         }
     </style>
 </head>
 <body>
-    <div class="container">
+
+    <main class="app-container">
         <header class="header">
-            <h1>🚀 Wesley Finance PRO</h1>
-            <p>Agente IA • Categorização Automática • Insights Profissionais</p>
+            <h1>Wesley Finance PRO</h1>
+            <p style="color: var(--color-text-muted);">Gestão Financeira Inteligente</p>
         </header>
 
-        <div class="saldo-card">
-            <div id="saldo">R$ 0,00</div>
-        </div>
-
-        <div class="stats-grid" id="statsGrid">
-            <!-- Stats gerados dinamicamente -->
-        </div>
-
-        <div class="input-section">
-            <h2>✨ Adicionar Transação Inteligente</h2>
-            <form id="transacaoForm">
-                <div class="input-grid">
-                    <div class="input-group">
-                        <input type="number" id="valor" placeholder="150.00" step="0.01" required min="0">
+        <section class="dashboard-grid">
+            <article class="card">
+                <div class="balance-label">Saldo Total</div>
+                <div class="balance-amount" id="displaySaldo">R$ 0,00</div>
+                
+                <div class="stats-row">
+                    <div class="stat-item">
+                        <div class="stat-label">Entradas</div>
+                        <div class="stat-value text-success" id="displayReceitas">R$ 0,00</div>
                     </div>
-                    <div class="input-group">
-                        <select id="tipo" required>
-                            <option value="">Tipo...</option>
-                            <option value="receita">💰 Receita</option>
-                            <option value="despesa">💸 Despesa</option>
-                        </select>
-                    </div>
-                    <div class="input-group">
-                        <input type="text" id="descricao" placeholder="Shopee, Localiza, academia... (IA categoriza!)" required>
-                    </div>
-                    <div>
-                        <button type="submit" class="btn btn-primary">➕ Adicionar</button>
+                    <div class="stat-item">
+                        <div class="stat-label">Saídas</div>
+                        <div class="stat-value text-danger" id="displayDespesas">R$ 0,00</div>
                     </div>
                 </div>
-            </form>
-        </div>
+            </article>
+        </section>
 
-        <div class="historico-section">
-            <h3>📈 Histórico Completo</h3>
-            <div id="listaTransacoes"></div>
-        </div>
-    </div>
+        <section>
+            <form id="transactionForm" class="transaction-form">
+                <div class="input-group">
+                    <input type="text" id="inputDescricao" class="input-field" placeholder="Ex: Mercado, Salário, Uber..." required autocomplete="off">
+                </div>
+                
+                <div class="input-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <input type="number" id="inputValor" class="input-field" placeholder="0,00" step="0.01" min="0.01" required>
+                    <select id="inputTipo" class="input-field">
+                        <option value="despesa">Saída</option>
+                        <option value="receita">Entrada</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn-primary">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
+                    Adicionar
+                </button>
+            </form>
+        </section>
+
+        <section>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-md);">
+                <h3 style="font-weight: 600;">Últimas Transações</h3>
+                <button onclick="App.exportarDados()" style="background: none; border: none; color: var(--color-primary); cursor: pointer; font-size: 0.875rem;">Backup</button>
+            </div>
+            <div id="transactionsList" class="list-container">
+                </div>
+        </section>
+    </main>
 
     <script>
-        class WesleyFinancePro {
-            constructor() {
-                this.transacoes = [];
-                this.init();
-            }
+        /**
+         * 🛠️ Utils: Funções auxiliares puras
+         */
+        const Utils = {
+            formatCurrency: (value) => {
+                return new Intl.NumberFormat('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL'
+                }).format(value);
+            },
 
-            init() {
-                this.carregarDados();
-                this.bindEvents();
-                this.renderizarTudo();
-            }
+            formatDate: (dateString) => {
+                return new Intl.DateTimeFormat('pt-BR', {
+                    day: '2-digit',
+                    month: 'short',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                }).format(new Date(dateString));
+            },
 
-            // 🧠 CATEGORIZAÇÃO PROFISSIONAL (inspirado Mobills/Organizze/GuiaBolso)
-            categorizarInteligente(descricao, tipo) {
-                const desc = descricao.toLowerCase().trim();
-                
-                // RECEITAS (Salários e ganhos)
-                if (tipo === 'receita') {
-                    if (desc.includes('localiza') || desc.includes('movida') || 
-                        desc.includes('jbs') || desc.includes('sesc') || 
-                        desc.includes('salário') || desc.includes('salario') ||
-                        desc.includes('pgto') || desc.includes('provent')) {
-                        return 'Salário';
+            generateId: () => '_' + Math.random().toString(36).substr(2, 9)
+        };
+
+        /**
+         * 🧠 Core: Lógica de Negócios e Categorização
+         */
+        const Core = {
+            // Dicionário de categorização (Strategy Pattern)
+            categoriesMap: {
+                receita: {
+                    'salario': ['salário', 'pagamento', 'holerite', 'empresa'],
+                    'investimento': ['rendimento', 'cdb', 'dividendos', 'fii'],
+                    'freelance': ['extra', 'serviço', 'freela']
+                },
+                despesa: {
+                    'alimentacao': ['ifood', 'mercado', 'padaria', 'restaurante', 'almoço', 'jantar', 'pizza'],
+                    'transporte': ['uber', '99', 'gasolina', 'posto', 'ônibus', 'metrô'],
+                    'moradia': ['aluguel', 'condomínio', 'luz', 'água', 'internet', 'claro', 'vivo'],
+                    'lazer': ['netflix', 'spotify', 'cinema', 'jogo', 'steam'],
+                    'saude': ['farmácia', 'médico', 'exame', 'academia', 'smartfit'],
+                    'compras': ['amazon', 'shopee', 'shein', 'mercado livre']
+                }
+            },
+
+            categorize: (description, type) => {
+                const normalizedDesc = description.toLowerCase();
+                const categories = Core.categoriesMap[type];
+
+                for (const [category, keywords] of Object.entries(categories)) {
+                    if (keywords.some(key => normalizedDesc.includes(key))) {
+                        return category.charAt(0).toUpperCase() + category.slice(1);
                     }
-                    if (desc.includes('freelance') || desc.includes('trabalho')) return 'Freelance';
-                    return 'Outras Receitas';
                 }
-
-                // DESPESAS (categorização avançada)
-                if (desc.includes('shopee') || desc.includes('mercado livre') || 
-                    desc.includes('magalu') || desc.includes('amazon') || desc.includes('amazon')) {
-                    return 'Compras Online';
-                }
-                
-                if (desc.includes('mercad') || desc.includes('supermercado') || 
-                    desc.includes('pão') || desc.includes('carrefour')) {
-                    return 'Supermercado';
-                }
-                
-                if (desc.includes('academia') || desc.includes('gym') || 
-                    desc.includes('fitness') || desc.includes('treino') ||
-                    desc.includes('parque') || desc.includes('corrida')) {
-                    return 'Fitness';
-                }
-                
-                if (desc.includes('vinho') || desc.includes('restaurante') || 
-                    desc.includes('jantar') || desc.includes('casal') || 
-                    desc.includes('cinema') || desc.includes('bar')) {
-                    return 'Lazer';
-                }
-                
-                if (desc.includes('ifood') || desc.includes('uber eats') || 
-                    desc.includes('99food') || desc.includes('delivery')) {
-                    return 'Delivery';
-                }
-                
-                if (desc.includes('luz') || desc.includes('água') || 
-                    desc.includes('internet') || desc.includes('net') ||
-                    desc.includes('telefon') || desc.includes('celular')) {
-                    return 'Contas';
-                }
-                
-                if (desc.includes('transporte') || desc.includes('ônibus') || 
-                    desc.includes('metro') || desc.includes('táxi')) {
-                    return 'Transporte';
-                }
-                
-                if (desc.includes('aluguel') || desc.includes('condomínio')) {
-                    return 'Moradia';
-                }
-                
                 return 'Outros';
             }
+        };
 
-            salvarTransacao(valor, tipo, descricao) {
-                const categoria = this.categorizarInteligente(descricao, tipo);
-                const transacao = {
-                    id: Date.now() + Math.random(),
-                    data: new Date().toLocaleDateString('pt-BR'),
-                    hora: new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit'}),
-                    valor: parseFloat(valor),
-                    tipo,
-                    descricao: descricao.trim(),
-                    categoria
+        /**
+         * 💾 Store: Gerenciamento de Estado e Persistência
+         */
+        const Store = {
+            KEY: 'wesley_finance_v2',
+            
+            get() {
+                try {
+                    return JSON.parse(localStorage.getItem(this.KEY)) || [];
+                } catch {
+                    return [];
+                }
+            },
+
+            save(data) {
+                localStorage.setItem(this.KEY, JSON.stringify(data));
+            },
+
+            add(transaction) {
+                const data = this.get();
+                data.unshift(transaction);
+                this.save(data);
+                return data;
+            },
+
+            remove(id) {
+                const data = this.get().filter(t => t.id !== id);
+                this.save(data);
+                return data;
+            }
+        };
+
+        /**
+         * 🎨 UI: Manipulação do DOM
+         */
+        const UI = {
+            elements: {
+                form: document.getElementById('transactionForm'),
+                descInput: document.getElementById('inputDescricao'),
+                valInput: document.getElementById('inputValor'),
+                typeInput: document.getElementById('inputTipo'),
+                list: document.getElementById('transactionsList'),
+                displaySaldo: document.getElementById('displaySaldo'),
+                displayReceitas: document.getElementById('displayReceitas'),
+                displayDespesas: document.getElementById('displayDespesas')
+            },
+
+            init() {
+                this.render(Store.get());
+                this.bindEvents();
+            },
+
+            bindEvents() {
+                this.elements.form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.handleSubmit();
+                });
+            },
+
+            handleSubmit() {
+                const desc = this.elements.descInput.value;
+                const val = parseFloat(this.elements.valInput.value);
+                const type = this.elements.typeInput.value;
+
+                if (!desc || isNaN(val) || val <= 0) return;
+
+                const transaction = {
+                    id: Utils.generateId(),
+                    description: desc,
+                    value: val,
+                    type: type,
+                    category: Core.categorize(desc, type),
+                    date: new Date().toISOString()
                 };
 
-                this.transacoes.unshift(transacao);
-                this.salvarDados();
-                this.renderizarTudo();
-                
-                this.mostrarNotificacao(transacao);
-            }
+                const newData = Store.add(transaction);
+                this.render(newData);
+                this.elements.form.reset();
+                this.elements.descInput.focus();
+            },
 
-            mostrarNotificacao(transacao) {
-                const emoji = transacao.tipo === 'receita' ? '💰' : '💸';
-                const saldoAtual = this.getSaldo();
-                
-                // Notificação moderna (melhor que alert)
-                const notificacao = `
-                    <div style="
-                        position: fixed; top: 20px; right: 20px; 
-                        background: linear-gradient(135deg, ${transacao.tipo === 'receita' ? '#10b981' : '#ef4444'}, ${transacao.tipo === 'receita' ? '#34d399' : '#f87171'});
-                        color: white; padding: 20px 24px; border-radius: 12px; 
-                        box-shadow: 0 16px 40px rgba(0,0,0,0.3); z-index: 10000;
-                        max-width: 350px; backdrop-filter: blur(10px);
-                    ">
-                        <strong>${emoji} ${transacao.descricao}</strong><br>
-                        <small style="opacity: 0.9;">
-                            📂 ${transacao.categoria} • R$ ${transacao.valor.toFixed(2)}<br>
-                            💳 Saldo atual: R$ ${saldoAtual.toFixed(2)}
-                        </small>
-                    </div>
-                `;
-                
-                document.body.insertAdjacentHTML('beforeend', notificacao);
-                setTimeout(() => {
-                    const el = document.querySelector('[style*="position: fixed"]');
-                    if (el) el.remove();
-                }, 4000);
-            }
+            handleDelete(id) {
+                if(confirm('Deseja excluir este registro?')) {
+                    const newData = Store.remove(id);
+                    this.render(newData);
+                }
+            },
 
-            getSaldo() {
-                return this.transacoes.reduce((total, t) => {
-                    return t.tipo === 'receita' ? total + t.valor : total - t.valor;
-                }, 0);
-            }
+            updateDashboard(transactions) {
+                const totals = transactions.reduce((acc, curr) => {
+                    if (curr.type === 'receita') {
+                        acc.receitas += curr.value;
+                        acc.total += curr.value;
+                    } else {
+                        acc.despesas += curr.value;
+                        acc.total -= curr.value;
+                    }
+                    return acc;
+                }, { receitas: 0, despesas: 0, total: 0 });
 
-            getStats() {
-                const receitas = this.transacoes
-                    .filter(t => t.tipo === 'receita')
-                    .reduce((sum, t) => sum + t.valor, 0);
-                    
-                const despesas = this.transacoes
-                    .filter(t => t.tipo === 'despesa')
-                    .reduce((sum, t) => sum + t.valor, 0);
-                
-                const topCategoria = this.transacoes
-                    .filter(t => t.tipo === 'despesa')
-                    .reduce((acc, t) => {
-                        acc[t.categoria] = (acc[t.categoria] || 0) + t.valor;
-                        return acc;
-                    }, {});
-                
-                const maiorGasto = Object.entries(topCategoria)
-                    .sort((a, b) => b[1] - a[1])[0];
+                this.elements.displaySaldo.textContent = Utils.formatCurrency(totals.total);
+                this.elements.displayReceitas.textContent = Utils.formatCurrency(totals.receitas);
+                this.elements.displayDespesas.textContent = Utils.formatCurrency(totals.despesas);
+            },
 
-                return { receitas, despesas, maiorGasto: maiorGasto?.[0] || 'Nenhuma' };
-            }
+            renderList(transactions) {
+                this.elements.list.innerHTML = '';
 
-            renderizarTudo() {
-                this.renderizarSaldo();
-                this.renderizarStats();
-                this.renderizarHistorico();
-            }
-
-            renderizarSaldo() {
-                document.getElementById('saldo').textContent = 
-                    `R$ ${this.getSaldo().toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
-            }
-
-            renderizarStats() {
-                const { receitas, despesas, maiorGasto } = this.getStats();
-                document.getElementById('statsGrid').innerHTML = `
-                    <div class="stat-card">
-                        <span class="stat-value" style="color: #10b981">R$ ${receitas.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</span>
-                        <span>Total Receitas</span>
-                    </div>
-                    <div class="stat-card">
-                        <span class="stat-value" style="color: #ef4444">R$ ${despesas.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</span>
-                        <span>Total Despesas</span>
-                    </div>
-                    <div class="stat-card">
-                        <span class="stat-value" style="color: #f59e0b">${maiorGasto}</span>
-                        <span>Maior Gasto</span>
-                    </div>
-                `;
-            }
-
-            renderizarHistorico() {
-                const lista = document.getElementById('listaTransacoes');
-                if (this.transacoes.length === 0) {
-                    lista.innerHTML = '<div style="text-align: center; padding: 60px; opacity: 0.7;"><p>✨ Adicione sua primeira transação!<br><small>Digite naturalmente, a IA categoriza tudo!</small></p></div>';
+                if (transactions.length === 0) {
+                    this.elements.list.innerHTML = `
+                        <div class="empty-state">
+                            <p>Nenhuma transação registrada ainda.</p>
+                        </div>`;
                     return;
                 }
 
-                lista.innerHTML = this.transacoes.slice(0, 30).map(t => `
-                    <div class="transacao ${t.tipo}">
-                        <div>
-                            <strong>${t.descricao}</strong>
-                            <div style="font-size: 0.9rem; opacity: 0.8; margin-top: 4px;">
-                                ${t.data} • ${t.hora}
+                const fragment = document.createDocumentFragment();
+
+                transactions.forEach(t => {
+                    const el = document.createElement('div');
+                    el.className = `transaction-item ${t.type}`;
+                    el.onclick = () => this.handleDelete(t.id);
+                    el.role = "button";
+                    el.title = "Clique para excluir";
+
+                    el.innerHTML = `
+                        <div class="t-info">
+                            <h4>${t.description}</h4>
+                            <div class="t-meta">
+                                <span class="badge">${t.category}</span>
+                                <span>${Utils.formatDate(t.date)}</span>
                             </div>
                         </div>
-                        <div style="text-align: right;">
-                            <div class="categoria categoria-${t.categoria.toLowerCase().replace(/\s+/g, '-')}">${t.categoria}</div>
-                            <div style="font-weight: 800; font-size: 1.3rem; margin-top: 8px; 
-                                color: ${t.tipo === 'receita' ? '#10b981' : '#ef4444'};">
-                                ${t.tipo === 'receita' ? '+' : '-'}R$ ${t.valor.toFixed(2)}
-                            </div>
+                        <div class="t-amount" style="color: var(--color-${t.type === 'receita' ? 'success' : 'danger'})">
+                            ${t.type === 'receita' ? '+' : '-'} ${Utils.formatCurrency(t.value)}
                         </div>
-                    </div>
-                `).join('');
-            }
-
-            carregarDados() {
-                const dados = localStorage.getItem('wesleyFinancePro');
-                if (dados) {
-                    this.transacoes = JSON.parse(dados);
-                }
-            }
-
-            salvarDados() {
-                localStorage.setItem('wesleyFinancePro', JSON.stringify(this.transacoes));
-            }
-
-            bindEvents() {
-                document.getElementById('transacaoForm').addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    const valor = document.getElementById('valor').value;
-                    const tipo = document.getElementById('tipo').value;
-                    const descricao = document.getElementById('descricao').value;
-                    
-                    if (valor && tipo && descricao) {
-                        this.salvarTransacao(valor, tipo, descricao);
-                        this.limparForm();
-                    }
+                    `;
+                    fragment.appendChild(el);
                 });
-            }
 
-            limparForm() {
-                document.getElementById('transacaoForm').reset();
-            }
-        }
+                this.elements.list.appendChild(fragment);
+            },
 
-        // 🚀 Inicialização
-        document.addEventListener('DOMContentLoaded', () => {
-            new WesleyFinancePro();
-        });
+            render(data) {
+                this.updateDashboard(data);
+                this.renderList(data);
+            }
+        };
+
+        // Expor método para debug/backup
+        const App = {
+            exportarDados: () => {
+                const data = JSON.stringify(Store.get(), null, 2);
+                const blob = new Blob([data], {type: 'application/json'});
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `backup-financeiro-${new Date().toISOString().split('T')[0]}.json`;
+                a.click();
+            }
+        };
+
+        // Start App
+        document.addEventListener('DOMContentLoaded', () => UI.init());
+
     </script>
 </body>
 </html>
