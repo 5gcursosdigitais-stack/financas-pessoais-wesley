@@ -9,9 +9,8 @@
     <title>Wesley Finanças</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        /* --- SISTEMA DE CORES DINÂMICO --- */
+        /* --- DESIGN SYSTEM FINAL --- */
         :root {
-            /* Padrão (Light) */
             --bg-body: #f4f6f8;
             --bg-card: #ffffff;
             --bg-nav: rgba(255, 255, 255, 0.95);
@@ -21,15 +20,11 @@
             --accent: #2563eb;
             --success: #059669;
             --danger: #be123c;
-            --input-bg: #ffffff;
             --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            
-            /* Áreas Seguras */
             --safe-top: env(safe-area-inset-top);
             --safe-bottom: env(safe-area-inset-bottom);
         }
 
-        /* Override para Dark Mode */
         [data-theme="dark"] {
             --bg-body: #000000;
             --bg-card: #1c1c1e;
@@ -37,14 +32,13 @@
             --text-main: #f2f2f7;
             --text-sub: #a1a1aa;
             --border: #2c2c2e;
-            --accent: #3b82f6; /* Azul mais claro para contraste */
+            --accent: #3b82f6;
             --success: #10b981;
             --danger: #f43f5e;
-            --input-bg: #151516;
             --shadow: none;
         }
 
-        /* --- RESET --- */
+        /* Reset Absoluto */
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; margin: 0; padding: 0; }
         html { height: 100%; overflow: hidden; }
         
@@ -55,15 +49,14 @@
             height: 100dvh;
             display: flex; flex-direction: column;
             overflow: hidden;
-            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
-        /* Container */
+        /* Container Principal */
         .app-content {
             flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch;
             padding: 20px;
             padding-top: calc(var(--safe-top) + 15px);
-            padding-bottom: 160px; /* Espaço para não cobrir botões */
+            padding-bottom: 180px; /* Espaço de segurança */
             width: 100%; max-width: 600px; margin: 0 auto;
         }
 
@@ -75,8 +68,7 @@
             display: flex; align-items: center; gap: 10px;
             background: var(--bg-card); padding: 8px 16px;
             border-radius: 30px; border: 1px solid var(--border);
-            font-weight: 700; font-size: 0.95rem;
-            box-shadow: var(--shadow);
+            font-weight: 700; font-size: 0.95rem; box-shadow: var(--shadow);
         }
         
         .icon-btn {
@@ -84,21 +76,17 @@
             background: var(--bg-card); border: 1px solid var(--border);
             display: flex; align-items: center; justify-content: center;
             font-size: 1.2rem; cursor: pointer; color: var(--text-main);
-            transition: transform 0.1s;
         }
-        .icon-btn:active { transform: scale(0.9); }
 
         /* Cards */
         .card {
             background: var(--bg-card); border-radius: 20px;
             padding: 24px; margin-bottom: 16px;
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow);
-            transition: background-color 0.3s ease;
+            border: 1px solid var(--border); box-shadow: var(--shadow);
         }
 
-        /* Dashboard */
-        .balance-label { font-size: 0.85rem; text-transform: uppercase; font-weight: 700; color: var(--text-sub); letter-spacing: 0.5px; }
+        /* Dashboard Tipografia */
+        .balance-label { font-size: 0.85rem; text-transform: uppercase; font-weight: 700; color: var(--text-sub); }
         .balance-value { font-size: 2.8rem; font-weight: 800; margin: 8px 0 16px 0; letter-spacing: -1px; }
         
         .kpi-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
@@ -107,39 +95,33 @@
         .txt-success { color: var(--success); }
         .txt-danger { color: var(--danger); }
 
-        /* Inputs */
+        /* Form Elements */
         .form-group { margin-bottom: 20px; }
         .form-label { display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 8px; color: var(--text-sub); }
         
         .input-field {
             width: 100%; height: 56px; padding: 0 16px;
             border: 1px solid var(--border); border-radius: 16px;
-            background: var(--input-bg); color: var(--text-main);
+            background: var(--bg-body); color: var(--text-main);
             font-size: 17px; appearance: none;
-            transition: border-color 0.2s;
         }
         .input-field:focus { border-color: var(--accent); }
 
         /* Botões */
         .btn {
-            width: 100%; height: 58px;
-            border: none; border-radius: 16px;
+            width: 100%; height: 58px; border: none; border-radius: 16px;
             font-size: 1.05rem; font-weight: 700;
             display: flex; align-items: center; justify-content: center; gap: 8px;
             cursor: pointer; margin-top: 10px;
         }
         .btn:active { transform: scale(0.98); opacity: 0.9; }
-        
         .btn-primary { background: var(--accent); color: #ffffff; }
-        .btn-outline { background: transparent; border: 2px solid var(--border); color: var(--text-main); }
-        
-        /* Label Botão (Restore) */
-        .btn-label {
-            display: flex; align-items: center; justify-content: center;
-            width: 100%; height: 58px;
-            border: 2px solid var(--border); border-radius: 16px;
-            font-weight: 700; cursor: pointer; color: var(--text-main);
-            background: transparent;
+        .btn-outline { background: transparent; border: 2px solid var(--border); color: var(--text-main); position: relative; }
+
+        /* TRUQUE DO UPLOAD NO IPHONE: Input transparente por cima do botão */
+        .file-input-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0; cursor: pointer; z-index: 10;
         }
 
         /* Seletor Tipo */
@@ -157,12 +139,11 @@
         .type-option.active.rec { color: var(--success); }
         .type-option.active.desp { color: var(--danger); }
 
-        /* Lista Transações */
+        /* Lista */
         .tx-item {
             display: flex; justify-content: space-between; align-items: center;
             padding: 18px 0; border-bottom: 1px solid var(--border);
         }
-        .tx-item:last-child { border-bottom: none; }
         .tx-main { font-weight: 600; font-size: 1rem; margin-bottom: 4px; color: var(--text-main); }
         .tx-sub { font-size: 0.8rem; color: var(--text-sub); }
         .tx-amount { font-weight: 800; font-size: 1rem; }
@@ -178,7 +159,6 @@
             padding-bottom: var(--safe-bottom);
             padding-top: 8px;
             height: calc(65px + var(--safe-bottom));
-            transition: background-color 0.3s ease;
         }
 
         .nav-btn {
@@ -190,7 +170,7 @@
         .nav-icon { font-size: 1.5rem; line-height: 1; }
         .nav-text { font-size: 0.65rem; font-weight: 600; letter-spacing: -0.2px; }
 
-        /* Calendário Ícone */
+        /* Calendário Dinâmico */
         .cal-icon {
             width: 26px; height: 26px; border: 2px solid currentColor; border-radius: 6px;
             position: relative; display: flex; justify-content: center; align-items: center;
@@ -201,29 +181,19 @@
         }
         .cal-day { font-size: 11px; font-weight: 900; margin-top: 4px; font-family: sans-serif; }
 
-        /* Lock Screen */
-        #lock-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--bg-body); z-index: 99999;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-        }
-        .pin-input {
-            font-size: 2.5rem; text-align: center; letter-spacing: 12px; width: 220px;
-            background: transparent; border: none; border-bottom: 2px solid var(--accent);
-            color: var(--text-main); margin: 30px 0; border-radius: 0;
-        }
-
         /* Utils */
         .d-none { display: none !important; }
         .animate-enter { animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
         @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        #lock-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-body); z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .pin-input { font-size: 2.5rem; text-align: center; letter-spacing: 12px; width: 220px; background: transparent; border: none; border-bottom: 2px solid var(--accent); color: var(--text-main); margin: 30px 0; border-radius: 0; }
     </style>
 </head>
 <body data-theme="light">
 
     <div id="lock-screen" class="d-none">
         <h2 style="margin-bottom: 10px;">🔒 Bloqueado</h2>
-        <p style="opacity: 0.6;">Digite seu PIN</p>
         <input type="tel" id="pin-input" class="pin-input" maxlength="4" placeholder="••••">
         <button class="btn btn-primary" onclick="unlock()" style="width: 200px;">ACESSAR</button>
     </div>
@@ -237,7 +207,7 @@
                     <span id="display-month">--</span>
                     <span onclick="changeMonth(1)" style="cursor:pointer; padding:0 10px;">❯</span>
                 </div>
-                <button class="icon-btn" onclick="toggleTheme()" id="theme-btn">🌓</button>
+                <button class="icon-btn" onclick="toggleTheme()">🌓</button>
                 <button class="icon-btn" onclick="toggleLock()">🔒</button>
             </div>
         </header>
@@ -271,13 +241,13 @@
             </div>
 
             <div class="card" style="text-align:center; border-style:dashed;">
-                <h4 style="margin-bottom:15px;">Manutenção</h4>
+                <h4 style="margin-bottom:15px;">Backup & Dados</h4>
                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-                    <button class="btn btn-outline" onclick="exportData()" style="margin:0;">⬇️ Baixar</button>
-                    <label class="btn-label" style="margin:0;">
+                    <button class="btn btn-outline" onclick="exportData()">⬇️ Baixar</button>
+                    <div class="btn btn-outline" style="margin-top:0;">
                         ⬆️ Restaurar
-                        <input type="file" onchange="importData(this)" accept=".json" style="display:none;">
-                    </label>
+                        <input type="file" class="file-input-overlay" onchange="importData(this)" accept=".json">
+                    </div>
                 </div>
                 <button class="btn btn-outline" onclick="cloneMonth()">🔁 Clonar Mês Anterior</button>
             </div>
@@ -346,11 +316,13 @@
     </nav>
 
     <script>
-        // DADOS DO SEU ARQUIVO
+        // --- DADOS INJETADOS (O SEGREDO) ---
+        // Seus dados exatos estão aqui. Se o app for aberto pela 1ª vez, ele usa isso.
         const SEED_DATA = {"2026-01":{"transacoes":[{"id":1769237949804,"tipo":"receita","data":"2026-01-05","valor":1488.25,"desc":"Pagamento Inicial Localiza","cat":"Entrada"},{"id":1769238022639,"tipo":"despesa","data":"2026-01-15","valor":323.8,"desc":"Nubank (Negociação)","cat":"Banco"},{"id":1769238044835,"tipo":"despesa","data":"2026-01-15","valor":35,"desc":"Vivo (Móvel)","cat":"Telefonia"},{"id":1769238058943,"tipo":"despesa","data":"2026-01-15","valor":93.06,"desc":"Vivo (Fixo)","cat":"Telefonia"},{"id":1769238090189,"tipo":"despesa","data":"2026-01-15","valor":100,"desc":"Devolução para Irene","cat":"Outros"},{"id":1769238140319,"tipo":"despesa","data":"2026-01-15","valor":313.31,"desc":"Itaú (Pagamento Cartão de Crédito)","cat":"Banco"},{"id":1769238242249,"tipo":"despesa","data":"2026-01-15","valor":39.99,"desc":"Jantar","cat":"Alimentação"},{"id":1769238274115,"tipo":"despesa","data":"2026-01-16","valor":123.68,"desc":"Supermercado","cat":"Alimentação"},{"id":1769238389601,"tipo":"despesa","data":"2026-01-22","valor":41.56,"desc":"Despedida Giselle (Localiza)","cat":"Alimentação"},{"id":1769238425467,"tipo":"despesa","data":"2026-01-19","valor":53.17,"desc":"Almoço (Shimatzu)","cat":"Alimentação"},{"id":1769238443297,"tipo":"despesa","data":"2026-01-21","valor":25.4,"desc":"Almoço (Shimatzu)","cat":"Alimentação"},{"id":1769238572209,"tipo":"despesa","data":"2026-01-15","valor":100,"desc":"Recarga Bilhete Único","cat":"Transporte"},{"id":1769238681319,"tipo":"despesa","data":"2026-01-05","valor":1111.84,"desc":"Itaú (Limite da Conta)","cat":"Banco"}],"investimentos":[]}};
+        
         const CATS = ["🏠 Moradia", "🍔 Alimentação", "🚗 Transporte", "📱 Telefonia", "🎬 Streaming", "🏦 Banco", "💊 Saúde", "📚 Educação", "🎉 Lazer", "🛍️ Compras", "🐾 Pets", "🎁 Presentes", "⚙️ Outros"];
 
-        let db = JSON.parse(localStorage.getItem('fin_v15')) || SEED_DATA;
+        let db = JSON.parse(localStorage.getItem('fin_v16')) || SEED_DATA;
         if(!db.config) db.config = {metas:{}};
         
         let curMonth = new Date().toISOString().slice(0,7);
@@ -358,19 +330,17 @@
         let chartPie = null, chartBar = null;
 
         window.onload = () => {
-            // Restore Theme & Lock
             const t = localStorage.getItem('theme') || 'light';
             document.body.setAttribute('data-theme', t);
             updateMetaColor(t);
             
             if(localStorage.getItem('app_pin')) document.getElementById('lock-screen').classList.remove('d-none');
 
-            // Selects
             const opts = CATS.map(c => `<option value="${c}">${c}</option>`).join('');
             document.getElementById('in-cat').innerHTML = opts;
             document.getElementById('meta-cat').innerHTML = opts;
 
-            // Date & Calendar
+            // Fix Timezone: Força a data local do Brasil/Usuário
             const now = new Date();
             const off = now.getTimezoneOffset() * 60000;
             document.getElementById('in-date').value = new Date(now - off).toISOString().split('T')[0];
@@ -380,24 +350,21 @@
         };
 
         function updateMetaColor(theme) {
-            const color = theme === 'dark' ? '#000000' : '#f4f6f8';
-            document.getElementById('meta-theme').setAttribute('content', color);
+            document.getElementById('meta-theme').setAttribute('content', theme === 'dark' ? '#000000' : '#f4f6f8');
         }
 
         function toggleTheme() {
             const b = document.body;
-            const current = b.getAttribute('data-theme');
-            const next = current === 'dark' ? 'light' : 'dark';
+            const next = b.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
             b.setAttribute('data-theme', next);
             localStorage.setItem('theme', next);
             updateMetaColor(next);
-            // Re-render charts for color update
             render(); 
         }
 
         // --- CORE ---
         const getM = (m=curMonth) => { if(!db[m]) db[m]={transacoes:[], investimentos:[]}; return db[m]; }
-        const save = () => { localStorage.setItem('fin_v15', JSON.stringify(db)); render(); }
+        const save = () => { localStorage.setItem('fin_v16', JSON.stringify(db)); render(); }
         const fmt = v => v.toLocaleString('pt-BR', {style:'currency', currency:'BRL'});
 
         // --- ACTIONS ---
@@ -407,13 +374,17 @@
             const desc = document.getElementById('in-desc').value;
             if(!dt || isNaN(val) || !desc) return alert("Preencha tudo!");
 
-            const m = getM(dt.slice(0,7));
+            const targetMonth = dt.slice(0,7);
+            const m = getM(targetMonth);
             const cat = curType==='receita' ? 'Entrada' : document.getElementById('in-cat').value;
             
             m.transacoes.push({id:Date.now(), type:curType, data:dt, valor:val, desc, cat});
             save(); alert("Salvo!");
             document.getElementById('in-val').value='';
             document.getElementById('in-desc').value='';
+            
+            // Só atualiza a tela se o mês salvo for o mesmo que estamos vendo
+            if(targetMonth === curMonth) render();
         }
 
         function setTxType(t) {
@@ -502,9 +473,7 @@
             const ctx = document.getElementById('chart-pie'); if(!ctx) return;
             if(chartPie) chartPie.destroy();
             const cats = {}; txs.filter(x=>x.type==='despesa').forEach(x=>cats[x.cat]=(cats[x.cat]||0)+x.valor);
-            
-            // Cor do texto baseada no tema
-            const textColor = document.body.getAttribute('data-theme') === 'dark' ? '#ffffff' : '#1e293b';
+            const txt = document.body.getAttribute('data-theme') === 'dark' ? '#fff' : '#1e293b';
 
             chartPie = new Chart(ctx, {
                 type: 'doughnut',
@@ -514,7 +483,7 @@
                 },
                 options: {
                     responsive: true, maintainAspectRatio: false,
-                    plugins: { legend: { position: 'right', labels: { color: textColor, boxWidth: 12 } } }
+                    plugins: { legend: { position: 'right', labels: { color: txt, boxWidth: 12 } } }
                 }
             });
         }
@@ -534,19 +503,14 @@
                     d.push(r-e);
                 } else d.push(0);
             }
-
-            const textColor = document.body.getAttribute('data-theme') === 'dark' ? '#ffffff' : '#1e293b';
-
+            const txt = document.body.getAttribute('data-theme') === 'dark' ? '#fff' : '#1e293b';
             chartBar = new Chart(ctx, {
                 type:'bar',
                 data: { labels:l, datasets:[{ label:'Saldo', data:d, backgroundColor:d.map(v=>v>=0?'#059669':'#be123c'), borderRadius:4 }] },
                 options: {
                     responsive:true, maintainAspectRatio:false,
                     plugins: { legend: { display: false } },
-                    scales: { 
-                        x: { ticks: { color: textColor } },
-                        y: { ticks: { color: textColor }, grid: { color: document.body.getAttribute('data-theme') === 'dark' ? '#333' : '#e2e8f0' } }
-                    }
+                    scales: { x: { ticks: { color: txt } }, y: { ticks: { color: txt } } }
                 }
             });
         }
