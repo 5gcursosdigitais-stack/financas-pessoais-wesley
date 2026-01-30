@@ -54,40 +54,23 @@
 
         /* HEADER & CONTROLS */
         .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
-        .app-title { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.5px; }
+        .app-title { font-size: 1.25rem; font-weight: 800; letter-spacing: -0.5px; }
         
-        .header-actions { display: flex; gap: 8px; }
+        .header-actions { display: flex; gap: 4px; align-items: center; }
 
         .month-selector {
-            display: flex; align-items: center; gap: 10px;
-            background: var(--bg-card); padding: 8px 16px;
+            display: flex; align-items: center; gap: 8px;
+            background: var(--bg-card); padding: 6px 12px;
             border-radius: 30px; border: 1px solid var(--border);
-            font-weight: 700; font-size: 0.95rem; box-shadow: var(--shadow);
+            font-weight: 700; font-size: 0.9rem; box-shadow: var(--shadow);
         }
         
         .icon-btn {
-            width: 44px; height: 44px; border-radius: 50%;
-            background: var(--bg-card); border: 1px solid var(--border);
+            width: 40px; height: 40px; border-radius: 50%;
+            background: transparent; border: none;
             display: flex; align-items: center; justify-content: center;
-            font-size: 1.2rem; cursor: pointer; color: var(--text-main);
-        }
-
-        /* BOTÃO BANDEIRA (HÍBRIDO) */
-        .flag-btn {
-            width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--border);
-            cursor: pointer; position: relative; overflow: hidden;
-            background: linear-gradient(90deg, #009c3b 50%, #3c3b6e 50%); /* Verde Brasil / Azul EUA */
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: var(--shadow);
-        }
-        /* Detalhes simples para simular as bandeiras */
-        .flag-btn::after {
-            content: "🇧🇷🇺🇸"; font-size: 1.4rem; 
-            /* Centraliza os emojis sobre o gradiente */
-            display: flex; align-items: center; justify-content: center;
-            width: 100%; height: 100%;
-            background: var(--bg-card); /* Fundo limpo para os emojis */
-            border-radius: 50%;
+            font-size: 1.3rem; cursor: pointer; color: var(--text-main);
+            padding: 0;
         }
 
         /* CARDS & DASHBOARD */
@@ -137,8 +120,6 @@
         .type-option.active.rec { background-color: var(--success); color: white; box-shadow: var(--shadow); }
         .type-option.active.desp { background-color: var(--danger); color: white; box-shadow: var(--shadow); }
 
-        .file-input-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; z-index: 10; }
-
         /* LISTAS */
         .tx-item { display: flex; justify-content: space-between; align-items: center; padding: 18px 0; border-bottom: 1px solid var(--border); }
         .tx-main { font-weight: 600; font-size: 1rem; margin-bottom: 4px; color: var(--text-main); }
@@ -151,7 +132,8 @@
             background: var(--bg-nav); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
             border-top: 1px solid var(--border); z-index: 9999;
             display: grid; grid-template-columns: repeat(6, 1fr);
-            padding-bottom: var(--safe-bottom); padding-top: 8px; height: calc(65px + var(--safe-bottom));
+            padding-bottom: max(var(--safe-bottom), 20px); padding-top: 8px; 
+            height: calc(70px + var(--safe-bottom));
         }
         .nav-btn {
             background: none; border: none; display: flex; flex-direction: column; align-items: center;
@@ -169,6 +151,33 @@
         .animate-enter { animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
         @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         
+        /* MODAL/POPUP */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(5px);
+            z-index: 10000; display: flex; align-items: center; justify-content: center;
+            padding: 20px;
+        }
+        .modal-content {
+            background: var(--bg-card); border-radius: 20px;
+            padding: 24px; max-width: 500px; width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: modalSlide 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            max-height: 80vh; overflow-y: auto;
+        }
+        @keyframes modalSlide { from { opacity: 0; transform: translateY(30px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        .modal-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid var(--border);
+        }
+        .modal-title { font-size: 1.3rem; font-weight: 700; }
+        .modal-close {
+            width: 36px; height: 36px; border-radius: 50%;
+            background: var(--bg-body); border: none;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.3rem; cursor: pointer; color: var(--text-main);
+        }
+        
         #lock-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-body); z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .pin-input { font-size: 2.5rem; text-align: center; letter-spacing: 12px; width: 220px; background: transparent; border: none; border-bottom: 2px solid var(--accent); color: var(--text-main); margin: 30px 0; border-radius: 0; }
     </style>
@@ -183,16 +192,17 @@
 
     <div class="app-content">
         <header class="header">
-            <h1 class="app-title">Wesley Fin.</h1>
+            <h1 class="app-title">Wesley Finanças</h1>
             <div class="header-actions">
                 <div class="month-selector">
                     <span onclick="changeMonth(-1)" style="cursor:pointer; padding:0 10px;">❮</span>
                     <span id="display-month">--</span>
                     <span onclick="changeMonth(1)" style="cursor:pointer; padding:0 10px;">❯</span>
                 </div>
-                <button class="flag-btn" onclick="toggleLanguage()" id="lang-btn"></button>
-                <button class="icon-btn" onclick="toggleTheme()">🌓</button>
-                <button class="icon-btn" onclick="toggleLock()">🔒</button>
+                <button class="icon-btn" onclick="toggleLanguage()" title="Idioma">🌐</button>
+                <button class="icon-btn" onclick="toggleTheme()" id="theme-icon" title="Tema">☀️</button>
+                <button class="icon-btn" onclick="toggleHideValues()" id="hide-icon" title="Ocultar Valores">🙈</button>
+                <button class="icon-btn" onclick="toggleLock()" title="Bloquear">🔒</button>
             </div>
         </header>
 
@@ -225,27 +235,31 @@
             <div class="card" style="text-align:center; border-style:dashed;">
                 <h4 style="margin-bottom:15px;" data-i18n="lbl_maintenance">Manutenção</h4>
                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-                    <button class="btn btn-outline" onclick="exportData()" data-i18n="btn_download">⬇️ Baixar</button>
-                    <div class="btn btn-outline" style="margin:0; padding:0;">
-                        <label class="file-input-overlay"><input type="file" onchange="importData(this)" accept=".json" style="display:none;"></label>
-                        <span data-i18n="btn_restore">⬆️ Restaurar</span>
-                    </div>
+                    <button class="btn btn-outline" onclick="exportData()" data-i18n="btn_download" style="margin:0;">⬇️ Baixar</button>
+                    <button class="btn btn-outline" onclick="document.getElementById('file-import').click()" data-i18n="btn_restore" style="margin:0;">⬆️ Restaurar</button>
+                    <input type="file" id="file-import" onchange="importData(this)" accept=".json" style="display:none;">
                 </div>
                 <button class="btn btn-outline btn-reset" onclick="hardReset()" data-i18n="btn_reset">⚠️ Resetar Padrão</button>
             </div>
         </div>
 
-        <div id="view-extrato" class="d-none animate-enter">
-            <div class="card">
-                <h3 style="margin-bottom:15px;" data-i18n="nav_extract">Extrato</h3>
+        <div id="view-extrato" class="modal-overlay d-none" onclick="if(event.target===this) closeModal('view-extrato')">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" data-i18n="nav_extract">Extrato</h3>
+                    <button class="modal-close" onclick="closeModal('view-extrato')">✕</button>
+                </div>
                 <input type="text" class="input-field" id="search-input" placeholder="🔍 ..." onkeyup="renderExtrato()">
                 <div id="tx-container" style="margin-top:20px;"></div>
             </div>
         </div>
 
-        <div id="view-novo" class="d-none animate-enter">
-            <div class="card">
-                <h3 style="margin-bottom:20px;" data-i18n="nav_new">Novo Lançamento</h3>
+        <div id="view-novo" class="modal-overlay d-none" onclick="if(event.target===this) closeModal('view-novo')">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" data-i18n="nav_new">Novo Lançamento</h3>
+                    <button class="modal-close" onclick="closeModal('view-novo')">✕</button>
+                </div>
                 <div class="type-switcher">
                     <div class="type-option active rec" id="opt-rec" onclick="setTxType('receita')" data-i18n="opt_income">Receita</div>
                     <div class="type-option" id="opt-desp" onclick="setTxType('despesa')" data-i18n="opt_expense">Despesa</div>
@@ -258,31 +272,40 @@
             </div>
         </div>
 
-        <div id="view-anual" class="d-none animate-enter">
-            <div class="card">
-                <h3 data-i18n="nav_annual">Anual</h3>
+        <div id="view-anual" class="modal-overlay d-none" onclick="if(event.target===this) closeModal('view-anual')">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" data-i18n="nav_annual">Anual</h3>
+                    <button class="modal-close" onclick="closeModal('view-anual')">✕</button>
+                </div>
                 <div style="position:relative; height:250px; margin-top:20px;"><canvas id="chart-bar"></canvas></div>
             </div>
         </div>
 
-        <div id="view-metas" class="d-none animate-enter">
-            <div class="card">
-                <h3 data-i18n="nav_goals">Metas</h3>
-                <div class="form-group" style="margin-top:15px;"><label class="form-label" data-i18n="lbl_cat">CATEGORIA</label><select class="input-field" id="meta-cat"></select></div>
+        <div id="view-metas" class="modal-overlay d-none" onclick="if(event.target===this) closeModal('view-metas')">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" data-i18n="nav_goals">Metas</h3>
+                    <button class="modal-close" onclick="closeModal('view-metas')">✕</button>
+                </div>
+                <div class="form-group"><label class="form-label" data-i18n="lbl_cat">CATEGORIA</label><select class="input-field" id="meta-cat"></select></div>
                 <div class="form-group"><label class="form-label" data-i18n="lbl_limit">LIMITE</label><input type="number" class="input-field" id="meta-val" inputmode="decimal"></div>
                 <button class="btn btn-primary" onclick="saveMeta()" data-i18n="btn_save">SALVAR</button>
+                <div id="meta-list" style="margin-top:20px;"></div>
             </div>
-            <div id="meta-list"></div>
         </div>
 
-        <div id="view-invest" class="d-none animate-enter">
-            <div class="card">
-                <h3 data-i18n="nav_inv">Ativos</h3>
-                <div class="form-group" style="margin-top:15px;"><label class="form-label" data-i18n="lbl_type">TIPO</label><select class="input-field" id="inv-type"></select></div>
+        <div id="view-invest" class="modal-overlay d-none" onclick="if(event.target===this) closeModal('view-invest')">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" data-i18n="nav_inv">Ativos</h3>
+                    <button class="modal-close" onclick="closeModal('view-invest')">✕</button>
+                </div>
+                <div class="form-group"><label class="form-label" data-i18n="lbl_type">TIPO</label><select class="input-field" id="inv-type"></select></div>
                 <div class="form-group"><label class="form-label" data-i18n="lbl_bal">SALDO</label><input type="number" class="input-field" id="inv-val" step="0.01" inputmode="decimal"></div>
                 <button class="btn btn-primary" style="background:var(--success);" onclick="saveInv()" data-i18n="btn_update">ATUALIZAR</button>
+                <div id="inv-list" style="margin-top:20px;"></div>
             </div>
-            <div id="inv-list"></div>
         </div>
     </div>
 
@@ -343,6 +366,7 @@
             const t = localStorage.getItem('theme') || 'light';
             document.body.setAttribute('data-theme', t);
             document.getElementById('meta-theme').setAttribute('content', t==='dark'?'#000000':'#f4f6f8');
+            document.getElementById('theme-icon').innerText = t==='dark'?'🌙':'☀️';
             if(localStorage.getItem('app_pin')) document.getElementById('lock-screen').classList.remove('d-none');
 
             // Timezone Fix
@@ -386,6 +410,7 @@
         const getM = (m=curMonth) => { if(!db[m]) db[m]={transacoes:[], investimentos:[]}; return db[m]; }
         const save = () => { localStorage.setItem('fin_v20', JSON.stringify(db)); render(); }
         const fmt = v => {
+            if(valuesHidden) return '••••';
             const loc = curLang==='pt'?'pt-BR':'en-US';
             const cur = curLang==='pt'?'BRL':'USD'; // Just formatting style
             return v.toLocaleString(loc, {style:'currency', currency: cur}); 
@@ -499,9 +524,15 @@
                 const l = db.config.metas[c], v = cats[c]||0, p = Math.min((v/l)*100,100);
                 const cl = p>90?'var(--danger)':(p>75?'#d97706':'var(--success)');
                 el.innerHTML += `
-                <div class="card"><div style="display:flex; justify-content:space-between; font-weight:700;"><span>${c}</span><span>${fmt(v)} / ${fmt(l)}</span></div>
-                <div style="background:var(--border); height:8px; border-radius:4px; margin-top:5px; overflow:hidden;"><div style="width:${p}%; background:${cl}; height:100%"></div></div>
-                <button onclick="if(confirm('${I18N[curLang].msg_del}')){delete db.config.metas['${c}'];save()}" style="border:none;background:none;font-size:0.8rem;margin-top:5px;cursor:pointer;">🗑️</button></div>`;
+                <div style="background:var(--bg-body); padding:16px; border-radius:12px; margin-bottom:12px;">
+                    <div style="display:flex; justify-content:space-between; font-weight:700; margin-bottom:8px;">
+                        <span>${c}</span><span>${fmt(v)} / ${fmt(l)}</span>
+                    </div>
+                    <div style="background:var(--border); height:8px; border-radius:4px; overflow:hidden;">
+                        <div style="width:${p}%; background:${cl}; height:100%"></div>
+                    </div>
+                    <button onclick="if(confirm('${I18N[curLang].msg_del}')){delete db.config.metas['${c}'];save()}" style="border:none;background:none;font-size:0.8rem;margin-top:8px;cursor:pointer;color:var(--text-sub);">🗑️ Remover</button>
+                </div>`;
             }
         }
 
@@ -510,7 +541,14 @@
             if(!el) return;
             el.innerHTML='';
             invs.forEach(i => {
-                el.innerHTML += `<div class="card" style="display:flex; justify-content:space-between; align-items:center; padding:16px;"><div style="font-weight:700;">${i.type}</div><div>${fmt(i.val)} <span onclick="del(${i.id},'inv')" style="cursor:pointer;">🗑️</span></div></div>`;
+                el.innerHTML += `
+                <div style="display:flex; justify-content:space-between; align-items:center; padding:16px; background:var(--bg-body); border-radius:12px; margin-bottom:12px;">
+                    <div style="font-weight:700;">${i.type}</div>
+                    <div style="display:flex; align-items:center; gap:12px;">
+                        <span style="font-weight:600;">${fmt(i.val)}</span>
+                        <span onclick="del(${i.id},'inv')" style="cursor:pointer; color:var(--text-sub); font-size:1.2rem;">🗑️</span>
+                    </div>
+                </div>`;
             });
         }
 
@@ -549,15 +587,30 @@
         }
 
         function changeMonth(d) { let [y,m]=curMonth.split('-').map(Number); m+=d; if(m>12){m=1;y++}else if(m<1){m=12;y--}; curMonth=`${y}-${String(m).padStart(2,'0')}`; render(); }
+        
         function go(id, btn) {
-            document.querySelectorAll('[id^="view-"]').forEach(e=>e.classList.add('d-none'));
+            // Se for dash, só atualiza navegação
+            if(id === 'view-dash') {
+                document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+                btn.classList.add('active');
+                render();
+                return;
+            }
+            
+            // Para outros, abre modal
             document.getElementById(id).classList.remove('d-none');
-            document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
-            btn.classList.add('active');
-            if(id==='view-dash') render();
+            
             if(id==='view-extrato') renderExtrato();
-            if(id==='view-anual') renderChartBar();
+            if(id==='view-anual') setTimeout(renderChartBar, 100);
         }
+        
+        function closeModal(id) {
+            document.getElementById(id).classList.add('d-none');
+            // Volta para o dash
+            document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+            document.querySelector('.nav-btn').classList.add('active');
+        }
+        
         function saveMeta() { const c=document.getElementById('meta-cat').value, v=parseFloat(document.getElementById('meta-val').value); if(v){db.config.metas[c]=v; save(); alert(I18N[curLang].msg_saved);} }
         function saveInv() { const t=document.getElementById('inv-type').value, v=parseFloat(document.getElementById('inv-val').value); if(v){let m=getM(); m.investimentos=m.investimentos.filter(i=>i.type!==t); m.investimentos.push({id:Date.now(),type:t,val:v}); save(); alert(I18N[curLang].msg_saved);} }
         function del(id, type) { if(confirm(I18N[curLang].msg_del)){ let m=getM(); if(type==='tx') m.transacoes=m.transacoes.filter(x=>x.id!==id); else m.investimentos=m.investimentos.filter(x=>x.id!==id); save(); } }
@@ -573,7 +626,23 @@
         
         function toggleLock() { if(localStorage.getItem('app_pin')) { if(confirm("Remover?")) localStorage.removeItem('app_pin'); } else { const p=prompt("PIN:"); if(p) localStorage.setItem('app_pin', p); } }
         function unlock() { if(document.getElementById('pin-input').value===localStorage.getItem('app_pin')) document.getElementById('lock-screen').classList.add('d-none'); else alert("Erro"); }
-        function toggleTheme() { const b=document.body; const n=b.getAttribute('data-theme')==='dark'?'light':'dark'; b.setAttribute('data-theme',n); localStorage.setItem('theme',n); document.getElementById('meta-theme').setAttribute('content', n==='dark'?'#000000':'#f4f6f8'); render(); }
+        
+        let valuesHidden = false;
+        function toggleHideValues() {
+            valuesHidden = !valuesHidden;
+            document.getElementById('hide-icon').innerText = valuesHidden ? '🙊' : '🙈';
+            render();
+        }
+        
+        function toggleTheme() { 
+            const b=document.body; 
+            const n=b.getAttribute('data-theme')==='dark'?'light':'dark'; 
+            b.setAttribute('data-theme',n); 
+            localStorage.setItem('theme',n); 
+            document.getElementById('meta-theme').setAttribute('content', n==='dark'?'#000000':'#f4f6f8'); 
+            document.getElementById('theme-icon').innerText = n==='dark'?'🌙':'☀️';
+            render(); 
+        }
     </script>
 </body>
 </html>
