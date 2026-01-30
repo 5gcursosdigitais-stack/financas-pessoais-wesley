@@ -9,17 +9,17 @@
     <title>Wesley Finanças</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        /* --- DESIGN SYSTEM FINAL --- */
+        /* --- SYSTEM DESIGN (V-FINAL) --- */
         :root {
             --bg-body: #f4f6f8;
             --bg-card: #ffffff;
-            --bg-nav: rgba(255, 255, 255, 0.95);
+            --bg-nav: rgba(255, 255, 255, 0.96); /* Blur forte */
             --text-main: #1e293b;
             --text-sub: #64748b;
             --border: #e2e8f0;
             --accent: #2563eb;
-            --success: #059669;
-            --danger: #be123c;
+            --success: #059669; /* Verde Esmeralda */
+            --danger: #881337;  /* Vinho Solicitado */
             --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
             --safe-top: env(safe-area-inset-top);
             --safe-bottom: env(safe-area-inset-bottom);
@@ -28,13 +28,13 @@
         [data-theme="dark"] {
             --bg-body: #000000;
             --bg-card: #1c1c1e;
-            --bg-nav: rgba(28, 28, 30, 0.95);
+            --bg-nav: rgba(28, 28, 30, 0.96);
             --text-main: #f2f2f7;
             --text-sub: #a1a1aa;
             --border: #2c2c2e;
             --accent: #3b82f6;
             --success: #10b981;
-            --danger: #f43f5e;
+            --danger: #e11d48; /* Vinho mais claro para dark mode */
             --shadow: none;
         }
 
@@ -46,17 +46,17 @@
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", Roboto, sans-serif;
             background-color: var(--bg-body);
             color: var(--text-main);
-            height: 100dvh;
+            height: 100dvh; /* Altura real dinâmica */
             display: flex; flex-direction: column;
             overflow: hidden;
         }
 
-        /* Container Principal */
+        /* Container Principal com Rolagem */
         .app-content {
             flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch;
             padding: 20px;
-            padding-top: calc(var(--safe-top) + 15px);
-            padding-bottom: 180px; /* Espaço de segurança */
+            padding-top: calc(var(--safe-top) + 15px); /* Respeita o Notch */
+            padding-bottom: 180px; /* Colchão de segurança GIGANTE */
             width: 100%; max-width: 600px; margin: 0 auto;
         }
 
@@ -85,17 +85,19 @@
             border: 1px solid var(--border); box-shadow: var(--shadow);
         }
 
-        /* Dashboard Tipografia */
+        /* Dashboard */
         .balance-label { font-size: 0.85rem; text-transform: uppercase; font-weight: 700; color: var(--text-sub); }
         .balance-value { font-size: 2.8rem; font-weight: 800; margin: 8px 0 16px 0; letter-spacing: -1px; }
         
         .kpi-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .kpi-box h4 { font-size: 0.8rem; color: var(--text-sub); margin-bottom: 4px; }
         .kpi-box span { font-size: 1.2rem; font-weight: 700; }
+        
+        /* Cores Específicas */
         .txt-success { color: var(--success); }
         .txt-danger { color: var(--danger); }
 
-        /* Form Elements */
+        /* Inputs */
         .form-group { margin-bottom: 20px; }
         .form-label { display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 8px; color: var(--text-sub); }
         
@@ -103,7 +105,7 @@
             width: 100%; height: 56px; padding: 0 16px;
             border: 1px solid var(--border); border-radius: 16px;
             background: var(--bg-body); color: var(--text-main);
-            font-size: 17px; appearance: none;
+            font-size: 17px; appearance: none; /* Evita zoom iOS */
         }
         .input-field:focus { border-color: var(--accent); }
 
@@ -118,10 +120,10 @@
         .btn-primary { background: var(--accent); color: #ffffff; }
         .btn-outline { background: transparent; border: 2px solid var(--border); color: var(--text-main); position: relative; }
 
-        /* TRUQUE DO UPLOAD NO IPHONE: Input transparente por cima do botão */
-        .file-input-overlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            opacity: 0; cursor: pointer; z-index: 10;
+        /* Label Button (Correção Upload iPhone) */
+        .btn-upload-label {
+            display: flex; align-items: center; justify-content: center;
+            width: 100%; height: 100%; cursor: pointer;
         }
 
         /* Seletor Tipo */
@@ -148,29 +150,35 @@
         .tx-sub { font-size: 0.8rem; color: var(--text-sub); }
         .tx-amount { font-weight: 800; font-size: 1rem; }
 
-        /* Nav Inferior (Piso) */
+        /* Nav Inferior (Piso do iPhone Ajustado) */
         .nav-dock {
             position: fixed; bottom: 0; left: 0; width: 100%;
             background: var(--bg-nav);
             backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
             border-top: 1px solid var(--border);
             z-index: 9999;
+            
+            /* GRID FIXO (Sem Dança) */
             display: grid; grid-template-columns: repeat(6, 1fr);
+            
+            /* ESPAÇAMENTO EXATO (Sem flutuar demais) */
             padding-bottom: var(--safe-bottom);
             padding-top: 8px;
-            height: calc(65px + var(--safe-bottom));
+            height: auto; /* Altura automática baseada no conteúdo + padding */
         }
 
         .nav-btn {
             background: none; border: none;
             display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
-            gap: 4px; cursor: pointer; opacity: 0.4; height: 100%; color: var(--text-main);
+            gap: 4px; cursor: pointer; opacity: 0.4; 
+            padding-bottom: 2px;
+            color: var(--text-main);
         }
         .nav-btn.active { opacity: 1; color: var(--accent); }
         .nav-icon { font-size: 1.5rem; line-height: 1; }
         .nav-text { font-size: 0.65rem; font-weight: 600; letter-spacing: -0.2px; }
 
-        /* Calendário Dinâmico */
+        /* Calendário Dinâmico (V11+) */
         .cal-icon {
             width: 26px; height: 26px; border: 2px solid currentColor; border-radius: 6px;
             position: relative; display: flex; justify-content: center; align-items: center;
@@ -243,10 +251,12 @@
             <div class="card" style="text-align:center; border-style:dashed;">
                 <h4 style="margin-bottom:15px;">Backup & Dados</h4>
                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-                    <button class="btn btn-outline" onclick="exportData()">⬇️ Baixar</button>
-                    <div class="btn btn-outline" style="margin-top:0;">
-                        ⬆️ Restaurar
-                        <input type="file" class="file-input-overlay" onchange="importData(this)" accept=".json">
+                    <button class="btn btn-outline" onclick="exportData()" style="margin:0;">⬇️ Baixar</button>
+                    <div class="btn btn-outline" style="margin:0; padding:0;">
+                        <label class="btn-upload-label">
+                            ⬆️ Restaurar
+                            <input type="file" onchange="importData(this)" accept=".json" style="display:none;">
+                        </label>
                     </div>
                 </div>
                 <button class="btn btn-outline" onclick="cloneMonth()">🔁 Clonar Mês Anterior</button>
@@ -316,13 +326,12 @@
     </nav>
 
     <script>
-        // --- DADOS INJETADOS (O SEGREDO) ---
-        // Seus dados exatos estão aqui. Se o app for aberto pela 1ª vez, ele usa isso.
+        // --- DADOS INJETADOS DO JSON FORNECIDO ---
         const SEED_DATA = {"2026-01":{"transacoes":[{"id":1769237949804,"tipo":"receita","data":"2026-01-05","valor":1488.25,"desc":"Pagamento Inicial Localiza","cat":"Entrada"},{"id":1769238022639,"tipo":"despesa","data":"2026-01-15","valor":323.8,"desc":"Nubank (Negociação)","cat":"Banco"},{"id":1769238044835,"tipo":"despesa","data":"2026-01-15","valor":35,"desc":"Vivo (Móvel)","cat":"Telefonia"},{"id":1769238058943,"tipo":"despesa","data":"2026-01-15","valor":93.06,"desc":"Vivo (Fixo)","cat":"Telefonia"},{"id":1769238090189,"tipo":"despesa","data":"2026-01-15","valor":100,"desc":"Devolução para Irene","cat":"Outros"},{"id":1769238140319,"tipo":"despesa","data":"2026-01-15","valor":313.31,"desc":"Itaú (Pagamento Cartão de Crédito)","cat":"Banco"},{"id":1769238242249,"tipo":"despesa","data":"2026-01-15","valor":39.99,"desc":"Jantar","cat":"Alimentação"},{"id":1769238274115,"tipo":"despesa","data":"2026-01-16","valor":123.68,"desc":"Supermercado","cat":"Alimentação"},{"id":1769238389601,"tipo":"despesa","data":"2026-01-22","valor":41.56,"desc":"Despedida Giselle (Localiza)","cat":"Alimentação"},{"id":1769238425467,"tipo":"despesa","data":"2026-01-19","valor":53.17,"desc":"Almoço (Shimatzu)","cat":"Alimentação"},{"id":1769238443297,"tipo":"despesa","data":"2026-01-21","valor":25.4,"desc":"Almoço (Shimatzu)","cat":"Alimentação"},{"id":1769238572209,"tipo":"despesa","data":"2026-01-15","valor":100,"desc":"Recarga Bilhete Único","cat":"Transporte"},{"id":1769238681319,"tipo":"despesa","data":"2026-01-05","valor":1111.84,"desc":"Itaú (Limite da Conta)","cat":"Banco"}],"investimentos":[]}};
         
         const CATS = ["🏠 Moradia", "🍔 Alimentação", "🚗 Transporte", "📱 Telefonia", "🎬 Streaming", "🏦 Banco", "💊 Saúde", "📚 Educação", "🎉 Lazer", "🛍️ Compras", "🐾 Pets", "🎁 Presentes", "⚙️ Outros"];
 
-        let db = JSON.parse(localStorage.getItem('fin_v16')) || SEED_DATA;
+        let db = JSON.parse(localStorage.getItem('fin_v_final')) || SEED_DATA;
         if(!db.config) db.config = {metas:{}};
         
         let curMonth = new Date().toISOString().slice(0,7);
@@ -330,20 +339,22 @@
         let chartPie = null, chartBar = null;
 
         window.onload = () => {
+            // Theme & Lock
             const t = localStorage.getItem('theme') || 'light';
             document.body.setAttribute('data-theme', t);
             updateMetaColor(t);
-            
             if(localStorage.getItem('app_pin')) document.getElementById('lock-screen').classList.remove('d-none');
 
+            // Selects
             const opts = CATS.map(c => `<option value="${c}">${c}</option>`).join('');
             document.getElementById('in-cat').innerHTML = opts;
             document.getElementById('meta-cat').innerHTML = opts;
 
-            // Fix Timezone: Força a data local do Brasil/Usuário
+            // Fix Timezone (Pega data local do aparelho, não UTC)
             const now = new Date();
             const off = now.getTimezoneOffset() * 60000;
-            document.getElementById('in-date').value = new Date(now - off).toISOString().split('T')[0];
+            const localDate = new Date(now.getTime() - off).toISOString().split('T')[0];
+            document.getElementById('in-date').value = localDate;
             document.getElementById('cal-day').innerText = now.getDate();
 
             render();
@@ -364,7 +375,7 @@
 
         // --- CORE ---
         const getM = (m=curMonth) => { if(!db[m]) db[m]={transacoes:[], investimentos:[]}; return db[m]; }
-        const save = () => { localStorage.setItem('fin_v16', JSON.stringify(db)); render(); }
+        const save = () => { localStorage.setItem('fin_v_final', JSON.stringify(db)); render(); }
         const fmt = v => v.toLocaleString('pt-BR', {style:'currency', currency:'BRL'});
 
         // --- ACTIONS ---
@@ -374,8 +385,9 @@
             const desc = document.getElementById('in-desc').value;
             if(!dt || isNaN(val) || !desc) return alert("Preencha tudo!");
 
-            const targetMonth = dt.slice(0,7);
-            const m = getM(targetMonth);
+            // Salva na chave do mês selecionado
+            const targetM = dt.slice(0,7);
+            const m = getM(targetM);
             const cat = curType==='receita' ? 'Entrada' : document.getElementById('in-cat').value;
             
             m.transacoes.push({id:Date.now(), type:curType, data:dt, valor:val, desc, cat});
@@ -383,8 +395,7 @@
             document.getElementById('in-val').value='';
             document.getElementById('in-desc').value='';
             
-            // Só atualiza a tela se o mês salvo for o mesmo que estamos vendo
-            if(targetMonth === curMonth) render();
+            if(targetM === curMonth) render();
         }
 
         function setTxType(t) {
