@@ -393,357 +393,81 @@
         <button class="nav-btn" onclick="go('view-invest', this)"><span class="nav-icon">📈</span><span class="nav-text" data-i18n="nav_inv">Inv.</span></button>
     </nav>
 
-    <script>
-        // --- TRANSLATION DICTIONARY ---
-        const I18N = {
-            pt: {
-                nav_dash: "Dash", nav_extract: "Extrato", nav_new: "Novo", nav_annual: "Anual", nav_goals: "Metas", nav_inv: "Inv.",
-                lbl_balance: "Saldo Líquido", lbl_income: "ENTRADAS", lbl_expense: "SAÍDAS", lbl_reserve: "🛡️ Reserva",
-                lbl_chart_cat: "Gastos por Categoria", lbl_maintenance: "Backup & Dados",
-                btn_download: "⬇️ Baixar", btn_restore: "⬆️ Restaurar", btn_reset: "⚠️ Resetar Padrão",
-                opt_income: "Receita", opt_expense: "Despesa",
-                lbl_date: "DATA", lbl_val: "VALOR", lbl_desc: "DESCRIÇÃO", lbl_cat: "CATEGORIA", btn_save: "SALVAR",
-                lbl_limit: "LIMITE", lbl_type: "TIPO", lbl_bal: "SALDO", btn_update: "ATUALIZAR",
-                months: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"],
-                cats: ["🏠 Moradia", "🍔 Alimentação", "🚗 Transporte", "📱 Telefonia", "🎬 Streaming", "🏦 Banco", "💊 Saúde", "📚 Educação", "🎉 Lazer", "🛍️ Compras", "🐾 Pets", "🎁 Presentes", "⚙️ Outros"],
-                invs: ["Reserva", "Renda Fixa", "Ações", "Cripto", "Veículos"],
-                msg_saved: "Salvo!", msg_del: "Excluir?", msg_months_covered: "meses garantidos",
-                lock_title: "🔒 Bloqueado", btn_access: "ACESSAR"
-            },
-            en: {
-                nav_dash: "Dash", nav_extract: "History", nav_new: "New", nav_annual: "Yearly", nav_goals: "Goals", nav_inv: "Assets",
-                lbl_balance: "Net Balance", lbl_income: "INCOME", lbl_expense: "EXPENSES", lbl_reserve: "🛡️ Safety Net",
-                lbl_chart_cat: "Expenses by Category", lbl_maintenance: "Data & Backup",
-                btn_download: "⬇️ Download", btn_restore: "⬆️ Restore", btn_reset: "⚠️ Factory Reset",
-                opt_income: "Income", opt_expense: "Expense",
-                lbl_date: "DATE", lbl_val: "AMOUNT", lbl_desc: "DESCRIPTION", lbl_cat: "CATEGORY", btn_save: "SAVE",
-                lbl_limit: "LIMIT", lbl_type: "TYPE", lbl_bal: "BALANCE", btn_update: "UPDATE",
-                months: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-                cats: ["🏠 Housing", "🍔 Food", "🚗 Transport", "📱 Phone/Net", "🎬 Streaming", "🏦 Bank", "💊 Health", "📚 Education", "🎉 Leisure", "🛍️ Shopping", "🐾 Pets", "🎁 Gifts", "⚙️ Others"],
-                invs: ["Safety Net", "Fixed Income", "Stocks", "Crypto", "Vehicles"],
-                msg_saved: "Saved!", msg_del: "Delete?", msg_months_covered: "months covered",
-                lock_title: "🔒 Locked", btn_access: "UNLOCK"
-            }
-        };
+    <!-- 🚀 AGENTE IA WESLEY - COLE AQUI -->
+<script>
+class FinancasAgent {
+  constructor() {
+    this.categorizar = (desc) => {
+      const regras = {
+        'mercad': 'Supermercado', 'shopee': 'Compras', 'academia': 'Fitness',
+        'localiza': 'Salário', 'movida': 'Salário', 'jbs': 'Salário',
+        'vinho': 'Lazer', 'ifood': 'Delivery', 'restaurante': 'Lazer',
+        'parque': 'Fitness', 'academ': 'Fitness', 'supermercado': 'Supermercado'
+      };
+      desc = desc.toLowerCase();
+      for (let key in regras) {
+        if (desc.includes(key)) return regras[key];
+      }
+      return 'Outros';
+    };
+  }
+  
+  salvarTransacao(valor, descricao) {
+    const categoria = this.categorizar(descricao);
+    const transacao = {
+      id: Date.now(),
+      data: new Date().toLocaleDateString('pt-BR'),
+      valor: parseFloat(valor) * (descricao.toLowerCase().includes('receita') ? 1 : -1),
+      descricao,
+      categoria
+    };
+    
+    let transacoes = JSON.parse(localStorage.getItem('transacoesWesley') || '[]');
+    transacoes.push(transacao);
+    localStorage.setItem('transacoesWesley', JSON.stringify(transacoes));
+    
+    // Atualiza saldo VISÍVEL no seu app
+    this.atualizarSaldo();
+    
+    // 🎉 Agente responde!
+    alert(`✅ ${descricao}\n💰 ${categoria}\n💳 Saldo atual: R$ ${this.getSaldo().toFixed(2)}`);
+    
+    // Limpa formulário
+    document.querySelector('input[type="number"]').value = '';
+    document.querySelector('input[type="text"]').value = '';
+  }
+  
+  getSaldo() {
+    let transacoes = JSON.parse(localStorage.getItem('transacoesWesley') || '[]');
+    return transacoes.reduce((total, t) => total + t.valor, 0);
+  }
+  
+  atualizarSaldo() {
+    const saldoAtual = this.getSaldo();
+    const elementoSaldo = document.querySelector('#saldo, .saldo, [id*="saldo"], [class*="saldo"]');
+    if (elementoSaldo) {
+      elementoSaldo.textContent = `R$ ${saldoAtual.toFixed(2)}`;
+    }
+  }
+}
 
-        const SEED_DATA = {"2026-01":{"transacoes":[{"id":1769237949804,"tipo":"receita","data":"2026-01-05","valor":1488.25,"desc":"Pagamento Inicial Localiza","cat":"Entrada"},{"id":1769238022639,"tipo":"despesa","data":"2026-01-15","valor":323.8,"desc":"Nubank (Negociação)","cat":"Banco"},{"id":1769238044835,"tipo":"despesa","data":"2026-01-15","valor":35,"desc":"Vivo (Móvel)","cat":"Telefonia"},{"id":1769238058943,"tipo":"despesa","data":"2026-01-15","valor":93.06,"desc":"Vivo (Fixo)","cat":"Telefonia"},{"id":1769238090189,"tipo":"despesa","data":"2026-01-15","valor":100,"desc":"Devolução para Irene","cat":"Outros"},{"id":1769238140319,"tipo":"despesa","data":"2026-01-15","valor":313.31,"desc":"Itaú (Pagamento Cartão de Crédito)","cat":"Banco"},{"id":1769238242249,"tipo":"despesa","data":"2026-01-15","valor":39.99,"desc":"Jantar","cat":"Alimentação"},{"id":1769238274115,"tipo":"despesa","data":"2026-01-16","valor":123.68,"desc":"Supermercado","cat":"Alimentação"},{"id":1769238389601,"tipo":"despesa","data":"2026-01-22","valor":41.56,"desc":"Despedida Giselle (Localiza)","cat":"Alimentação"},{"id":1769238425467,"tipo":"despesa","data":"2026-01-19","valor":53.17,"desc":"Almoço (Shimatzu)","cat":"Alimentação"},{"id":1769238443297,"tipo":"despesa","data":"2026-01-21","valor":25.4,"desc":"Almoço (Shimatzu)","cat":"Alimentação"},{"id":1769238572209,"tipo":"despesa","data":"2026-01-15","valor":100,"desc":"Recarga Bilhete Único","cat":"Transporte"},{"id":1769238681319,"tipo":"despesa","data":"2026-01-05","valor":1111.84,"desc":"Itaú (Limite da Conta)","cat":"Banco"}],"investimentos":[]}};
+const agenteWesley = new FinancasAgent();
 
-        let db = JSON.parse(localStorage.getItem('fin_v20')) || SEED_DATA;
-        if(!db.config) db.config = {metas:{}};
-        
-        let curMonth = new Date().toISOString().slice(0,7);
-        let curLang = localStorage.getItem('lang') || 'pt';
-        let curType = 'receita';
-        let chartPie = null, chartBar = null;
-
-        // --- INIT ---
-        window.onload = () => {
-            const t = localStorage.getItem('theme') || 'light';
-            document.body.setAttribute('data-theme', t);
-            document.getElementById('meta-theme').setAttribute('content', t==='dark'?'#000000':'#f4f6f8');
-            document.getElementById('theme-icon').innerText = t==='dark'?'🌙':'☀️';
-            if(localStorage.getItem('app_pin')) document.getElementById('lock-screen').classList.remove('d-none');
-
-            // Timezone Fix
-            const now = new Date();
-            const off = now.getTimezoneOffset() * 60000;
-            document.getElementById('in-date').value = new Date(now - off).toISOString().split('T')[0];
-            document.getElementById('cal-day').innerText = now.getDate();
-
-            updateLanguage(); // Populates texts & selects
-            render();
-        };
-
-        // --- TRANSLATION LOGIC ---
-        function toggleLanguage() {
-            curLang = curLang === 'pt' ? 'en' : 'pt';
-            localStorage.setItem('lang', curLang);
-            updateLanguage();
-            render(); // Re-render charts/lists
-        }
-
-        function updateLanguage() {
-            const t = I18N[curLang];
-            
-            // Update Text Elements
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if(t[key]) el.innerText = t[key];
-            });
-
-            // Populate Selects with Translated Options
-            const populate = (id, arr) => {
-                const el = document.getElementById(id);
-                el.innerHTML = arr.map(c => `<option value="${c}">${c}</option>`).join('');
-            };
-            populate('in-cat', t.cats);
-            populate('meta-cat', t.cats);
-            populate('inv-type', t.invs);
-        }
-
-        // --- CORE ---
-        const getM = (m=curMonth) => { if(!db[m]) db[m]={transacoes:[], investimentos:[]}; return db[m]; }
-        const save = () => { localStorage.setItem('fin_v20', JSON.stringify(db)); render(); }
-        const fmt = v => {
-            if(valuesHidden) return '••••';
-            const loc = curLang==='pt'?'pt-BR':'en-US';
-            const cur = curLang==='pt'?'BRL':'USD'; // Just formatting style
-            return v.toLocaleString(loc, {style:'currency', currency: cur}); 
-        };
-
-        function hardReset() {
-            if(confirm(curLang==='pt'?"Restaurar dados iniciais?":"Factory reset?")) {
-                db = JSON.parse(JSON.stringify(SEED_DATA)); 
-                db.config={metas:{}}; 
-                save(); 
-                location.reload();
-            }
-        }
-
-        // --- ACTIONS ---
-        function addTx() {
-            const dt = document.getElementById('in-date').value;
-            const val = parseFloat(document.getElementById('in-val').value);
-            const desc = document.getElementById('in-desc').value;
-            if(!dt || isNaN(val) || !desc) return alert("Erro");
-
-            const tm = dt.slice(0,7);
-            const cat = curType==='receita' ? (curLang==='pt'?'Entrada':'Income') : document.getElementById('in-cat').value;
-            
-            getM(tm).transacoes.push({id:Date.now(), tipo:curType, data:dt, valor:val, desc, cat});
-            save(); 
-            alert(I18N[curLang].msg_saved);
-            document.getElementById('in-val').value=''; 
-            document.getElementById('in-desc').value='';
-            closeModal('view-novo');
-            if(tm===curMonth) render();
-        }
-
-        function setTxType(t) {
-            curType = t;
-            const r = document.getElementById('opt-rec'), d = document.getElementById('opt-desp');
-            if(t==='receita') { 
-                r.classList.add('active', 'rec'); 
-                r.classList.remove('desp');
-                d.classList.remove('active', 'desp'); 
-                document.getElementById('grp-cat').style.display='none'; 
-            } else { 
-                r.classList.remove('active', 'rec'); 
-                d.classList.add('active', 'desp');
-                d.classList.remove('rec');
-                document.getElementById('grp-cat').style.display='block'; 
-            }
-        }
-
-        // --- RENDER ---
-        function render() {
-            const m = getM();
-            const txs = m.transacoes || [];
-            
-            // Header Month
-            const [y, mm] = curMonth.split('-');
-            const mIndex = parseInt(mm) - 1;
-            document.getElementById('display-month').innerText = I18N[curLang].months[mIndex] + " " + y;
-
-            const inc = txs.filter(x=>x.tipo==='receita').reduce((a,b)=>a+b.valor,0);
-            const exp = txs.filter(x=>x.tipo==='despesa').reduce((a,b)=>a+b.valor,0);
-            
-            document.getElementById('dash-total').innerText = fmt(inc-exp);
-            document.getElementById('dash-inc').innerText = fmt(inc);
-            document.getElementById('dash-exp').innerText = fmt(exp);
-
-            const invs = m.investimentos || [];
-            const res = invs.filter(i=>i.type && (i.type.includes('Reserva') || i.type.includes('Safety'))).reduce((a,b)=>a+b.val,0);
-            const cus = exp || 1;
-            const pct = Math.min((res/(cus*6))*100, 100);
-            document.getElementById('reserva-bar').style.width = pct+'%';
-            document.getElementById('reserva-pct').innerText = Math.round(pct)+'%';
-            document.getElementById('reserva-txt').innerText = `${(res/cus).toFixed(1)} ${I18N[curLang].msg_months_covered}`;
-
-            renderList(txs);
-            renderMetas(txs);
-            renderInv(invs);
-            renderPie(txs);
-        }
-
-        function renderExtrato() {
-            const m = getM();
-            const txs = m.transacoes || [];
-            renderList(txs);
-        }
-
-        function renderList(txs) {
-            const el = document.getElementById('tx-container'); 
-            if(!el) return;
-            el.innerHTML='';
-            const q = document.getElementById('search-input').value.toLowerCase();
-            const flt = txs.filter(t=>t.desc.toLowerCase().includes(q)).sort((a,b)=>b.data.localeCompare(a.data));
-            
-            flt.forEach(t => {
-                const parts = t.data.split('-');
-                // Date format depends on lang
-                const dateStr = curLang==='pt' ? `${parts[2]}` : `${parts[1]}/${parts[2]}`;
-                const cl = t.tipo==='receita'?'txt-success':'txt-danger';
-                el.innerHTML += `
-                <div class="tx-item">
-                    <div><div class="tx-main">${t.desc}</div><div class="tx-sub">${dateStr} • ${t.cat}</div></div>
-                    <div style="text-align:right"><div class="tx-amount ${cl}">${t.tipo==='receita'?'+':'-'} ${fmt(t.valor)}</div>
-                    <div style="font-size:0.75rem; opacity:0.6; cursor:pointer;" onclick="del(${t.id},'tx')">X</div></div>
-                </div>`;
-            });
-        }
-
-        function renderMetas(txs) {
-            const el = document.getElementById('meta-list'); 
-            if(!el) return;
-            el.innerHTML='';
-            const cats = {}; txs.filter(x=>x.tipo==='despesa').forEach(x=>cats[x.cat]=(cats[x.cat]||0)+x.valor);
-            for(let c in db.config.metas) {
-                const l = db.config.metas[c], v = cats[c]||0, p = Math.min((v/l)*100,100);
-                const cl = p>90?'var(--danger)':(p>75?'#d97706':'var(--success)');
-                el.innerHTML += `
-                <div style="background:var(--bg-body); padding:16px; border-radius:12px; margin-bottom:12px;">
-                    <div style="display:flex; justify-content:space-between; font-weight:700; margin-bottom:8px;">
-                        <span>${c}</span><span>${fmt(v)} / ${fmt(l)}</span>
-                    </div>
-                    <div style="background:var(--border); height:8px; border-radius:4px; overflow:hidden;">
-                        <div style="width:${p}%; background:${cl}; height:100%"></div>
-                    </div>
-                    <button onclick="if(confirm('${I18N[curLang].msg_del}')){delete db.config.metas['${c}'];save()}" style="border:none;background:none;font-size:0.8rem;margin-top:8px;cursor:pointer;color:var(--text-sub);">🗑️ Remover</button>
-                </div>`;
-            }
-        }
-
-        function renderInv(invs) {
-            const el = document.getElementById('inv-list'); 
-            if(!el) return;
-            el.innerHTML='';
-            invs.forEach(i => {
-                el.innerHTML += `
-                <div style="display:flex; justify-content:space-between; align-items:center; padding:16px; background:var(--bg-body); border-radius:12px; margin-bottom:12px;">
-                    <div style="font-weight:700;">${i.type}</div>
-                    <div style="display:flex; align-items:center; gap:12px;">
-                        <span style="font-weight:600;">${fmt(i.val)}</span>
-                        <span onclick="del(${i.id},'inv')" style="cursor:pointer; color:var(--text-sub); font-size:1.2rem;">🗑️</span>
-                    </div>
-                </div>`;
-            });
-        }
-
-        function renderPie(txs) {
-            const ctx = document.getElementById('chart-pie'); if(!ctx) return;
-            if(chartPie) chartPie.destroy();
-            const cats = {}; txs.filter(x=>x.tipo==='despesa').forEach(x=>cats[x.cat]=(cats[x.cat]||0)+x.valor);
-            const txt = document.body.getAttribute('data-theme') === 'dark' ? '#fff' : '#1e293b';
-            chartPie = new Chart(ctx, {
-                type: 'doughnut',
-                data: { labels: Object.keys(cats), datasets: [{ data: Object.values(cats), backgroundColor: ['#2563eb','#059669','#d97706','#be123c','#7c3aed'], borderWidth:0 }] },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { color: txt, boxWidth: 10 } } } }
-            });
-        }
-
-        function renderChartBar() {
-            const ctx = document.getElementById('chart-bar'); if(!ctx) return;
-            if(chartBar) chartBar.destroy();
-            const l=[], d=[]; let [y,m] = curMonth.split('-').map(Number);
-            for(let i=5; i>=0; i--) {
-                let tm=m-i, ty=y; if(tm<1){tm+=12;ty--}
-                const k=`${ty}-${String(tm).padStart(2,'0')}`;
-                l.push(`${I18N[curLang].months[tm-1]}`);
-                if(db[k]) {
-                    const r=db[k].transacoes.filter(x=>x.tipo==='receita').reduce((a,b)=>a+b.valor,0);
-                    const e=db[k].transacoes.filter(x=>x.tipo==='despesa').reduce((a,b)=>a+b.valor,0);
-                    d.push(r-e);
-                } else d.push(0);
-            }
-            const txt = document.body.getAttribute('data-theme') === 'dark' ? '#fff' : '#1e293b';
-            chartBar = new Chart(ctx, {
-                type:'bar',
-                data: { labels:l, datasets:[{ label:'Saldo', data:d, backgroundColor:d.map(v=>v>=0?'#059669':'#be123c'), borderRadius:4 }] },
-                options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{x:{ticks:{color:txt}}, y:{ticks:{color:txt}}} }
-            });
-        }
-
-        function changeMonth(d) { let [y,m]=curMonth.split('-').map(Number); m+=d; if(m>12){m=1;y++}else if(m<1){m=12;y--}; curMonth=`${y}-${String(m).padStart(2,'0')}`; render(); }
-        
-        function go(id, btn) {
-            // Fecha todos os modais primeiro
-            document.querySelectorAll('.modal-overlay').forEach(modal => modal.classList.add('d-none'));
-            
-            // Se for dash, só atualiza navegação
-            if(id === 'view-dash') {
-                document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
-                btn.classList.add('active');
-                render();
-                return;
-            }
-            
-            // Para outros, abre modal
-            document.getElementById(id).classList.remove('d-none');
-            
-            if(id==='view-extrato') renderExtrato();
-            if(id==='view-anual') setTimeout(renderChartBar, 100);
-        }
-        
-        function closeModal(id) {
-            document.getElementById(id).classList.add('d-none');
-            // Volta para o dash
-            document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
-            document.querySelector('.nav-btn').classList.add('active');
-        }
-        
-        function saveMeta() { 
-            const c=document.getElementById('meta-cat').value, v=parseFloat(document.getElementById('meta-val').value); 
-            if(v){
-                db.config.metas[c]=v; 
-                save(); 
-                alert(I18N[curLang].msg_saved);
-                document.getElementById('meta-val').value='';
-                closeModal('view-metas');
-            }
-        }
-        function saveInv() { 
-            const t=document.getElementById('inv-type').value, v=parseFloat(document.getElementById('inv-val').value); 
-            if(v){
-                let m=getM(); 
-                m.investimentos=m.investimentos.filter(i=>i.type!==t); 
-                m.investimentos.push({id:Date.now(),type:t,val:v}); 
-                save(); 
-                alert(I18N[curLang].msg_saved);
-                document.getElementById('inv-val').value='';
-                closeModal('view-invest');
-            }
-        }
-        function del(id, type) { if(confirm(I18N[curLang].msg_del)){ let m=getM(); if(type==='tx') m.transacoes=m.transacoes.filter(x=>x.id!==id); else m.investimentos=m.investimentos.filter(x=>x.id!==id); save(); } }
-        
-        function exportData() {
-            const a = document.createElement('a'); a.href = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(db));
-            a.download = `backup_${new Date().toISOString().slice(0,10)}.json`; document.body.appendChild(a); a.click(); a.remove();
-        }
-        function importData(i) {
-            const r = new FileReader(); r.onload = e => { try{db=JSON.parse(e.target.result); if(!db.config)db.config={metas:{}}; save(); location.reload();}catch(e){alert("Erro");} };
-            if(i.files[0]) r.readAsText(i.files[0]);
-        }
-        
-        function toggleLock() { if(localStorage.getItem('app_pin')) { if(confirm("Remover?")) localStorage.removeItem('app_pin'); } else { const p=prompt("PIN:"); if(p) localStorage.setItem('app_pin', p); } }
-        function unlock() { if(document.getElementById('pin-input').value===localStorage.getItem('app_pin')) document.getElementById('lock-screen').classList.add('d-none'); else alert("Erro"); }
-        
-        let valuesHidden = false;
-        function toggleHideValues() {
-            valuesHidden = !valuesHidden;
-            document.getElementById('hide-icon').innerText = valuesHidden ? '🙊' : '🙈';
-            render();
-        }
-        
-        function toggleTheme() { 
-            const b=document.body; 
-            const n=b.getAttribute('data-theme')==='dark'?'light':'dark'; 
-            b.setAttribute('data-theme',n); 
-            localStorage.setItem('theme',n); 
-            document.getElementById('meta-theme').setAttribute('content', n==='dark'?'#000000':'#f4f6f8'); 
-            document.getElementById('theme-icon').innerText = n==='dark'?'🌙':'☀️';
-            render(); 
-        }
-    </script>
+// 🔗 Conecta com SEU formulário existente
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.querySelector('form');
+  if (form) {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const valorInput = document.querySelector('input[type="number"], input[name="valor"]');
+      const descInput = document.querySelector('input[type="text"], textarea, input[name="descricao"]');
+      
+      if (valorInput && descInput) {
+        agenteWesley.salvarTransacao(valorInput.value, descInput.value);
+      }
+    });
+  }
+});
+</script>
 </body>
 </html>
