@@ -436,8 +436,11 @@
             const cat = curType==='receita' ? (curLang==='pt'?'Entrada':'Income') : document.getElementById('in-cat').value;
             
             getM(tm).transacoes.push({id:Date.now(), tipo:curType, data:dt, valor:val, desc, cat});
-            save(); alert(I18N[curLang].msg_saved);
-            document.getElementById('in-val').value=''; document.getElementById('in-desc').value='';
+            save(); 
+            alert(I18N[curLang].msg_saved);
+            document.getElementById('in-val').value=''; 
+            document.getElementById('in-desc').value='';
+            closeModal('view-novo');
             if(tm===curMonth) render();
         }
 
@@ -589,6 +592,9 @@
         function changeMonth(d) { let [y,m]=curMonth.split('-').map(Number); m+=d; if(m>12){m=1;y++}else if(m<1){m=12;y--}; curMonth=`${y}-${String(m).padStart(2,'0')}`; render(); }
         
         function go(id, btn) {
+            // Fecha todos os modais primeiro
+            document.querySelectorAll('.modal-overlay').forEach(modal => modal.classList.add('d-none'));
+            
             // Se for dash, só atualiza navegação
             if(id === 'view-dash') {
                 document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
@@ -611,8 +617,28 @@
             document.querySelector('.nav-btn').classList.add('active');
         }
         
-        function saveMeta() { const c=document.getElementById('meta-cat').value, v=parseFloat(document.getElementById('meta-val').value); if(v){db.config.metas[c]=v; save(); alert(I18N[curLang].msg_saved);} }
-        function saveInv() { const t=document.getElementById('inv-type').value, v=parseFloat(document.getElementById('inv-val').value); if(v){let m=getM(); m.investimentos=m.investimentos.filter(i=>i.type!==t); m.investimentos.push({id:Date.now(),type:t,val:v}); save(); alert(I18N[curLang].msg_saved);} }
+        function saveMeta() { 
+            const c=document.getElementById('meta-cat').value, v=parseFloat(document.getElementById('meta-val').value); 
+            if(v){
+                db.config.metas[c]=v; 
+                save(); 
+                alert(I18N[curLang].msg_saved);
+                document.getElementById('meta-val').value='';
+                closeModal('view-metas');
+            }
+        }
+        function saveInv() { 
+            const t=document.getElementById('inv-type').value, v=parseFloat(document.getElementById('inv-val').value); 
+            if(v){
+                let m=getM(); 
+                m.investimentos=m.investimentos.filter(i=>i.type!==t); 
+                m.investimentos.push({id:Date.now(),type:t,val:v}); 
+                save(); 
+                alert(I18N[curLang].msg_saved);
+                document.getElementById('inv-val').value='';
+                closeModal('view-invest');
+            }
+        }
         function del(id, type) { if(confirm(I18N[curLang].msg_del)){ let m=getM(); if(type==='tx') m.transacoes=m.transacoes.filter(x=>x.id!==id); else m.investimentos=m.investimentos.filter(x=>x.id!==id); save(); } }
         
         function exportData() {
