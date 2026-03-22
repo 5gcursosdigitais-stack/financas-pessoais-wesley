@@ -1,77 +1,1004 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Wesley Finanças Pro v2</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>WESLEY FINANÇAS</title>
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2pdf@0.10.1/dist/html2pdf.bundle.min.js"></script>
+  
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body { width: 100%; height: 100%; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #18181a; color: #e0e0e0; }
-    .app-wrapper { display: flex; flex-direction: column; height: 100vh; }
-    .app-content { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 120px; }
-    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; gap: 12px; flex-wrap: wrap; }
-    .app-title { font-size: 2rem; font-weight: 900; color: #00d4ff; letter-spacing: 1px; }
-    .header-actions { display: flex; gap: 8px; flex-wrap: wrap; }
-    .icon-btn { width: 50px; height: 50px; min-width: 50px; border-radius: 12px; background: #23232b; border: 2px solid #27272a; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; cursor: pointer; transition: all 0.3s; }
-    .icon-btn:hover { background: #00d4ff; color: #18181a; transform: translateY(-2px); }
-    .card { background: #23232b; border: 1px solid #27272a; border-radius: 18px; padding: 22px; margin-bottom: 18px; box-shadow: 0 2px 12px #0002; transition: border 0.3s; }
-    .card-title { font-size: 0.9rem; color: #a1a1aa; margin-bottom: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
-    .balance-value { font-size: 2.8rem; font-weight: 900; color: #00d4ff; margin: 12px 0; }
-    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 14px; margin-top: 16px; }
-    .kpi-item { background: #23232b; padding: 16px; border-radius: 12px; text-align: center; }
-    .kpi-label { font-size: 0.8rem; color: #a1a1aa; margin-bottom: 8px; font-weight: 600; text-transform: uppercase; }
-    .kpi-value { font-size: 1.3rem; font-weight: 900; color: #00d4ff; }
-    .progress-bar { width: 100%; height: 10px; background: #23232b; border-radius: 5px; overflow: hidden; margin: 12px 0; }
-    .progress-fill { height: 100%; background: #00d4ff; transition: width 0.6s; }
-    .btn { min-height: 62px; padding: 16px 24px; font-size: 17px; font-weight: 700; border: none; border-radius: 14px; cursor: pointer; transition: all 0.3s; width: 100%; margin-bottom: 14px; text-transform: uppercase; letter-spacing: 1px; }
-    .btn-primary { background: #00d4ff; color: #18181a; }
-    .btn-primary:hover { transform: translateY(-3px) scale(1.03); box-shadow: 0 8px 24px #00d4ff33; }
-    .btn-secondary { background: #23232b; color: #00d4ff; border: 2px solid #00d4ff; }
-    .btn-secondary:hover { background: #00d4ff; color: #18181a; }
-    .btn-danger { background: #2a1a1e; color: #f43f5e; border: 2px solid #f43f5e; }
-    .btn-danger:hover { background: #f43f5e; color: white; }
-    .input-field { width: 100%; min-height: 54px; padding: 14px 16px; font-size: 17px; border: 2px solid #27272a; border-radius: 12px; background: #23232b; color: #e0e0e0; margin-bottom: 16px; }
-    .input-field:focus { outline: none; border-color: #00d4ff; box-shadow: 0 0 0 3px #00d4ff22; }
-    .form-label { display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 8px; color: #a1a1aa; text-transform: uppercase; }
-    .type-switcher { display: flex; background: #23232b; padding: 4px; border-radius: 12px; gap: 4px; margin-bottom: 20px; }
-    .type-option { flex: 1; padding: 14px; border: none; border-radius: 10px; background: transparent; color: #a1a1aa; font-weight: 700; cursor: pointer; transition: all 0.3s; }
-    .type-option.active { background: #00d4ff; color: #18181a; }
-    .tx-item { display: flex; justify-content: space-between; padding: 16px; background: #23232b; border-radius: 12px; margin-bottom: 12px; border-left: 5px solid #27272a; align-items: center; }
-    .tx-item:hover { border-left-color: #00d4ff; }
-    .tx-info { flex: 1; }
-    .tx-main { font-weight: 700; margin-bottom: 4px; color: #e0e0e0; }
-    .tx-sub { font-size: 0.85rem; color: #a1a1aa; }
-    .tx-amount { font-weight: 900; font-size: 1.2rem; text-align: right; margin-right: 10px; }
-    .tx-income { color: #10b981; }
-    .tx-expense { color: #f43f5e; }
-    .tx-delete { background: none; border: none; cursor: pointer; font-size: 1.3rem; color: #f43f5e; }
-    .nav-dock { position: fixed; bottom: 0; left: 0; width: 100%; background: #18181a; border-top: 1px solid #27272a; display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; padding: 8px; z-index: 1000; }
-    .nav-btn { background: none; border: none; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; cursor: pointer; color: #a1a1aa; padding: 8px; border-radius: 12px; transition: all 0.3s; font-weight: 600; }
-    .nav-btn.active { color: #00d4ff; background: #00d4ff22; }
-    .nav-icon { font-size: 1.6rem; }
-    .nav-text { font-size: 0.7rem; text-transform: uppercase; }
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(5px); z-index: 9999; display: none; align-items: flex-end; justify-content: center; }
-    .modal-overlay.active { display: flex; }
-    .modal-content { background: #23232b; border: 1px solid #27272a; border-radius: 22px 22px 0 0; padding: 28px; width: 100%; max-width: 100%; max-height: 85vh; overflow-y: auto; }
-    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; }
-    .modal-title { font-size: 1.6rem; font-weight: 900; }
-    .modal-close { width: 44px; height: 44px; border-radius: 12px; background: #23232b; border: none; font-size: 1.3rem; cursor: pointer; color: #00d4ff; }
-    .modal-close:hover { background: #00d4ff; color: #18181a; }
-    .feedback { position: fixed; top: 20px; right: 20px; padding: 16px 22px; border-radius: 12px; font-weight: 700; z-index: 11000; animation: slideIn 0.3s; }
-    @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
-    .feedback.success { background: #10b981; color: white; }
-    .feedback.error { background: #f43f5e; color: white; }
-    .chart-container { position: relative; height: 250px; margin: 16px 0; background: #23232b; border-radius: 12px; padding: 10px; }
-    .empty-state { text-align: center; padding: 30px 20px; color: #a1a1aa; }
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .health-circle { width: 64px; height: 64px; border-radius: 50%; background: #00d4ff; color: #18181a; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 1.4rem; box-shadow: 0 0 0 4px #00d4ff22; }
-    @media (max-width: 600px) { .app-content { padding: 8px; padding-bottom: 100px; } .modal-content { padding: 12px; } }
+    /* ADHD-Optimized Base Styles */
+    :root {
+      --bg: #1a1a1a;
+      --panel: #2a2a2a;
+      --text: #e0e0e0;
+      --text-dim: #a1a1aa;
+      --border: #444;
+      --primary: #4a9eff;
+      --success: #44ff88;
+      --danger: #ff4444;
+      --warning: #f59e0b;
+      --safe-top: env(safe-area-inset-top);
+      --safe-bottom: env(safe-area-inset-bottom);
+    }
+    
+    [data-theme="light"] {
+      --bg: #f4f6f8;
+      --panel: #ffffff;
+      --text: #1e293b;
+      --text-dim: #64748b;
+      --border: #cbd5e1;
+      --primary: #2563eb;
+      --success: #059669;
+      --danger: #be123c;
+      --warning: #d97706;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      max-width: 800px;
+      margin: 0 auto;
+      height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .app-content {
+      flex: 1;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: 20px;
+      padding-top: calc(max(var(--safe-top), 20px));
+      padding-bottom: 30px; /* Space above dock */
+    }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .title {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .action-group {
+      display: flex;
+      gap: 10px;
+    }
+
+    /* LARGE BUTTONS FOR ADHD & ACCESSIBILITY */
+    button, .action-btn {
+      min-height: 60px;
+      padding: 15px 25px;
+      font-size: 18px;
+      font-weight: 700;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      background: var(--primary);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 8px;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(74, 158, 255, 0.4);
+    }
+    button:active {
+      transform: translateY(0);
+    }
+
+    .action-btn {
+      min-width: 60px;
+      padding: 10px;
+      background: var(--panel);
+      color: var(--text);
+      border: 2px solid var(--border);
+      font-size: 24px;
+    }
+    .action-btn:hover { background: var(--border); color: var(--text); }
+
+    .btn-danger { background: var(--danger); }
+    .btn-success { background: var(--success); color: #000; }
+    .btn-secondary { background: var(--panel); border: 2px solid var(--border); color: var(--text); }
+
+    .btn-full { width: 100%; margin-top: 15px; }
+
+    /* LARGE INPUTS */
+    input, select {
+      min-height: 56px;
+      padding: 14px 15px;
+      font-size: 18px;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      background: var(--bg);
+      color: var(--text);
+      width: 100%;
+      margin-top: 8px;
+      transition: border-color 0.2s;
+      appearance: none;
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .form-group { margin-bottom: 20px; }
+    .form-label { font-weight: 700; color: var(--text-dim); text-transform: uppercase; font-size: 14px; }
+
+    /* CARDS */
+    .card {
+      background: var(--panel);
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+    }
+
+    .card-title {
+      color: var(--text-dim);
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 14px;
+      margin-bottom: 12px;
+    }
+
+    .big-value {
+      font-size: 40px;
+      font-weight: 900;
+      word-break: break-word;
+      line-height: 1.1;
+      margin-bottom: 15px;
+    }
+
+    .kpi-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+
+    .kpi-box {
+      background: var(--bg);
+      padding: 15px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+    .kpi-box h4 { font-size: 12px; color: var(--text-dim); margin-bottom: 5px; }
+    .kpi-box span { font-size: 20px; font-weight: 800; }
+
+    .txt-success { color: var(--success); }
+    .txt-danger { color: var(--danger); }
+    .txt-primary { color: var(--primary); }
+
+    /* LIST ITEMS */
+    .list-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 0;
+      border-bottom: 2px solid var(--border);
+    }
+    .list-item:last-child { border-bottom: none; }
+    
+    .list-info h4 { font-size: 18px; margin-bottom: 4px; }
+    .list-info p { font-size: 14px; color: var(--text-dim); }
+    
+    .list-amount { font-size: 20px; font-weight: 800; text-align: right; }
+    .del-btn { min-height: 44px; min-width: 44px; padding:0; background:none; border:none; font-size: 24px; color: var(--danger); box-shadow:none; }
+
+    /* TYPE SWITCHER */
+    .switcher {
+      display: flex;
+      background: var(--panel);
+      padding: 6px;
+      border-radius: 16px;
+      border: 2px solid var(--border);
+      margin-bottom: 25px;
+      gap: 6px;
+    }
+    .sw-opt {
+      flex: 1;
+      text-align: center;
+      padding: 15px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 18px;
+      cursor: pointer;
+      color: var(--text-dim);
+    }
+    .sw-opt.active.rec { background: var(--success); color: #000; }
+    .sw-opt.active.desp { background: var(--danger); color: #fff; }
+
+    /* NAVIGATION DOCK */
+    .nav-dock {
+      background: var(--panel);
+      border-top: 2px solid var(--border);
+      display: flex;
+      padding: 10px;
+      padding-bottom: calc(max(var(--safe-bottom), 15px));
+      gap: 5px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .nav-dock::-webkit-scrollbar { display: none; }
+
+    .nav-btn {
+      flex: 1;
+      min-width: 65px;
+      min-height: 70px;
+      background: transparent;
+      color: var(--text-dim);
+      flex-direction: column;
+      gap: 5px;
+      padding: 8px;
+      font-size: 12px;
+      scroll-snap-align: center;
+      box-shadow: none;
+    }
+    .nav-btn:hover { background: var(--bg); transform: none; box-shadow: none; color: var(--text); }
+    .nav-btn.active { color: var(--primary); background: var(--bg); font-weight: 800; border: 2px solid var(--primary); }
+    .nav-btn .icon { font-size: 28px; }
+
+    /* MODALS & VIEWS */
+    .view { display: none; animation: slideUp 0.3s ease; }
+    .view.active { display: block; }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* LOCK SCREEN */
+    #lock-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--bg);
+      z-index: 99999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+    }
+    .pin-input {
+      font-size: 40px;
+      text-align: center;
+      letter-spacing: 15px;
+      border: none;
+      border-bottom: 4px solid var(--primary);
+      border-radius: 0;
+      background: transparent;
+      color: var(--text);
+      margin: 40px 0;
+      outline: none;
+      width: 100%;
+      max-width: 300px;
+    }
+    .pin-input:focus { border-color: var(--success); }
+
+    .chart-container { position: relative; height: 250px; width: 100%; }
+    
+    .month-selector {
+      display: flex; 
+      align-items: center; 
+      justify-content: space-between;
+      background: var(--panel);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 5px;
+      margin-bottom: 20px;
+    }
+    .month-selector .action-btn { border: none; min-width: 50px; background: transparent; }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-dim);
+      font-size: 18px;
+    }
+
   </style>
 </head>
-<body>
-  <!-- ...HTML igual à última versão funcional... -->
-  <script>
-// ...JavaScript igual à última versão funcional, revisado para garantir funcionamento de todas as funções, auto-save, feedback, gráficos canvas, responsividade e acessibilidade...
-  </script>
+<body data-theme="dark">
+
+<!-- LOCK SCREEN -->
+<div id="lock-screen" style="display:none;">
+    <h1 style="color:var(--primary); font-size:32px;">🔒 <span id="txt-locked">App Locked</span></h1>
+    <p style="color:var(--text-dim); margin-top:10px; font-size: 18px;" id="txt-enter-pin">Enter your PIN to access.</p>
+    <input type="password" id="pin-input" class="pin-input" maxlength="4" placeholder="••••" inputmode="numeric">
+    <button class="btn-full" onclick="unlock()" style="max-width:300px; font-size:20px;" id="btn-unlock">🔓 Unlock</button>
+</div>
+
+<!-- MAIN APP -->
+<div class="app-content">
+  <div class="header-bar">
+    <div class="title">WESLEY FINANÇAS</div>
+    <div class="action-group">
+      <button class="action-btn" onclick="toggleLanguage()" id="lang-btn" title="Toggle Language">🇺🇸</button>
+      <button class="action-btn" onclick="toggleTheme()" id="theme-btn" title="Toggle Theme">☀️</button>
+      <button class="action-btn" onclick="setupLock()" id="lock-btn" title="Lock App">🔒</button>
+    </div>
+  </div>
+
+  <div class="month-selector">
+    <button class="action-btn" onclick="changeMonth(-1)">❮</button>
+    <div id="display-month" style="font-size: 20px; font-weight: 800;">MMM YYYY</div>
+    <button class="action-btn" onclick="changeMonth(1)">❯</button>
+  </div>
+
+  <!-- VIEWS -->
+  <div id="view-dash" class="view active">
+    <!-- DASHBOARD -->
+    <div class="card">
+      <div class="card-title" id="lbl-balance">Net Balance</div>
+      <div class="big-value" id="dash-total">$0.00</div>
+      <div class="kpi-row">
+        <div class="kpi-box">
+          <h4 id="lbl-inc">INCOMES</h4>
+          <span class="txt-success" id="dash-inc">$0.00</span>
+        </div>
+        <div class="kpi-box">
+          <h4 id="lbl-exp">EXPENSES</h4>
+          <span class="txt-danger" id="dash-exp">$0.00</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="card">
+      <div class="card-title" id="lbl-expenses-cat">Expenses by Category</div>
+      <div class="chart-container"><canvas id="chart-pie"></canvas></div>
+    </div>
+  </div>
+
+  <div id="view-extrato" class="view">
+    <div class="card">
+      <div class="card-title" id="lbl-transactions">Transactions</div>
+      <input type="text" id="search-tx" placeholder="Search..." oninput="renderExtrato()">
+      <div id="tx-list" style="margin-top:20px;"></div>
+    </div>
+  </div>
+
+  <div id="view-novo" class="view">
+    <div class="card">
+      <div class="card-title" id="lbl-new-tx">New Transaction</div>
+      
+      <div class="switcher">
+        <div class="sw-opt active rec" id="opt-rec" onclick="setTxType('income')"></div>
+        <div class="sw-opt desp" id="opt-desp" onclick="setTxType('expense')"></div>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label" id="lbl-date">Date</label>
+        <input type="date" id="in-date">
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label" id="lbl-amount">Amount</label>
+        <input type="number" id="in-val" step="0.01" inputmode="decimal" placeholder="0.00">
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label" id="lbl-desc">Description</label>
+        <input type="text" id="in-desc" placeholder="Pizza, Salary...">
+      </div>
+      
+      <div class="form-group" id="grp-cat" style="display:none;">
+        <label class="form-label" id="lbl-cat">Category</label>
+        <select id="in-cat"></select>
+      </div>
+      
+      <button class="btn-full" onclick="addTx()" id="btn-save-tx">Save</button>
+    </div>
+  </div>
+
+  <div id="view-anual" class="view">
+    <div class="card">
+      <div class="card-title" id="lbl-year">6 Months History</div>
+      <div class="chart-container"><canvas id="chart-bar"></canvas></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title" id="lbl-data">Manage Data</div>
+      <button class="btn-full btn-secondary" onclick="exportData()" id="btn-export">⬇️ Export Data</button>
+      <button class="btn-full btn-secondary" onclick="document.getElementById('import-file').click()" id="btn-import">⬆️ Import Data</button>
+      <input type="file" id="import-file" style="display:none;" accept=".json" onchange="importData(this)">
+      <button class="btn-full btn-danger" onclick="clearData()" id="btn-clear">⚠️ Reset Everything</button>
+    </div>
+  </div>
+
+  <div id="view-metas" class="view">
+    <div class="card">
+      <div class="card-title" id="lbl-goals">Monthly Goals & Budgets</div>
+      <div class="form-group">
+        <label class="form-label" id="lbl-goal-cat">Category</label>
+        <select id="meta-cat"></select>
+      </div>
+      <div class="form-group">
+        <label class="form-label" id="lbl-goal-limit">Limit</label>
+        <input type="number" id="meta-val" step="0.01" inputmode="decimal">
+      </div>
+      <button class="btn-full" onclick="saveMeta()" id="btn-save-goal">Set Goal</button>
+    </div>
+    <div class="card" id="meta-list"></div>
+  </div>
+
+  <div id="view-invest" class="view">
+    <div class="card">
+      <div class="card-title" id="lbl-assets">Assets & Investments</div>
+      <div class="form-group">
+        <label class="form-label" id="lbl-inv-type">Type</label>
+        <select id="inv-type"></select>
+      </div>
+      <div class="form-group">
+        <label class="form-label" id="lbl-inv-val">Balance</label>
+        <input type="number" id="inv-val" step="0.01" inputmode="decimal">
+      </div>
+      <button class="btn-full btn-success" onclick="saveInv()" id="btn-save-inv">Update Asset</button>
+    </div>
+    <div class="card" id="inv-list"></div>
+  </div>
+
+</div>
+
+<!-- DOCK -->
+<nav class="nav-dock">
+  <button class="nav-btn active" onclick="go('view-dash',this)"><span class="icon">📊</span><span id="nav-dash">Dash</span></button>
+  <button class="nav-btn" onclick="go('view-extrato',this)"><span class="icon">📑</span><span id="nav-list">List</span></button>
+  <button class="nav-btn" onclick="go('view-novo',this)"><span class="icon">➕</span><span id="nav-new">New</span></button>
+  <button class="nav-btn" onclick="go('view-anual',this)"><span class="icon">📈</span><span id="nav-year">Year</span></button>
+  <button class="nav-btn" onclick="go('view-metas',this)"><span class="icon">🎯</span><span id="nav-goals">Goals</span></button>
+  <button class="nav-btn" onclick="go('view-invest',this)"><span class="icon">💰</span><span id="nav-assets">Assets</span></button>
+</nav>
+
+<script>
+// --- I18N SUPPORT ---
+const I18N = {
+  pt: {
+    langBtn: "🇺🇸 EN",
+    locked: "Aplicativo Bloqueado", enterPin: "Digite sua senha para acessar.", unlock: "🔓 Acessar",
+    balance: "Saldo Líquido", inc: "ENTRADAS", exp: "SAÍDAS", expCat: "Despesas por Categoria",
+    navDash: "Início", navList: "Extrato", navNew: "Adicionar", navYear: "Anual", navGoals: "Orçamento", navAssets: "Ativos",
+    txList: "Suas Transações", search: "Buscar...",
+    newTx: "Novo Lançamento", optRec: "Receita", optDesp: "Despesa",
+    date: "Data", amount: "Valor", desc: "Descrição", cat: "Categoria", save: "Salvar",
+    yearHist: "Histórico 6 Meses", manageData: "Gerenciar Dados", export: "⬇️ Exportar Dados", import: "⬆️ Importar", clear: "⚠️ Resetar Tudo",
+    goals: "Limites e Orçamentos", goalCat: "Categoria", goalLimit: "Limite Máximo", setGoal: "Definir Meta",
+    assets: "Ativos e Investimentos", invType: "Tipo de Ativo", invVal: "Saldo Atual", updateAsset: "Atualizar Ativo",
+    saved: "Salvo com sucesso!", error: "Ocorreu um erro.", emptyTx: "Nenhuma transação este mês.",
+    currency: "BRL", locale: "pt-BR",
+    cats: ["🏠 Moradia","🍔 Alimentação","🚗 Transporte","📱 Telefonia","🎬 Streaming","🏦 Banco","💊 Saúde","📚 Educação","🎉 Lazer","🛍️ Compras","🐾 Pets","🎁 Presentes","⚙️ Outros"],
+    inv_cats: ["Reserva","Renda Fixa","Ações","Cripto","Veículos","Imóvel"]
+  },
+  en: {
+    langBtn: "🇧🇷 PT",
+    locked: "App Locked", enterPin: "Enter your PIN to access.", unlock: "🔓 Unlock",
+    balance: "Net Balance", inc: "INCOMES", exp: "EXPENSES", expCat: "Expenses by Category",
+    navDash: "Dash", navList: "History", navNew: "Add", navYear: "Yearly", navGoals: "Goals", navAssets: "Assets",
+    txList: "Your Transactions", search: "Search...",
+    newTx: "New Transaction", optRec: "Income", optDesp: "Expense",
+    date: "Date", amount: "Amount", desc: "Description", cat: "Category", save: "Save",
+    yearHist: "6 Months History", manageData: "Manage Data", export: "⬇️ Export Data", import: "⬆️ Import Data", clear: "⚠️ Factory Reset",
+    goals: "Monthly Budgets", goalCat: "Category", goalLimit: "Limit", setGoal: "Set Goal",
+    assets: "Assets & Investments", invType: "Asset Type", invVal: "Current Balance", updateAsset: "Update Asset",
+    saved: "Saved successfully!", error: "There was an error.", emptyTx: "No transactions this month.",
+    currency: "USD", locale: "en-US",
+    cats: ["🏠 Housing","🍔 Food","🚗 Transport","📱 Phone/Net","🎬 Streaming","🏦 Bank","💊 Health","📚 Education","🎉 Leisure","🛍️ Shopping","🐾 Pets","🎁 Gifts","⚙️ Others"],
+    inv_cats: ["Safety Net","Fixed Income","Stocks","Crypto","Vehicles","Real Estate"]
+  }
+};
+
+const MONTHS = {
+  pt: ["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"],
+  en: ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
+};
+
+// --- DATA & STATE ---
+const Storage = {
+  key: 'fin_v20_pro',
+  save(data) {
+    try {
+      localStorage.setItem(this.key, JSON.stringify(data));
+      this.showFeedback(I18N[curLang].saved);
+    } catch(e) { console.error('Save error', e); this.showFeedback(I18N[curLang].error, true); }
+  },
+  load() {
+    try {
+      return JSON.parse(localStorage.getItem(this.key)) || { config: { metas: {} } };
+    } catch(e) { return { config: { metas: {} } }; }
+  },
+  showFeedback(msg, isErr=false) {
+    const d = document.createElement('div');
+    d.textContent = msg;
+    d.style.cssText = `position:fixed; top:20px; right:20px; padding:20px 30px; border-radius:12px; font-size:18px; font-weight:800; z-index:999999; color:#000; animation: slideIn 0.3s; box-shadow:0 4px 15px rgba(0,0,0,0.5); background: ${isErr?'#ff4444':'#44ff88'}`;
+    document.body.appendChild(d);
+    setTimeout(()=>d.remove(), 2500);
+  }
+};
+
+let db = Storage.load();
+let curMonth = new Date().toISOString().slice(0,7);
+let curLang = localStorage.getItem('lang_pref') || 'en';
+let curType = 'income'; // 'income' or 'expense'
+let chartPie = null, chartBar = null;
+
+// --- INIT ---
+window.onload = () => {
+  // Theme initialization
+  const savedTheme = localStorage.getItem('theme_pref') || 'dark';
+  document.body.setAttribute('data-theme', savedTheme);
+  document.getElementById('theme-btn').innerText = savedTheme === 'dark' ? '☀️' : '🌙';
+  
+  // PIN Verification
+  if(localStorage.getItem('app_pin')) {
+    document.getElementById('lock-screen').style.display = 'flex';
+  }
+
+  // Current Date preset
+  const localDate = new Date();
+  localDate.setMinutes(localDate.getMinutes() - localDate.getTimezoneOffset());
+  document.getElementById('in-date').value = localDate.toISOString().slice(0,10);
+
+  applyLang();
+};
+
+function applyLang() {
+  const L = I18N[curLang];
+  
+  // Update texts
+  document.getElementById('lang-btn').innerText = L.langBtn;
+  document.getElementById('txt-locked').innerText = L.locked;
+  document.getElementById('txt-enter-pin').innerText = L.enterPin;
+  document.getElementById('btn-unlock').innerText = L.unlock;
+  
+  document.getElementById('lbl-balance').innerText = L.balance;
+  document.getElementById('lbl-inc').innerText = L.inc;
+  document.getElementById('lbl-exp').innerText = L.exp;
+  document.getElementById('lbl-expenses-cat').innerText = L.expCat;
+  
+  document.getElementById('nav-dash').innerText = L.navDash;
+  document.getElementById('nav-list').innerText = L.navList;
+  document.getElementById('nav-new').innerText = L.navNew;
+  document.getElementById('nav-year').innerText = L.navYear;
+  document.getElementById('nav-goals').innerText = L.navGoals;
+  document.getElementById('nav-assets').innerText = L.navAssets;
+  
+  document.getElementById('lbl-transactions').innerText = L.txList;
+  document.getElementById('search-tx').placeholder = L.search;
+  
+  document.getElementById('lbl-new-tx').innerText = L.newTx;
+  document.getElementById('opt-rec').innerText = L.optRec;
+  document.getElementById('opt-desp').innerText = L.optDesp;
+  document.getElementById('lbl-date').innerText = L.date;
+  document.getElementById('lbl-amount').innerText = L.amount;
+  document.getElementById('lbl-desc').innerText = L.desc;
+  document.getElementById('lbl-cat').innerText = L.cat;
+  document.getElementById('btn-save-tx').innerText = L.save;
+  
+  document.getElementById('lbl-year').innerText = L.yearHist;
+  document.getElementById('lbl-data').innerText = L.manageData;
+  document.getElementById('btn-export').innerText = L.export;
+  document.getElementById('btn-import').innerText = L.import;
+  document.getElementById('btn-clear').innerText = L.clear;
+  
+  document.getElementById('lbl-goals').innerText = L.goals;
+  document.getElementById('lbl-goal-cat').innerText = L.goalCat;
+  document.getElementById('lbl-goal-limit').innerText = L.goalLimit;
+  document.getElementById('btn-save-goal').innerText = L.setGoal;
+  
+  document.getElementById('lbl-assets').innerText = L.assets;
+  document.getElementById('lbl-inv-type').innerText = L.invType;
+  document.getElementById('lbl-inv-val').innerText = L.invVal;
+  document.getElementById('btn-save-inv').innerText = L.updateAsset;
+
+  // Render dropdowns
+  document.getElementById('in-cat').innerHTML = L.cats.map(c=>`<option value="${c}">${c}</option>`).join('');
+  document.getElementById('meta-cat').innerHTML = L.cats.map(c=>`<option value="${c}">${c}</option>`).join('');
+  document.getElementById('inv-type').innerHTML = L.inv_cats.map(c=>`<option value="${c}">${c}</option>`).join('');
+
+  setTxType(curType);
+  renderAll();
+}
+
+// --- LOGIC ---
+const getMonthData = (m=curMonth) => { 
+  if(!db[m]) db[m]={ transacoes:[], investimentos:[] }; 
+  if(!db.config) db.config = { metas: {} };
+  return db[m]; 
+};
+
+function autoSave() { Storage.save(db); renderAll(); }
+
+function fmt(val) {
+  return val.toLocaleString(I18N[curLang].locale, {style:'currency', currency:I18N[curLang].currency});
+}
+
+function renderAll() {
+  const m = getMonthData();
+  const txs = m.transacoes || [];
+  
+  // Set view month
+  const [yy, mm] = curMonth.split('-');
+  document.getElementById('display-month').innerText = `${MONTHS[curLang][parseInt(mm)-1]} ${yy}`;
+  
+  // Dash metrics
+  const inc = txs.filter(x => x.tipo === 'income' || x.tipo === 'receita').reduce((a,b)=>a+b.valor, 0);
+  const exp = txs.filter(x => x.tipo === 'expense' || x.tipo === 'despesa').reduce((a,b)=>a+b.valor, 0);
+  
+  document.getElementById('dash-total').innerText = fmt(inc - exp);
+  document.getElementById('dash-inc').innerText = fmt(inc);
+  document.getElementById('dash-exp').innerText = fmt(exp);
+  
+  renderExtrato(txs);
+  renderPie(txs);
+  renderChartBar();
+  renderMetas(txs);
+  renderInv(m.investimentos || []);
+}
+
+function renderExtrato(txsToRender) {
+  const m = getMonthData();
+  let txs = txsToRender || m.transacoes || [];
+  const q = (document.getElementById('search-tx').value || '').toLowerCase();
+  
+  if(q) txs = txs.filter(t => t.desc.toLowerCase().includes(q));
+  
+  txs = txs.sort((a,b) => b.data.localeCompare(a.data));
+  
+  const el = document.getElementById('tx-list');
+  el.innerHTML = '';
+  
+  if(txs.length === 0) {
+    el.innerHTML = `<div class="empty-state">${I18N[curLang].emptyTx}</div>`;
+    return;
+  }
+  
+  txs.forEach(t => {
+    const isInc = (t.tipo === 'income' || t.tipo === 'receita');
+    const parts = t.data.split('-');
+    const dateStr = curLang==='pt' ? `${parts[2]}/${parts[1]}` : `${parts[1]}/${parts[2]}`;
+    const sign = isInc ? '+' : '-';
+    const cl = isInc ? 'txt-success' : 'txt-danger';
+    
+    el.innerHTML += `
+      <div class="list-item">
+        <div class="list-info">
+          <h4>${t.desc}</h4>
+          <p>${dateStr} • ${t.cat || '—'}</p>
+        </div>
+        <div style="display:flex; align-items:center; gap:15px;">
+          <span class="list-amount ${cl}">${sign} ${fmt(t.valor)}</span>
+          <button class="del-btn" onclick="delTx(${t.id})">✕</button>
+        </div>
+      </div>
+    `;
+  });
+}
+
+function renderMetas(txs) {
+  const el = document.getElementById('meta-list');
+  el.innerHTML = '';
+  const cats = {}; 
+  txs.filter(x => x.tipo === 'expense' || x.tipo === 'despesa').forEach(x => cats[x.cat] = (cats[x.cat]||0) + x.valor);
+  
+  const metas = db.config.metas || {};
+  let hasMetas = false;
+  
+  for(let c in metas) {
+    hasMetas = true;
+    const limit = metas[c];
+    const spent = cats[c] || 0;
+    const pct = Math.min((spent/limit)*100, 100);
+    const color = pct > 95 ? 'var(--danger)' : pct > 75 ? 'var(--warning)' : 'var(--success)';
+    
+    el.innerHTML += `
+      <div class="list-item" style="display:block;">
+        <div style="display:flex;justify-content:space-between; margin-bottom:10px;">
+          <h4 style="font-size:16px;">${c}</h4>
+          <span style="font-weight:700;">${fmt(spent)} / ${fmt(limit)}</span>
+        </div>
+        <div style="height:12px; background:var(--bg); border-radius:6px; overflow:hidden; margin-bottom:10px;">
+          <div style="height:100%; width:${pct}%; background:${color}; transition: width 0.3s;"></div>
+        </div>
+        <div style="text-align:right;">
+          <button class="del-btn" onclick="delMeta('${c}')" style="min-height:30px; font-size:16px;">🗑️ Rem</button>
+        </div>
+      </div>
+    `;
+  }
+}
+
+function renderInv(invs) {
+  const el = document.getElementById('inv-list');
+  el.innerHTML = '';
+  
+  const total = invs.reduce((a,b)=>a+b.val, 0);
+  
+  if(total > 0) {
+    el.innerHTML += `
+      <div style="background:var(--success); color:#000; padding:20px; border-radius:12px; margin-bottom:15px; text-align:center;">
+        <h4 style="margin-bottom:5px;">Total Patrimônio</h4>
+        <h2 style="font-size:28px;">${fmt(total)}</h2>
+      </div>
+    `;
+  }
+
+  invs.forEach(i => {
+    const pct = total > 0 ? ((i.val/total)*100).toFixed(1) : 0;
+    el.innerHTML += `
+      <div class="list-item">
+        <div class="list-info">
+          <h4>${i.type}</h4>
+          <p>${pct}%</p>
+        </div>
+        <div style="display:flex; align-items:center; gap:15px;">
+          <span class="list-amount">${fmt(i.val)}</span>
+          <button class="del-btn" onclick="delInv(${i.id})">✕</button>
+        </div>
+      </div>
+    `;
+  });
+}
+
+// --- CHARTS ---
+Chart.defaults.font.family = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+Chart.defaults.color = "#a1a1aa";
+
+function renderPie(txs) {
+  const ctx = document.getElementById('chart-pie');
+  if(chartPie) chartPie.destroy();
+  const cats = {}; 
+  txs.filter(x => x.tipo === 'expense' || x.tipo === 'despesa').forEach(x => cats[x.cat] = (cats[x.cat]||0) + x.valor);
+  
+  const textCol = document.body.getAttribute('data-theme') === 'dark' ? '#fff' : '#000';
+  
+  chartPie = new Chart(ctx, {
+    type:'doughnut',
+    data: {
+      labels: Object.keys(cats),
+      datasets: [{
+        data: Object.values(cats),
+        backgroundColor: ['#4a9eff','#44ff88','#f59e0b','#ff4444','#8b5cf6','#06b6d4','#10b981','#ef4444'],
+        borderWidth: 0
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: 'right', labels: { color: textCol } } },
+      cutout: '70%'
+    }
+  });
+}
+
+function renderChartBar() {
+  const ctx = document.getElementById('chart-bar');
+  if(chartBar) chartBar.destroy();
+  const l=[], d=[]; 
+  let [y,m] = curMonth.split('-').map(Number);
+  
+  for(let i=5; i>=0; i--) {
+    let tm=m-i, ty=y;
+    if(tm<1){tm+=12;ty--;}
+    const k=`${ty}-${String(tm).padStart(2,'0')}`;
+    l.push(MONTHS[curLang][tm-1]);
+    
+    if(db[k]) {
+      const r = db[k].transacoes.filter(x => x.tipo === 'income' || x.tipo === 'receita').reduce((a,b)=>a+b.valor,0);
+      const e = db[k].transacoes.filter(x => x.tipo === 'expense' || x.tipo === 'despesa').reduce((a,b)=>a+b.valor,0);
+      d.push(r-e);
+    } else d.push(0);
+  }
+  
+  const textCol = document.body.getAttribute('data-theme') === 'dark' ? '#fff' : '#000';
+
+  chartBar = new Chart(ctx, {
+    type:'bar',
+    data: {
+      labels: l,
+      datasets: [{
+        data: d,
+        backgroundColor: d.map(v => v>=0 ? '#44ff88' : '#ff4444'),
+        borderRadius: 6
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: { x: { ticks: { color: textCol } }, y: { ticks: { color: textCol } } }
+    }
+  });
+}
+
+// --- ACTIONS ---
+function changeMonth(delta) {
+  let [y,m] = curMonth.split('-').map(Number);
+  m += delta;
+  if(m > 12) { m=1; y++; }
+  else if(m < 1) { m=12; y--; }
+  curMonth = `${y}-${String(m).padStart(2,'0')}`;
+  renderAll();
+}
+
+function go(id, btn) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(id).classList.add('active');
+  
+  if(id === 'view-dash' || id === 'view-extrato') renderAll();
+  if(id === 'view-anual') setTimeout(renderChartBar, 100);
+}
+
+function setTxType(type) {
+  curType = type;
+  const inc = document.getElementById('opt-rec');
+  const exp = document.getElementById('opt-desp');
+  if(type === 'income') {
+    inc.classList.add('active'); exp.classList.remove('active');
+    document.getElementById('grp-cat').style.display = 'none';
+  } else {
+    exp.classList.add('active'); inc.classList.remove('active');
+    document.getElementById('grp-cat').style.display = 'block';
+  }
+}
+
+function addTx() {
+  const dt = document.getElementById('in-date').value;
+  const val = parseFloat(document.getElementById('in-val').value);
+  const desc = document.getElementById('in-desc').value;
+  if(!dt || isNaN(val) || !desc) {
+    Storage.showFeedback(I18N[curLang].error, true);
+    return;
+  }
+  
+  const tm = dt.slice(0,7);
+  const mData = getMonthData(tm);
+  const cat = curType === 'income' ? 'Income' : document.getElementById('in-cat').value;
+  
+  mData.transacoes.push({ id: Date.now(), tipo: curType, data: dt, valor: val, desc, cat });
+  autoSave();
+  
+  document.getElementById('in-val').value = '';
+  document.getElementById('in-desc').value = '';
+}
+
+function saveMeta() {
+  const c = document.getElementById('meta-cat').value;
+  const v = parseFloat(document.getElementById('meta-val').value);
+  if(v) { 
+    if(!db.config) db.config = { metas: {} };
+    db.config.metas[c] = v; 
+    autoSave(); 
+    document.getElementById('meta-val').value = ''; 
+  }
+}
+
+function saveInv() {
+  const t = document.getElementById('inv-type').value;
+  const v = parseFloat(document.getElementById('inv-val').value);
+  if(!isNaN(v)) { 
+    let m = getMonthData();
+    m.investimentos = m.investimentos.filter(i => i.type !== t);
+    m.investimentos.push({ id: Date.now(), type: t, val: v });
+    autoSave();
+    document.getElementById('inv-val').value = ''; 
+  }
+}
+
+function delTx(id) {
+  let m = getMonthData();
+  m.transacoes = m.transacoes.filter(x => x.id !== id);
+  autoSave();
+}
+function delInv(id) {
+  let m = getMonthData();
+  m.investimentos = m.investimentos.filter(x => x.id !== id);
+  autoSave();
+}
+function delMeta(cat) {
+  if(db.config && db.config.metas) delete db.config.metas[cat];
+  autoSave();
+}
+
+function exportData() {
+  const blob = new Blob([JSON.stringify(db, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `fin_data_${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+}
+
+function importData(input) {
+  const f = input.files[0];
+  if(!f) return;
+  const r = new FileReader();
+  r.onload = e => {
+    try {
+      db = JSON.parse(e.target.result);
+      if(!db.config) db.config = { metas: {} };
+      autoSave();
+      location.reload();
+    } catch(err) { Storage.showFeedback(I18N[curLang].error, true); }
+  };
+  r.readAsText(f);
+}
+
+function clearData() {
+  if(confirm("DANGER! This deletes ALL data permanently. Confirm? / Isso apaga tudo. Confirma?")) {
+    db = { config: { metas: {} } };
+    Storage.save(db);
+    location.reload();
+  }
+}
+
+function toggleLanguage() {
+  curLang = curLang === 'en' ? 'pt' : 'en';
+  localStorage.setItem('lang_pref', curLang);
+  applyLang();
+}
+
+function toggleTheme() {
+  const b = document.body;
+  const n = b.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  b.setAttribute('data-theme', n);
+  localStorage.setItem('theme_pref', n);
+  document.getElementById('theme-btn').innerText = n === 'dark' ? '☀️' : '🌙';
+  renderPie(getMonthData().transacoes || []); // update chart colors
+  renderChartBar();
+}
+
+function setupLock() {
+  if(localStorage.getItem('app_pin')) {
+    if(confirm("Remove PIN lock? / Remover senha?")) localStorage.removeItem('app_pin');
+  } else {
+    const p = prompt("New 4-digit PIN: / Nova senha de 4 dígitos:");
+    if(p && p.length >= 4) {
+      localStorage.setItem('app_pin', p);
+      Storage.showFeedback(I18N[curLang].saved);
+    }
+  }
+}
+
+function unlock() {
+  if(document.getElementById('pin-input').value === localStorage.getItem('app_pin')) {
+    document.getElementById('lock-screen').style.display = 'none';
+  } else {
+    Storage.showFeedback(I18N[curLang].error, true);
+    document.getElementById('pin-input').value = '';
+  }
+}
+</script>
 </body>
 </html>
