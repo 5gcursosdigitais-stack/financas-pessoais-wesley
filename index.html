@@ -11,31 +11,37 @@
   <script src="https://cdn.jsdelivr.net/npm/html2pdf@0.10.1/dist/html2pdf.bundle.min.js"></script>
   
   <style>
-    /* ADHD-Optimized Base Styles */
+    /* LIQUID GLASS / iOS 18 UI SYSTEM */
     :root {
-      --bg: #1a1a1a;
-      --panel: #2a2a2a;
-      --text: #e0e0e0;
-      --text-dim: #a1a1aa;
-      --border: #444;
-      --primary: #4a9eff;
-      --success: #44ff88;
-      --danger: #ff4444;
-      --warning: #f59e0b;
+      --bg-gradient: radial-gradient(circle at top left, #29293e, #13131c 100%);
+      --glass-panel: rgba(40, 42, 54, 0.4);
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+      --glass-blur: blur(24px);
+
+      --text: #f0f0f5;
+      --text-dim: #9ba1b0;
+      --primary: #5c8cf5; /* more pastel iOS blue */
+      --success: #3ddc84;
+      --danger: #ff5252;
+      --warning: #ffb74d;
+      
       --safe-top: env(safe-area-inset-top);
       --safe-bottom: env(safe-area-inset-bottom);
     }
     
     [data-theme="light"] {
-      --bg: #f4f6f8;
-      --panel: #ffffff;
-      --text: #1e293b;
-      --text-dim: #64748b;
-      --border: #cbd5e1;
-      --primary: #2563eb;
-      --success: #059669;
-      --danger: #be123c;
-      --warning: #d97706;
+      --bg-gradient: radial-gradient(circle at top left, #f5f7fa, #dce3ed 100%);
+      --glass-panel: rgba(255, 255, 255, 0.5);
+      --glass-border: rgba(255, 255, 255, 0.6);
+      --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+      
+      --text: #1a1b24;
+      --text-dim: #6b7280;
+      --primary: #007aff;
+      --success: #34c759;
+      --danger: #ff3b30;
+      --warning: #ff9500;
     }
 
     * {
@@ -46,8 +52,9 @@
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: var(--bg);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg-gradient);
+      background-attachment: fixed;
       color: var(--text);
       max-width: 800px;
       margin: 0 auto;
@@ -55,7 +62,7 @@
       display: flex;
       flex-direction: column;
       overflow: hidden;
-      transition: background 0.3s, color 0.3s;
+      transition: background 0.4s ease, color 0.4s ease;
     }
 
     .app-content {
@@ -64,27 +71,41 @@
       -webkit-overflow-scrolling: touch;
       padding: 20px;
       padding-top: calc(max(var(--safe-top), 20px));
-      padding-bottom: 30px; /* Space above dock */
+      padding-bottom: 30px; 
     }
 
+    /* SINGLE LINE HEADER */
     .header-bar {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 24px;
-      flex-wrap: wrap;
-      gap: 12px;
+      flex-wrap: nowrap;
+      gap: 6px;
+      background: var(--glass-panel);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 10px 14px;
+      box-shadow: var(--glass-shadow);
     }
 
     .title {
-      font-size: 24px;
+      font-size: 19px;
       font-weight: 800;
       color: var(--primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex: 1;
+      letter-spacing: -0.5px;
     }
 
     .action-group {
       display: flex;
-      gap: 10px;
+      gap: 5px;
+      flex-shrink: 0;
     }
 
     /* LARGE BUTTONS FOR ADHD & ACCESSIBILITY */
@@ -94,9 +115,9 @@
       font-size: 18px;
       font-weight: 700;
       border: none;
-      border-radius: 12px;
+      border-radius: 18px;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
       background: var(--primary);
       color: white;
       display: flex;
@@ -104,63 +125,73 @@
       justify-content: center;
       text-align: center;
       gap: 8px;
+      box-shadow: 0 4px 15px rgba(0, 122, 255, 0.3);
     }
 
     button:hover {
       transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(74, 158, 255, 0.4);
+      box-shadow: 0 8px 20px rgba(0, 122, 255, 0.4);
     }
     button:active {
-      transform: translateY(0);
+      transform: translateY(1px);
     }
 
     .action-btn {
-      min-width: 60px;
-      padding: 10px;
-      background: var(--panel);
+      min-width: 48px;
+      padding: 0;
+      background: rgba(100, 100, 120, 0.1);
       color: var(--text);
-      border: 2px solid var(--border);
-      font-size: 24px;
+      border: 1px solid var(--glass-border);
+      font-size: 20px;
+      box-shadow: none;
     }
-    .action-btn:hover { background: var(--border); color: var(--text); }
+    .action-btn:hover { background: rgba(100, 100, 120, 0.2); }
 
-    .btn-danger { background: var(--danger); }
-    .btn-success { background: var(--success); color: #000; }
-    .btn-secondary { background: var(--panel); border: 2px solid var(--border); color: var(--text); }
+    .btn-danger { background: var(--danger); box-shadow: 0 4px 15px rgba(255, 59, 48, 0.3); }
+    .btn-success { background: var(--success); color: #000; box-shadow: 0 4px 15px rgba(52, 199, 89, 0.3); }
+    .btn-secondary { background: var(--glass-panel); border: 1px solid var(--glass-border); color: var(--text); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); box-shadow: none; }
 
     .btn-full { width: 100%; margin-top: 15px; }
 
-    /* LARGE INPUTS */
+    /* LIQUID GLASS INPUTS */
     input, select {
       min-height: 56px;
-      padding: 14px 15px;
+      padding: 14px 16px;
       font-size: 18px;
-      border: 2px solid var(--border);
-      border-radius: 12px;
-      background: var(--bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.05); /* very subtle */
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
       color: var(--text);
       width: 100%;
       margin-top: 8px;
-      transition: border-color 0.2s;
+      transition: border-color 0.3s, background 0.3s;
       appearance: none;
+    }
+    [data-theme="light"] input, [data-theme="light"] select {
+       background: rgba(0, 0, 0, 0.03); 
     }
 
     input:focus, select:focus {
       outline: none;
       border-color: var(--primary);
+      background: rgba(255, 255, 255, 0.1);
     }
 
-    .form-group { margin-bottom: 20px; }
-    .form-label { font-weight: 700; color: var(--text-dim); text-transform: uppercase; font-size: 14px; }
+    .form-group { margin-bottom: 22px; }
+    .form-label { font-weight: 700; color: var(--text-dim); text-transform: uppercase; font-size: 13px; letter-spacing: 0.5px; margin-left: 4px; }
 
-    /* CARDS */
+    /* GLASS CARDS */
     .card {
-      background: var(--panel);
-      border: 2px solid var(--border);
-      border-radius: 16px;
+      background: var(--glass-panel);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border: 1px solid var(--glass-border);
+      border-radius: 28px;
       padding: 24px;
       margin-bottom: 20px;
-      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+      box-shadow: var(--glass-shadow);
     }
 
     .card-title {
@@ -169,15 +200,21 @@
       text-transform: uppercase;
       font-size: 14px;
       margin-bottom: 12px;
+      letter-spacing: 0.5px;
     }
 
     .big-value {
-      font-size: 40px;
+      font-size: 44px;
       font-weight: 900;
       word-break: break-word;
       line-height: 1.1;
-      margin-bottom: 15px;
+      margin-bottom: 18px;
+      letter-spacing: -1px;
+      background: linear-gradient(90deg, var(--text), var(--text-dim));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
+    [data-theme="dark"] .big-value { background: linear-gradient(90deg, #fff, #aaa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
     .kpi-row {
       display: grid;
@@ -186,13 +223,14 @@
     }
 
     .kpi-box {
-      background: var(--bg);
-      padding: 15px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
+      background: rgba(0,0,0,0.1);
+      padding: 18px;
+      border-radius: 20px;
+      border: 1px solid var(--glass-border);
     }
-    .kpi-box h4 { font-size: 12px; color: var(--text-dim); margin-bottom: 5px; }
-    .kpi-box span { font-size: 20px; font-weight: 800; }
+    [data-theme="light"] .kpi-box { background: rgba(255,255,255,0.4); }
+    .kpi-box h4 { font-size: 11px; color: var(--text-dim); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 1px;}
+    .kpi-box span { font-size: 22px; font-weight: 800; }
 
     .txt-success { color: var(--success); }
     .txt-danger { color: var(--danger); }
@@ -203,44 +241,55 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 18px 0;
-      border-bottom: 2px solid var(--border);
+      padding: 20px 0;
+      border-bottom: 1px solid rgba(150, 150, 150, 0.2);
     }
     .list-item:last-child { border-bottom: none; }
     
-    .list-info h4 { font-size: 18px; margin-bottom: 4px; }
+    .list-info h4 { font-size: 18px; margin-bottom: 5px; font-weight: 700; }
     .list-info p { font-size: 14px; color: var(--text-dim); }
     
     .list-amount { font-size: 20px; font-weight: 800; text-align: right; }
-    .del-btn { min-height: 44px; min-width: 44px; padding:0; background:none; border:none; font-size: 24px; color: var(--danger); box-shadow:none; }
+    .del-btn { 
+      min-height: 48px; min-width: 48px; border-radius: 14px; 
+      background: rgba(255, 59, 48, 0.1); border:none; 
+      font-size: 20px; color: var(--danger); box-shadow:none;
+      transition: background 0.2s;
+    }
+    .del-btn:hover { background: rgba(255, 59, 48, 0.2); transform: none; box-shadow: none; }
 
     /* TYPE SWITCHER */
     .switcher {
       display: flex;
-      background: var(--panel);
+      background: rgba(0,0,0,0.1);
       padding: 6px;
-      border-radius: 16px;
-      border: 2px solid var(--border);
+      border-radius: 20px;
+      border: 1px solid var(--glass-border);
       margin-bottom: 25px;
       gap: 6px;
     }
+    [data-theme="light"] .switcher { background: rgba(255,255,255,0.4); }
     .sw-opt {
       flex: 1;
       text-align: center;
-      padding: 15px;
-      border-radius: 10px;
+      padding: 16px;
+      border-radius: 14px;
       font-weight: 700;
-      font-size: 18px;
+      font-size: 17px;
       cursor: pointer;
       color: var(--text-dim);
+      transition: all 0.3s;
     }
-    .sw-opt.active.rec { background: var(--success); color: #000; }
-    .sw-opt.active.desp { background: var(--danger); color: #fff; }
+    .sw-opt.active.rec { background: var(--success); color: #000; box-shadow: 0 4px 15px rgba(52, 199, 89, 0.2); }
+    .sw-opt.active.desp { background: var(--danger); color: #fff; box-shadow: 0 4px 15px rgba(255, 59, 48, 0.2); }
 
-    /* NAVIGATION DOCK */
+    /* NAVIGATION DOCK LIQUID GLASS */
     .nav-dock {
-      background: var(--panel);
-      border-top: 2px solid var(--border);
+      background: var(--glass-panel);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border-top: 1px solid var(--glass-border);
+      border-radius: 30px 30px 0 0;
       display: flex;
       padding: 10px;
       padding-bottom: calc(max(var(--safe-bottom), 15px));
@@ -248,6 +297,7 @@
       overflow-x: auto;
       scroll-snap-type: x mandatory;
       -webkit-overflow-scrolling: touch;
+      box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.1);
     }
 
     .nav-dock::-webkit-scrollbar { display: none; }
@@ -259,33 +309,38 @@
       background: transparent;
       color: var(--text-dim);
       flex-direction: column;
-      gap: 5px;
+      gap: 6px;
       padding: 8px;
       font-size: 12px;
+      border-radius: 20px;
       scroll-snap-align: center;
       box-shadow: none;
+      border: 1px solid transparent; /* Prevents jumping */
     }
-    .nav-btn:hover { background: var(--bg); transform: none; box-shadow: none; color: var(--text); }
-    .nav-btn.active { color: var(--primary); background: var(--bg); font-weight: 800; border: 2px solid var(--primary); }
-    .nav-btn .icon { font-size: 28px; }
+    .nav-btn:hover { background: rgba(100,100,120,0.1); transform: none; box-shadow: none; color: var(--text); }
+    .nav-btn.active { color: var(--primary); background: rgba(100,100,120,0.1); font-weight: 800; border: 1px solid var(--glass-border); }
+    .nav-btn .icon { font-size: 26px; transition: transform 0.3s; }
+    .nav-btn.active .icon { transform: scale(1.1); }
 
     /* MODALS & VIEWS */
-    .view { display: none; animation: slideUp 0.3s ease; }
+    .view { display: none; animation: blurFadeIn 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
     .view.active { display: block; }
 
-    @keyframes slideUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+    @keyframes blurFadeIn {
+      from { opacity: 0; filter: blur(10px); transform: scale(0.97); }
+      to { opacity: 1; filter: blur(0); transform: scale(1); }
     }
 
-    /* LOCK SCREEN */
+    /* LOCK SCREEN (FROSTED GLASS) */
     #lock-screen {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: var(--bg);
+      background: rgba(15, 15, 20, 0.85);
+      backdrop-filter: blur(40px);
+      -webkit-backdrop-filter: blur(40px);
       z-index: 99999;
       display: flex;
       flex-direction: column;
@@ -293,41 +348,48 @@
       justify-content: center;
       padding: 30px;
     }
+    [data-theme="light"] #lock-screen { background: rgba(255, 255, 255, 0.85); }
     .pin-input {
-      font-size: 40px;
+      font-size: 44px;
       text-align: center;
-      letter-spacing: 15px;
+      letter-spacing: 20px;
       border: none;
-      border-bottom: 4px solid var(--primary);
+      border-bottom: 2px solid var(--glass-border);
       border-radius: 0;
       background: transparent;
+      backdrop-filter: none;
       color: var(--text);
       margin: 40px 0;
       outline: none;
       width: 100%;
-      max-width: 300px;
+      max-width: 250px;
     }
-    .pin-input:focus { border-color: var(--success); }
+    .pin-input:focus { border-color: var(--primary); background: transparent; }
 
-    .chart-container { position: relative; height: 250px; width: 100%; }
+    .chart-container { position: relative; height: 260px; width: 100%; }
     
     .month-selector {
       display: flex; 
       align-items: center; 
       justify-content: space-between;
-      background: var(--panel);
-      border: 2px solid var(--border);
-      border-radius: 12px;
-      padding: 5px;
+      background: var(--glass-panel);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 6px;
       margin-bottom: 20px;
+      box-shadow: var(--glass-shadow);
     }
     .month-selector .action-btn { border: none; min-width: 50px; background: transparent; }
-
+    
     .empty-state {
       text-align: center;
-      padding: 40px 20px;
+      padding: 50px 20px;
       color: var(--text-dim);
       font-size: 18px;
+      filter: grayscale(1);
+      opacity: 0.7;
     }
 
   </style>
@@ -336,26 +398,29 @@
 
 <!-- LOCK SCREEN -->
 <div id="lock-screen" style="display:none;">
-    <h1 style="color:var(--primary); font-size:32px;">🔒 <span id="txt-locked">App Locked</span></h1>
+    <h1 style="color:var(--text); font-size:36px; font-weight:900;">🔒 <span id="txt-locked">App Locked</span></h1>
     <p style="color:var(--text-dim); margin-top:10px; font-size: 18px;" id="txt-enter-pin">Enter your PIN to access.</p>
     <input type="password" id="pin-input" class="pin-input" maxlength="4" placeholder="••••" inputmode="numeric">
-    <button class="btn-full" onclick="unlock()" style="max-width:300px; font-size:20px;" id="btn-unlock">🔓 Unlock</button>
+    <button class="btn-full" onclick="unlock()" style="max-width:250px; font-size:20px; border-radius:24px;" id="btn-unlock">🔓 Unlock</button>
 </div>
 
 <!-- MAIN APP -->
 <div class="app-content">
+  <!-- SINGLE LINE COMPACT HEADER -->
   <div class="header-bar">
     <div class="title">WESLEY FINANÇAS</div>
     <div class="action-group">
+      <button class="action-btn" onclick="toggleHideValues()" id="hide-btn" title="Hide Values">🙈</button>
       <button class="action-btn" onclick="toggleLanguage()" id="lang-btn" title="Toggle Language">🇺🇸</button>
       <button class="action-btn" onclick="toggleTheme()" id="theme-btn" title="Toggle Theme">☀️</button>
       <button class="action-btn" onclick="setupLock()" id="lock-btn" title="Lock App">🔒</button>
     </div>
   </div>
 
+  <!-- MONTH SELECTOR -->
   <div class="month-selector">
     <button class="action-btn" onclick="changeMonth(-1)">❮</button>
-    <div id="display-month" style="font-size: 20px; font-weight: 800;">MMM YYYY</div>
+    <div id="display-month" style="font-size: 20px; font-weight: 800; letter-spacing: -0.5px;">MMM YYYY</div>
     <button class="action-btn" onclick="changeMonth(1)">❯</button>
   </div>
 
@@ -386,8 +451,8 @@
   <div id="view-extrato" class="view">
     <div class="card">
       <div class="card-title" id="lbl-transactions">Transactions</div>
-      <input type="text" id="search-tx" placeholder="Search..." oninput="renderExtrato()">
-      <div id="tx-list" style="margin-top:20px;"></div>
+      <input type="text" id="search-tx" placeholder="Search..." oninput="renderExtrato()" style="margin-bottom: 20px;">
+      <div id="tx-list"></div>
     </div>
   </div>
 
@@ -473,7 +538,7 @@
 
 </div>
 
-<!-- DOCK -->
+<!-- LIQUID GLASS DOCK -->
 <nav class="nav-dock">
   <button class="nav-btn active" onclick="go('view-dash',this)"><span class="icon">📊</span><span id="nav-dash">Dash</span></button>
   <button class="nav-btn" onclick="go('view-extrato',this)"><span class="icon">📑</span><span id="nav-list">List</span></button>
@@ -487,23 +552,23 @@
 // --- I18N SUPPORT ---
 const I18N = {
   pt: {
-    langBtn: "🇺🇸 EN",
-    locked: "Aplicativo Bloqueado", enterPin: "Digite sua senha para acessar.", unlock: "🔓 Acessar",
+    langBtn: "🇺🇸", // Compact mode
+    locked: "Bloqueado", enterPin: "Digite sua senha para acessar.", unlock: "🔓 Acessar",
     balance: "Saldo Líquido", inc: "ENTRADAS", exp: "SAÍDAS", expCat: "Despesas por Categoria",
-    navDash: "Início", navList: "Extrato", navNew: "Adicionar", navYear: "Anual", navGoals: "Orçamento", navAssets: "Ativos",
+    navDash: "Início", navList: "Extrato", navNew: "Adic.", navYear: "Anual", navGoals: "Orçam.", navAssets: "Ativos",
     txList: "Suas Transações", search: "Buscar...",
     newTx: "Novo Lançamento", optRec: "Receita", optDesp: "Despesa",
     date: "Data", amount: "Valor", desc: "Descrição", cat: "Categoria", save: "Salvar",
     yearHist: "Histórico 6 Meses", manageData: "Gerenciar Dados", export: "⬇️ Exportar Dados", import: "⬆️ Importar", clear: "⚠️ Resetar Tudo",
-    goals: "Limites e Orçamentos", goalCat: "Categoria", goalLimit: "Limite Máximo", setGoal: "Definir Meta",
-    assets: "Ativos e Investimentos", invType: "Tipo de Ativo", invVal: "Saldo Atual", updateAsset: "Atualizar Ativo",
-    saved: "Salvo com sucesso!", error: "Ocorreu um erro.", emptyTx: "Nenhuma transação este mês.",
+    goals: "Limites e Orçamentos", goalCat: "Categoria", goalLimit: "Limite Máximo", setGoal: "Salvar Meta",
+    assets: "Ativos e Investimentos", invType: "Tipo de Ativo", invVal: "Saldo Atual", updateAsset: "Salvar Ativo",
+    saved: "Salvo com sucesso!", error: "Ocorreu um erro.", emptyTx: "Nenhuma transação encontrada.",
     currency: "BRL", locale: "pt-BR",
     cats: ["🏠 Moradia","🍔 Alimentação","🚗 Transporte","📱 Telefonia","🎬 Streaming","🏦 Banco","💊 Saúde","📚 Educação","🎉 Lazer","🛍️ Compras","🐾 Pets","🎁 Presentes","⚙️ Outros"],
     inv_cats: ["Reserva","Renda Fixa","Ações","Cripto","Veículos","Imóvel"]
   },
   en: {
-    langBtn: "🇧🇷 PT",
+    langBtn: "🇧🇷",
     locked: "App Locked", enterPin: "Enter your PIN to access.", unlock: "🔓 Unlock",
     balance: "Net Balance", inc: "INCOMES", exp: "EXPENSES", expCat: "Expenses by Category",
     navDash: "Dash", navList: "History", navNew: "Add", navYear: "Yearly", navGoals: "Goals", navAssets: "Assets",
@@ -513,7 +578,7 @@ const I18N = {
     yearHist: "6 Months History", manageData: "Manage Data", export: "⬇️ Export Data", import: "⬆️ Import Data", clear: "⚠️ Factory Reset",
     goals: "Monthly Budgets", goalCat: "Category", goalLimit: "Limit", setGoal: "Set Goal",
     assets: "Assets & Investments", invType: "Asset Type", invVal: "Current Balance", updateAsset: "Update Asset",
-    saved: "Saved successfully!", error: "There was an error.", emptyTx: "No transactions this month.",
+    saved: "Saved successfully!", error: "There was an error.", emptyTx: "No transactions found.",
     currency: "USD", locale: "en-US",
     cats: ["🏠 Housing","🍔 Food","🚗 Transport","📱 Phone/Net","🎬 Streaming","🏦 Bank","💊 Health","📚 Education","🎉 Leisure","🛍️ Shopping","🐾 Pets","🎁 Gifts","⚙️ Others"],
     inv_cats: ["Safety Net","Fixed Income","Stocks","Crypto","Vehicles","Real Estate"]
@@ -542,17 +607,23 @@ const Storage = {
   showFeedback(msg, isErr=false) {
     const d = document.createElement('div');
     d.textContent = msg;
-    d.style.cssText = `position:fixed; top:20px; right:20px; padding:20px 30px; border-radius:12px; font-size:18px; font-weight:800; z-index:999999; color:#000; animation: slideIn 0.3s; box-shadow:0 4px 15px rgba(0,0,0,0.5); background: ${isErr?'#ff4444':'#44ff88'}`;
+    d.style.cssText = `position:fixed; top:20px; left:50%; transform:translateX(-50%); padding:18px 28px; border-radius:30px; font-size:16px; font-weight:800; z-index:999999; color:#fff; animation: popDown 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28); box-shadow:0 8px 30px rgba(0,0,0,0.3); background: ${isErr?'rgba(255,59,48,0.9)':'rgba(52,199,89,0.9)'}; backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);`;
     document.body.appendChild(d);
-    setTimeout(()=>d.remove(), 2500);
+    
+    const style = document.createElement('style');
+    style.innerHTML = `@keyframes popDown { from {opacity:0; transform:translate(-50%, -20px) scale(0.9);} to {opacity:1; transform:translate(-50%, 0) scale(1);} }`;
+    document.head.appendChild(style);
+    
+    setTimeout(()=>{ d.style.opacity='0'; d.style.transition='opacity 0.3s'; setTimeout(()=>d.remove(),300); }, 2500);
   }
 };
 
 let db = Storage.load();
 let curMonth = new Date().toISOString().slice(0,7);
 let curLang = localStorage.getItem('lang_pref') || 'en';
-let curType = 'income'; // 'income' or 'expense'
+let curType = 'income'; 
 let chartPie = null, chartBar = null;
+let valuesHidden = localStorage.getItem('hide_values') === 'true'; // Feature: Hide Values
 
 // --- INIT ---
 window.onload = () => {
@@ -560,13 +631,12 @@ window.onload = () => {
   const savedTheme = localStorage.getItem('theme_pref') || 'dark';
   document.body.setAttribute('data-theme', savedTheme);
   document.getElementById('theme-btn').innerText = savedTheme === 'dark' ? '☀️' : '🌙';
+  document.getElementById('hide-btn').innerText = valuesHidden ? '🙊' : '🙈';
   
-  // PIN Verification
   if(localStorage.getItem('app_pin')) {
     document.getElementById('lock-screen').style.display = 'flex';
   }
 
-  // Current Date preset
   const localDate = new Date();
   localDate.setMinutes(localDate.getMinutes() - localDate.getTimezoneOffset());
   document.getElementById('in-date').value = localDate.toISOString().slice(0,10);
@@ -577,7 +647,6 @@ window.onload = () => {
 function applyLang() {
   const L = I18N[curLang];
   
-  // Update texts
   document.getElementById('lang-btn').innerText = L.langBtn;
   document.getElementById('txt-locked').innerText = L.locked;
   document.getElementById('txt-enter-pin').innerText = L.enterPin;
@@ -623,7 +692,6 @@ function applyLang() {
   document.getElementById('lbl-inv-val').innerText = L.invVal;
   document.getElementById('btn-save-inv').innerText = L.updateAsset;
 
-  // Render dropdowns
   document.getElementById('in-cat').innerHTML = L.cats.map(c=>`<option value="${c}">${c}</option>`).join('');
   document.getElementById('meta-cat').innerHTML = L.cats.map(c=>`<option value="${c}">${c}</option>`).join('');
   document.getElementById('inv-type').innerHTML = L.inv_cats.map(c=>`<option value="${c}">${c}</option>`).join('');
@@ -642,6 +710,7 @@ const getMonthData = (m=curMonth) => {
 function autoSave() { Storage.save(db); renderAll(); }
 
 function fmt(val) {
+  if(valuesHidden) return '••••';
   return val.toLocaleString(I18N[curLang].locale, {style:'currency', currency:I18N[curLang].currency});
 }
 
@@ -649,11 +718,9 @@ function renderAll() {
   const m = getMonthData();
   const txs = m.transacoes || [];
   
-  // Set view month
   const [yy, mm] = curMonth.split('-');
   document.getElementById('display-month').innerText = `${MONTHS[curLang][parseInt(mm)-1]} ${yy}`;
   
-  // Dash metrics
   const inc = txs.filter(x => x.tipo === 'income' || x.tipo === 'receita').reduce((a,b)=>a+b.valor, 0);
   const exp = txs.filter(x => x.tipo === 'expense' || x.tipo === 'despesa').reduce((a,b)=>a+b.valor, 0);
   
@@ -676,12 +743,11 @@ function renderExtrato(txsToRender) {
   if(q) txs = txs.filter(t => t.desc.toLowerCase().includes(q));
   
   txs = txs.sort((a,b) => b.data.localeCompare(a.data));
-  
   const el = document.getElementById('tx-list');
   el.innerHTML = '';
   
   if(txs.length === 0) {
-    el.innerHTML = `<div class="empty-state">${I18N[curLang].emptyTx}</div>`;
+    el.innerHTML = `<div class="empty-state">🍃<br><br>${I18N[curLang].emptyTx}</div>`;
     return;
   }
   
@@ -698,7 +764,7 @@ function renderExtrato(txsToRender) {
           <h4>${t.desc}</h4>
           <p>${dateStr} • ${t.cat || '—'}</p>
         </div>
-        <div style="display:flex; align-items:center; gap:15px;">
+        <div style="display:flex; align-items:center; gap:12px;">
           <span class="list-amount ${cl}">${sign} ${fmt(t.valor)}</span>
           <button class="del-btn" onclick="delTx(${t.id})">✕</button>
         </div>
@@ -712,12 +778,9 @@ function renderMetas(txs) {
   el.innerHTML = '';
   const cats = {}; 
   txs.filter(x => x.tipo === 'expense' || x.tipo === 'despesa').forEach(x => cats[x.cat] = (cats[x.cat]||0) + x.valor);
-  
   const metas = db.config.metas || {};
-  let hasMetas = false;
   
   for(let c in metas) {
-    hasMetas = true;
     const limit = metas[c];
     const spent = cats[c] || 0;
     const pct = Math.min((spent/limit)*100, 100);
@@ -725,15 +788,15 @@ function renderMetas(txs) {
     
     el.innerHTML += `
       <div class="list-item" style="display:block;">
-        <div style="display:flex;justify-content:space-between; margin-bottom:10px;">
-          <h4 style="font-size:16px;">${c}</h4>
+        <div style="display:flex;justify-content:space-between; margin-bottom:12px;">
+          <h4 style="font-size:17px; font-weight:800;">${c}</h4>
           <span style="font-weight:700;">${fmt(spent)} / ${fmt(limit)}</span>
         </div>
-        <div style="height:12px; background:var(--bg); border-radius:6px; overflow:hidden; margin-bottom:10px;">
-          <div style="height:100%; width:${pct}%; background:${color}; transition: width 0.3s;"></div>
+        <div style="height:14px; background:rgba(0,0,0,0.1); border-radius:7px; overflow:hidden; margin-bottom:12px; box-shadow:inset 0 1px 3px rgba(0,0,0,0.2);">
+          <div style="height:100%; width:${pct}%; background:${color}; transition: width 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); border-radius:7px;"></div>
         </div>
         <div style="text-align:right;">
-          <button class="del-btn" onclick="delMeta('${c}')" style="min-height:30px; font-size:16px;">🗑️ Rem</button>
+          <button class="del-btn" onclick="delMeta('${c}')" style="min-height:36px; padding: 0 16px; font-size:14px; width:auto; border-radius:12px;">Remover</button>
         </div>
       </div>
     `;
@@ -748,9 +811,9 @@ function renderInv(invs) {
   
   if(total > 0) {
     el.innerHTML += `
-      <div style="background:var(--success); color:#000; padding:20px; border-radius:12px; margin-bottom:15px; text-align:center;">
-        <h4 style="margin-bottom:5px;">Total Patrimônio</h4>
-        <h2 style="font-size:28px;">${fmt(total)}</h2>
+      <div style="background:linear-gradient(135deg, var(--success), #28a745); color:#fff; padding:24px; border-radius:24px; margin-bottom:20px; text-align:center; box-shadow:0 8px 24px rgba(52, 199, 89, 0.3);">
+        <h4 style="margin-bottom:8px; font-weight:700; opacity:0.9; letter-spacing:1px; text-transform:uppercase; font-size:12px;">Total Patrimônio</h4>
+        <h2 style="font-size:36px; font-weight:900; letter-spacing:-1px;">${fmt(total)}</h2>
       </div>
     `;
   }
@@ -763,8 +826,8 @@ function renderInv(invs) {
           <h4>${i.type}</h4>
           <p>${pct}%</p>
         </div>
-        <div style="display:flex; align-items:center; gap:15px;">
-          <span class="list-amount">${fmt(i.val)}</span>
+        <div style="display:flex; align-items:center; gap:12px;">
+          <span class="list-amount" style="font-weight:900;">${fmt(i.val)}</span>
           <button class="del-btn" onclick="delInv(${i.id})">✕</button>
         </div>
       </div>
@@ -773,8 +836,8 @@ function renderInv(invs) {
 }
 
 // --- CHARTS ---
-Chart.defaults.font.family = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
-Chart.defaults.color = "#a1a1aa";
+Chart.defaults.font.family = "-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif";
+Chart.defaults.color = "#8E8E93";
 
 function renderPie(txs) {
   const ctx = document.getElementById('chart-pie');
@@ -782,7 +845,7 @@ function renderPie(txs) {
   const cats = {}; 
   txs.filter(x => x.tipo === 'expense' || x.tipo === 'despesa').forEach(x => cats[x.cat] = (cats[x.cat]||0) + x.valor);
   
-  const textCol = document.body.getAttribute('data-theme') === 'dark' ? '#fff' : '#000';
+  const textCol = document.body.getAttribute('data-theme') === 'dark' ? '#f0f0f5' : '#1c1c1e';
   
   chartPie = new Chart(ctx, {
     type:'doughnut',
@@ -790,14 +853,15 @@ function renderPie(txs) {
       labels: Object.keys(cats),
       datasets: [{
         data: Object.values(cats),
-        backgroundColor: ['#4a9eff','#44ff88','#f59e0b','#ff4444','#8b5cf6','#06b6d4','#10b981','#ef4444'],
-        borderWidth: 0
+        backgroundColor: ['#5c8cf5','#3ddc84','#ffb74d','#ff5252','#bf5af2','#32ade6','#34c759','#ff3b30'],
+        borderWidth: 0,
+        hoverOffset: 4
       }]
     },
     options: {
       responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { position: 'right', labels: { color: textCol } } },
-      cutout: '70%'
+      plugins: { legend: { position: 'right', labels: { color: textCol, font: {weight: 'bold'} } } },
+      cutout: '75%', animation: { animateScale: true }
     }
   });
 }
@@ -821,7 +885,7 @@ function renderChartBar() {
     } else d.push(0);
   }
   
-  const textCol = document.body.getAttribute('data-theme') === 'dark' ? '#fff' : '#000';
+  const textCol = document.body.getAttribute('data-theme') === 'dark' ? '#f0f0f5' : '#1c1c1e';
 
   chartBar = new Chart(ctx, {
     type:'bar',
@@ -829,14 +893,18 @@ function renderChartBar() {
       labels: l,
       datasets: [{
         data: d,
-        backgroundColor: d.map(v => v>=0 ? '#44ff88' : '#ff4444'),
-        borderRadius: 6
+        backgroundColor: d.map(v => v>=0 ? '#3ddc84' : '#ff5252'),
+        borderRadius: 8,
+        barPercentage: 0.6
       }]
     },
     options: {
       responsive: true, maintainAspectRatio: false,
       plugins: { legend: { display: false } },
-      scales: { x: { ticks: { color: textCol } }, y: { ticks: { color: textCol } } }
+      scales: { 
+        x: { grid: {display:false}, ticks: { color: textCol, font: {weight: 'bold'} } }, 
+        y: { grid: {color: 'rgba(150,150,150,0.1)'}, ticks: { color: textCol, font: {weight: 'bold'} } } 
+      }
     }
   });
 }
@@ -917,20 +985,9 @@ function saveInv() {
   }
 }
 
-function delTx(id) {
-  let m = getMonthData();
-  m.transacoes = m.transacoes.filter(x => x.id !== id);
-  autoSave();
-}
-function delInv(id) {
-  let m = getMonthData();
-  m.investimentos = m.investimentos.filter(x => x.id !== id);
-  autoSave();
-}
-function delMeta(cat) {
-  if(db.config && db.config.metas) delete db.config.metas[cat];
-  autoSave();
-}
+function delTx(id) { let m = getMonthData(); m.transacoes = m.transacoes.filter(x => x.id !== id); autoSave(); }
+function delInv(id) { let m = getMonthData(); m.investimentos = m.investimentos.filter(x => x.id !== id); autoSave(); }
+function delMeta(cat) { if(db.config && db.config.metas) delete db.config.metas[cat]; autoSave(); }
 
 function exportData() {
   const blob = new Blob([JSON.stringify(db, null, 2)], { type: 'application/json' });
@@ -956,11 +1013,18 @@ function importData(input) {
 }
 
 function clearData() {
-  if(confirm("DANGER! This deletes ALL data permanently. Confirm? / Isso apaga tudo. Confirma?")) {
+  if(confirm("DANGER! Confirm factory reset? / Confirma exclusão de tudo?")) {
     db = { config: { metas: {} } };
     Storage.save(db);
     location.reload();
   }
+}
+
+function toggleHideValues() {
+  valuesHidden = !valuesHidden;
+  localStorage.setItem('hide_values', valuesHidden);
+  document.getElementById('hide-btn').innerText = valuesHidden ? '🙊' : '🙈';
+  renderAll();
 }
 
 function toggleLanguage() {
@@ -975,7 +1039,7 @@ function toggleTheme() {
   b.setAttribute('data-theme', n);
   localStorage.setItem('theme_pref', n);
   document.getElementById('theme-btn').innerText = n === 'dark' ? '☀️' : '🌙';
-  renderPie(getMonthData().transacoes || []); // update chart colors
+  renderPie(getMonthData().transacoes || []);
   renderChartBar();
 }
 
