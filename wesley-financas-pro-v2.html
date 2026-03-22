@@ -1039,7 +1039,7 @@
             const now = new Date();
             const off = now.getTimezoneOffset() * 60000;
             document.getElementById('in-date').value = new Date(now - off).toISOString().split('T')[0];
-            update Cats();
+            updateCats();
             render();
         });
     </script>
